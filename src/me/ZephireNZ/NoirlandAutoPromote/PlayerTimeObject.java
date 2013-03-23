@@ -1,7 +1,5 @@
 package me.ZephireNZ.NoirlandAutoPromote;
 
-import java.util.concurrent.TimeUnit;
-
 import org.bukkit.entity.Player;
 
 public class PlayerTimeObject {
@@ -34,13 +32,13 @@ public class PlayerTimeObject {
 		return player;
 	}
 	
-	public String getPlayTime() {
+	public long getPlayTime() {
 		long playTime = quitTime - joinTime;
-		String strPlayTime = String.format("%d min, %d sec", 
-			    TimeUnit.MILLISECONDS.toMinutes(playTime),
-			    TimeUnit.MILLISECONDS.toSeconds(playTime) - 
-			    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(playTime))
-		);
-		return strPlayTime;
+//		String strPlayTime = String.format("%d min, %d sec", 
+//				TimeUnit.MILLISECONDS.toMinutes(playTime),
+//				TimeUnit.MILLISECONDS.toSeconds(playTime) - 
+//				TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(playTime))
+//		);
+		return playTime;
 	}
 }

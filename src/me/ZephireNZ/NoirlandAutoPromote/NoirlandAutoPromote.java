@@ -7,19 +7,24 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class NoirlandAutoPromote extends JavaPlugin {
 	
-	ArrayList<PlayerTimeObject> PlayerPlayTimerArray = new ArrayList<PlayerTimeObject>();
-	
-	@Override
-	public void onDisable(){
-		PluginDescriptionFile pdfFile = this.getDescription();
-		getLogger().info(pdfFile.getName() + " version " + pdfFile.getVersion() + " stopped.");
-	}
+	ArrayList<PlayerTimeObject> playerTimeArray = new ArrayList<PlayerTimeObject>();
+	DatabaseHandler dbHandler;
 	
 	@Override
 	public void onEnable(){
 		PluginDescriptionFile pdfFile = this.getDescription();
 		getLogger().info(pdfFile.getName() + " version " + pdfFile.getVersion() + " started.");
 		
+		dbHandler = new DatabaseHandler(this);
+		
 		getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(this), this);
+	}
+	
+	@Override
+	public void onDisable(){
+		dbHandler.closeConnection();
+		
+		PluginDescriptionFile pdfFile = this.getDescription();
+		getLogger().info(pdfFile.getName() + " version " + pdfFile.getVersion() + " stopped.");
 	}
 }

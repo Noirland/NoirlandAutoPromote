@@ -13,13 +13,6 @@ public class DatabaseHandler {
 		this.plugin = plugin;
 		SQLConnect();
 		buildTable();
-//		try {
-//			querySelect = SQLite.prepare("SELECT * FROM playTime WHERE player='?';", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-//			querySelect.
-//			
-//		} catch (SQLException e) {
-//			plugin.getLogger().info(e.getMessage());
-//		}
 		
 	}
 
@@ -48,13 +41,10 @@ public class DatabaseHandler {
 	public long getPlayTime(String player) {
 		try {
 			checkForPlayer(player, 0);
-			plugin.getLogger().info("getPlayTime Select");
 			ResultSet result = SQLite.query("SELECT * FROM playTime WHERE player='" + player + "';");
-			plugin.getLogger().info("getPlayTime getLong");
 			long playTime = result.getLong("playTime");
 			return playTime;
 		} catch (SQLException e) {
-			plugin.getLogger().info("getPlayTime Exception");
 			plugin.getLogger().info(e.getMessage());
 			return 0;
 		}
@@ -63,24 +53,19 @@ public class DatabaseHandler {
 	public void setPlayTime(String player, long playTime) {
 		try {
 			checkForPlayer(player, playTime);
-			plugin.getLogger().info("setPlayTime Update");
 			SQLite.query("UPDATE playTime SET playTime='" + playTime + "' WHERE player='" + player + "';");
 		}catch(SQLException e){
-			plugin.getLogger().info("setPlay Time Exception");
 			plugin.getLogger().info(e.getMessage());
 		}
 	}
 	
 	public void checkForPlayer(String player, long playTime) {
 		try {
-			plugin.getLogger().info("checkForPlayer Select");
-			plugin.getLogger().info("checkForPlayer Select");
 			ResultSet countResult = SQLite.query("SELECT COUNT(*) AS count FROM playTime WHERE player='" + player + "';");
 			if(countResult.getInt("count") == 0) {
 				SQLite.query("INSERT INTO playTime(player, playTime) VALUES('" + player + "', '" + playTime + "');");
 			}
 			}catch (SQLException e) {
-				plugin.getLogger().info("checkForPlayer Exception");
 				plugin.getLogger().info(e.getMessage());
 		}
 	}

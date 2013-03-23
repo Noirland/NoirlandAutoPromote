@@ -21,7 +21,7 @@ public class DatabaseHandler {
 		try {
 			SQLite.open();
 		}catch(Exception e){
-			plugin.getLogger().info(e.getMessage());
+			plugin.getLogger().severe(e.getMessage());
 			plugin.getPluginLoader().disablePlugin(plugin);
 		}
 	}
@@ -32,7 +32,7 @@ public class DatabaseHandler {
 				plugin.getLogger().info("Creating Table");
 				SQLite.query("CREATE TABLE playTime (player TEXT, playTime INTEGER);");
 			} catch (SQLException e) {
-				plugin.getLogger().info(e.getMessage());
+				plugin.getLogger().severe(e.getMessage());
 				plugin.getPluginLoader().disablePlugin(plugin);
 			}
 		}
@@ -45,7 +45,7 @@ public class DatabaseHandler {
 			long playTime = result.getLong("playTime");
 			return playTime;
 		} catch (SQLException e) {
-			plugin.getLogger().info(e.getMessage());
+			plugin.getLogger().severe(e.getMessage());
 			return 0;
 		}
 	}
@@ -55,7 +55,7 @@ public class DatabaseHandler {
 			checkForPlayer(player, playTime);
 			SQLite.query("UPDATE playTime SET playTime='" + playTime + "' WHERE player='" + player + "';");
 		}catch(SQLException e){
-			plugin.getLogger().info(e.getMessage());
+			plugin.getLogger().severe(e.getMessage());
 		}
 	}
 	
@@ -66,7 +66,7 @@ public class DatabaseHandler {
 				SQLite.query("INSERT INTO playTime(player, playTime) VALUES('" + player + "', '" + playTime + "');");
 			}
 			}catch (SQLException e) {
-				plugin.getLogger().info(e.getMessage());
+				plugin.getLogger().severe(e.getMessage());
 		}
 	}
 	

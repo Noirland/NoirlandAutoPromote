@@ -9,6 +9,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 	
 	ArrayList<PlayerTimeObject> playerTimeArray = new ArrayList<PlayerTimeObject>();
 	DatabaseHandler dbHandler;
+	GMHandler gmHandler;
 	
 	@Override
 	public void onEnable(){
@@ -16,6 +17,8 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		getLogger().info(pdfFile.getName() + " version " + pdfFile.getVersion() + " started.");
 		
 		dbHandler = new DatabaseHandler(this);
+		gmHandler = new GMHandler(this);
+		
 		
 		getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(this), this);
 	}

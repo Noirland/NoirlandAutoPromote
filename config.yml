@@ -1,0 +1,7 @@
+ranks:
+  InsertRankHere:
+    playTime: 5
+    promoteTo: NewRankHere
+  AnotherRankHere:
+    playTime: 5
+    promoteTo: NewRankHere

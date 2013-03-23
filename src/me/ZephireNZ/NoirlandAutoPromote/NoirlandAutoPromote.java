@@ -17,9 +17,9 @@ public class NoirlandAutoPromote extends JavaPlugin {
 	
 	@Override
 	public void onEnable(){
+		getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(this), this);
+		
 		PluginDescriptionFile pdfFile = this.getDescription();
 		getLogger().info(pdfFile.getName() + " version " + pdfFile.getVersion() + " started.");
-		
-		getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(this), this);
 	}
 }

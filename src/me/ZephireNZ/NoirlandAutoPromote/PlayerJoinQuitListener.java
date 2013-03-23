@@ -1,5 +1,7 @@
 package me.ZephireNZ.NoirlandAutoPromote;
 
+import java.util.Iterator;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -23,20 +25,17 @@ public class PlayerJoinQuitListener implements Listener {
 		PlayerTimeObject pto = new PlayerTimeObject(player);
 		pto.setJoinTime();
 		plugin.playerTimeArray.add(pto);
-		plugin.getLogger().info(player.getName() + " Join Time: " + pto.getJoinTime());
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-		for(PlayerTimeObject pto : plugin.playerTimeArray) {
+		for(Iterator<PlayerTimeObject> it = plugin.playerTimeArray.iterator(); it.hasNext(); ) {
+			PlayerTimeObject pto = it.next();
 			if(pto.getPlayer() == player ) {
 				pto.setQuitTime();
-				plugin.getLogger().info(player.getName() + " Quit Time: " + pto.getQuitTime());
-				plugin.getLogger().info(player.getName() + " Play time:" + pto.getPlayTime());
 				dbHandler.setPlayTime(player.getName(), dbHandler.getPlayTime(player.getName()) + pto.getPlayTime());
-				plugin.getLogger().info(player.getName() + " Total Play time: " + dbHandler.getPlayTime(player.getName()));
-				plugin.playerTimeArray.remove(pto);
+				it.remove();
 			}
 		}
 	}

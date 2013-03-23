@@ -74,13 +74,10 @@ public class DatabaseHandler {
 	public void checkForPlayer(String player, long playTime) {
 		try {
 			plugin.getLogger().info("checkForPlayer Select");
-			ResultSet result = SQLite.query("SELECT * FROM playTime WHERE player='" + player + "';");
-			plugin.getLogger().info("checkForPlayer result.last");
-			result.last();
-			plugin.getLogger().info("Row: " + result.getRow());
-			if(result.getRow() == 0) {
-				plugin.getLogger().info("CheckForPlayer Insert");
-					SQLite.query("INSERT INTO playTime(player, playTime) VALUES('" + player + "', '" + playTime + "');");
+			plugin.getLogger().info("checkForPlayer Select");
+			ResultSet countResult = SQLite.query("SELECT COUNT(*) AS count FROM playTime WHERE player='" + player + "';");
+			if(countResult.getInt("count") == 0) {
+				SQLite.query("INSERT INTO playTime(player, playTime) VALUES('" + player + "', '" + playTime + "');");
 			}
 			}catch (SQLException e) {
 				plugin.getLogger().info("checkForPlayer Exception");

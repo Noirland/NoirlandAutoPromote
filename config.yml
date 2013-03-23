@@ -5,3 +5,5 @@ ranks:
   AnotherRankHere:
     playTime: 5
     promoteTo: NewRankHere
+  NonPromotingRank:
+    noPromote: true

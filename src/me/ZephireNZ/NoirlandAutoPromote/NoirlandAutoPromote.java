@@ -31,4 +31,14 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		PluginDescriptionFile pdfFile = this.getDescription();
 		getLogger().info(pdfFile.getName() + " version " + pdfFile.getVersion() + " stopped.");
 	}
+	
+	public void saveToDB() {
+		for(PlayerTimeObject pto : playerTimeArray) {
+			String player = pto.getPlayer().getName();
+			pto.setQuitTime();
+			dbHandler.setPlayTime(player, pto.getPlayTime() + dbHandler.getPlayTime(player));
+			pto.setJoinTime();
+			pto.resetQuitTime();
+		}
+	}
 }

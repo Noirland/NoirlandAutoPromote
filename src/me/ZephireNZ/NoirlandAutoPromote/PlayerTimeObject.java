@@ -41,4 +41,8 @@ public class PlayerTimeObject {
 //		);
 		return playTime;
 	}
+	
+	public void resetQuitTime() {
+		quitTime = (Long) null;
+	}
 }

@@ -36,6 +36,7 @@ public class PlayerJoinQuitListener implements Listener {
 				plugin.getLogger().info(player.getName() + " Play time:" + pto.getPlayTime());
 				dbHandler.setPlayTime(player.getName(), dbHandler.getPlayTime(player.getName()) + pto.getPlayTime());
 				plugin.getLogger().info(player.getName() + " Total Play time: " + dbHandler.getPlayTime(player.getName()));
+				plugin.playerTimeArray.remove(pto);
 			}
 		}
 	}

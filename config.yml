@@ -7,3 +7,6 @@ ranks:
     promoteTo: NewRankHere
   NonPromotingRank:
     noPromote: true
+
+settings:
+  saveTime: 10

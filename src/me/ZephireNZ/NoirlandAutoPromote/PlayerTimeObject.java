@@ -43,6 +43,6 @@ public class PlayerTimeObject {
 	}
 	
 	public void resetQuitTime() {
-		quitTime = (Long) null;
+		quitTime = 0;
 	}
 }

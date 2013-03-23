@@ -22,6 +22,7 @@ public class PlayerJoinQuitListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
+		dbHandler.checkForPlayer(player.getName(), 0);
 		PlayerTimeObject pto = new PlayerTimeObject(player);
 		pto.setJoinTime();
 		plugin.playerTimeArray.add(pto);

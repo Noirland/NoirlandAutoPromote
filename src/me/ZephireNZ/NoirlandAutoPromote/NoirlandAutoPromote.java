@@ -21,6 +21,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		
 		
 		getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(this), this);
+		getServer().getPluginManager().registerEvents(gmHandler, this);
 	}
 	
 	@Override

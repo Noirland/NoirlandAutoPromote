@@ -4,4 +4,4 @@ main: me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote
 name: NoirlandAutoPromote
 startup: postworld
 version: 0.1
-depends: [SQLibrary]
+depends: [SQLibrary, GroupManager]

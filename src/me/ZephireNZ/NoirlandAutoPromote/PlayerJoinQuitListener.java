@@ -13,10 +13,14 @@ public class PlayerJoinQuitListener implements Listener {
 	
 	NoirlandAutoPromote plugin;
 	DatabaseHandler dbHandler;
+	ConfigHandler confHandler;
+	GMHandler gmHandler;
 	
 	public PlayerJoinQuitListener(NoirlandAutoPromote plugin) {
 		this.plugin = plugin;
 		this.dbHandler = plugin.dbHandler;
+		this.confHandler = plugin.confHandler;
+		this.gmHandler = plugin.gmHandler;
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -26,6 +30,9 @@ public class PlayerJoinQuitListener implements Listener {
 		PlayerTimeObject pto = new PlayerTimeObject(player);
 		pto.setJoinTime();
 		plugin.playerTimeArray.add(pto);
+		if(plugin.checkForPromotion(player)) {
+			plugin.promote(player, confHandler.getPromoteTo(gmHandler.getGroup(player)));
+		}
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)

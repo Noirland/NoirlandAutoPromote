@@ -9,20 +9,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
-import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 public class GMHandler implements Listener {
-	private NoirlandAutoPromote plugin;
 	private GroupManager gm;
 	
 	public GMHandler(NoirlandAutoPromote plugin) {
-		this.plugin = plugin;
-	}
-	
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPluginEnable(PluginEnableEvent event) {
 		final PluginManager pm = plugin.getServer().getPluginManager();
 		final Plugin GMplugin = pm.getPlugin("GroupManager");
  
@@ -41,12 +34,20 @@ public class GMHandler implements Listener {
 		}
 	}
 	
-	public String getGroup(final Player base) {
-		final AnjoPermissionsHandler handler = gm.getWorldsHolder().getWorldPermissions(base);
+	public String getGroup(final Player player) {
+		final AnjoPermissionsHandler handler = gm.getWorldsHolder().getWorldPermissions(player);
 		if (handler == null) {
 			return null;
 		}
-		return handler.getGroup(base.getName());
+		return handler.getGroup(player.getName());
+	}
+	
+	public String getPrefix(final Player player) {
+		final AnjoPermissionsHandler handler = gm.getWorldsHolder().getWorldPermissions(player);
+		if (handler == null) {
+			return null;
+		}
+		return handler.getGroupPrefix(getGroup(player));
 	}
  
 	public boolean setGroup(final Player base, final String group) {

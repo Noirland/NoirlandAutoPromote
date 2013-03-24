@@ -39,4 +39,8 @@ public class ConfigHandler {
 		int playTimeNeededHours = config.getInt("ranks." + rank + ".playTimeNeeded"); 
 		return TimeUnit.MILLISECONDS.convert(playTimeNeededHours, TimeUnit.HOURS);
 	}
+	
+	public long getSaveTimeSeconds() {
+		return TimeUnit.SECONDS.convert(config.getInt("settings.saveTime"),TimeUnit.MINUTES);
+	}
 }

@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class NoirlandAutoPromote extends JavaPlugin {
 	
@@ -33,7 +34,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 			}
 		}
 		
-		// TODO: Run Async task saveToDB() (possibly with time from config file)
+		new SaveTimesTask(this).runTaskTimer(this, confHandler.getSaveTimeSeconds() * 20L, confHandler.getSaveTimeSeconds() * 20L); // Save times to DB with time in config (in minutes)
 		
 		//TODO: Commands
 		
@@ -78,5 +79,20 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		dbHandler.setPlayTime(player.getName(), 0);
 		String prefix = ChatColor.translateAlternateColorCodes("&".charAt(0), gmHandler.getPrefix(player));
 		getServer().broadcastMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + player.getName() + " is now " + prefix + rank + ChatColor.RESET + "!");
+	}
+}
+
+class SaveTimesTask extends BukkitRunnable {
+	
+	NoirlandAutoPromote plugin;
+	
+	public SaveTimesTask(NoirlandAutoPromote plugin) {
+		this.plugin = plugin;
+	}
+	
+	@Override
+	public void run() {
+		plugin.saveToDB();
+		
 	}
 }

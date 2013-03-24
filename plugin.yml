@@ -5,3 +5,21 @@ name: NoirlandAutoPromote
 startup: postworld
 version: 0.1
 depend: [SQLibrary, GroupManager]
+commands:
+    autopromote:
+        description: Get info about AutoPromote.
+permissions:
+    autopromote.*:
+      description: Access to all autopromote commands.
+      default: op
+      children:
+        autopromote.check: true
+        autopromote.check.others: true
+    autopromote.check:
+      description: Check own promotion info.
+      default: true
+    autopromote.check.others:
+      description: Check anothers promotion info.
+      default: op
+      children:
+        autopromote.check: true

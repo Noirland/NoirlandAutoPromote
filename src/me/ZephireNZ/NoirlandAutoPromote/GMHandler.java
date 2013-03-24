@@ -4,6 +4,7 @@ import org.anjocaido.groupmanager.GroupManager;
 import org.anjocaido.groupmanager.dataholder.OverloadedWorldHolder;
 import org.anjocaido.groupmanager.permissions.AnjoPermissionsHandler;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -48,6 +49,14 @@ public class GMHandler implements Listener {
 			return null;
 		}
 		return handler.getGroupPrefix(getGroup(player));
+	}
+	
+	public String getColor(final Player player) {
+		final AnjoPermissionsHandler handler = gm.getWorldsHolder().getWorldPermissions(player);
+		if (handler == null) {
+			return null;
+		}
+		return ChatColor.translateAlternateColorCodes("&".charAt(0), handler.getGroupPrefix(getGroup(player)));
 	}
  
 	public boolean setGroup(final Player base, final String group) {

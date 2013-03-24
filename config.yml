@@ -1,0 +1,12 @@
+ranks:
+  InsertRankHere:
+    playTimeNeeded: 5
+    promoteTo: NewRankHere
+  AnotherRankHere:
+    playTimeNeeded: 5
+    promoteTo: NewRankHere
+  NonPromotingRank:
+    noPromote: true
+
+settings:
+  saveTime: 10

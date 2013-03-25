@@ -36,7 +36,7 @@ public class ConfigHandler {
 	}
 	
 	public long getPlayTimeNeededMillis(String rank) {
-		int playTimeNeededHours = config.getInt("ranks." + rank + ".playTimeNeeded"); 
+		int playTimeNeededHours = config.getInt("ranks." + rank + ".playTimeNeeded");
 		return TimeUnit.MILLISECONDS.convert(playTimeNeededHours, TimeUnit.HOURS);
 	}
 	

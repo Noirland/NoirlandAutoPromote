@@ -20,10 +20,10 @@ public class NoirlandAutoPromote extends JavaPlugin {
 	
 	@Override
 	public void onEnable(){
-		getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(this), this);
 		dbHandler = new DatabaseHandler(this);
 		gmHandler = new GMHandler(this);
 		confHandler = new ConfigHandler(this);
+		getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(this), this);
 		
 		for(Player player : getServer().getOnlinePlayers()) {
 			PlayerTimeObject pto = new PlayerTimeObject(player); // Add online players to pto object after reload
@@ -60,13 +60,13 @@ public class NoirlandAutoPromote extends JavaPlugin {
 			if(sender instanceof Player) {
 				if(args.length == 1 && sender.hasPermission("autopromote.check.others")) {
 					if(getServer().getPlayerExact(args[0]) != null) {
-						sender.sendMessage(ChatColor.RED + "[PROMOTEINFO] " + ChatColor.RESET + "" + promoteInfo(getServer().getPlayerExact(args[0]), false));
+						sender.sendMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + "" + promoteInfo(getServer().getPlayerExact(args[0]), false));
 					}else{
-						sender.sendMessage(ChatColor.RED + "[PROMOTEINFO] " + ChatColor.RESET + "That player has never played before.");
+						sender.sendMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + "That player has never played before.");
 					}
 				}else{
 					if(sender.hasPermission("autopromote.check")){
-						sender.sendMessage(ChatColor.RED + "[PROMOTEINFO] " + ChatColor.RESET + "" + promoteInfo(((Player) sender).getPlayer(), true));
+						sender.sendMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + "" + promoteInfo(((Player) sender).getPlayer(), true));
 					}
 				}
 			}else{
@@ -89,9 +89,9 @@ public class NoirlandAutoPromote extends JavaPlugin {
 					}
 				}else if(args.length == 1){ 
 					if(getServer().getPlayerExact(args[0]) != null) {
-						getLogger().info("[PROMOTEINFO] " + promoteInfo(getServer().getPlayerExact(args[0]), false));
+						getLogger().info("[AutoPromote] " + promoteInfo(getServer().getPlayerExact(args[0]), false));
 					}else{
-						getLogger().info("[PROMOTEINFO] That player has never played before.");
+						getLogger().info("[AutoPromote] That player has never played before.");
 					}
 				}
 			}

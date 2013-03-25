@@ -10,3 +10,4 @@ ranks:
 
 settings:
   saveTime: 10
+  debug: true

@@ -34,11 +34,6 @@ public class PlayerTimeObject {
 	
 	public long getPlayTime() {
 		long playTime = quitTime - joinTime;
-//		String strPlayTime = String.format("%d min, %d sec", 
-//				TimeUnit.MILLISECONDS.toMinutes(playTime),
-//				TimeUnit.MILLISECONDS.toSeconds(playTime) - 
-//				TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(playTime))
-//		);
 		return playTime;
 	}
 	

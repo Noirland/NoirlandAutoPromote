@@ -1,6 +1,7 @@
 package me.ZephireNZ.NoirlandAutoPromote;
 
 import org.anjocaido.groupmanager.GroupManager;
+import org.anjocaido.groupmanager.data.Group;
 import org.anjocaido.groupmanager.dataholder.OverloadedWorldHolder;
 import org.anjocaido.groupmanager.permissions.AnjoPermissionsHandler;
 
@@ -44,8 +45,9 @@ public class GMHandler implements Listener {
 		if (handler == null) {
 			return null;
 		}
-		plugin.debug("GMHandler getGroup group: " + handler.getGroup(player.getName()));
-		return handler.getGroup(player.getName());
+		String group = handler.getGroup(player.getName());
+		plugin.debug("GMHandler getGroup group: " + group);
+		return group;
 	}
 	
 	public String getPrefix(final Player player) {
@@ -54,7 +56,8 @@ public class GMHandler implements Listener {
 		if (handler == null) {
 			return null;
 		}
-		return handler.getGroupPrefix(getGroup(player));
+		String prefix = handler.getGroupPrefix(getGroup(player));
+		return prefix;
 	}
 	
 	public String getColor(final Player player) {
@@ -63,7 +66,8 @@ public class GMHandler implements Listener {
 		if (handler == null) {
 			return null;
 		}
-		return ChatColor.translateAlternateColorCodes("&".charAt(0), handler.getGroupPrefix(getGroup(player)));
+		String color = ChatColor.translateAlternateColorCodes("&".charAt(0), handler.getGroupPrefix(getGroup(player)));
+		return color;
 	}
  
 	public boolean setGroup(final Player player, final String group) {
@@ -72,7 +76,9 @@ public class GMHandler implements Listener {
 		if (handler == null) {
 			return false;
 		}
-		handler.getUser(player.getName()).setGroup(handler.getGroup(group));
+		Group newGroup = handler.getGroup(group);
+		plugin.debug("GMHandler setGroup newGroup: " + newGroup.getName());
+		handler.getUser(player.getName()).setGroup(newGroup);
 		return true;
 	}
 }

@@ -60,7 +60,6 @@ public class NoirlandAutoPromote extends JavaPlugin {
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) { // Commands control for /autopromote
 		try {
-			debug("onCommand args: " + args.toString());
 			if(sender instanceof Player) {
 				debug("onCommand Player: " + sender.getName());
 				if(args.length == 1 && sender.hasPermission("autopromote.check.others")) {
@@ -85,7 +84,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 					if(args[0].equals("promote")) {
 						debug("onCommand arg promote");
 						if(getServer().getPlayerExact(args[1]) != null) {
-							debug("onCommand player args[1] not exists");
+							debug("onCommand player args[1] exists");
 							Player player = getServer().getPlayerExact(args[1]);
 							String rank = gmHandler.getGroup(player);
 							String newRank;
@@ -105,8 +104,8 @@ public class NoirlandAutoPromote extends JavaPlugin {
 						}
 					}
 				}else if(args.length == 1){ 
-					debug("onCommand argsLen 1");
-					if(args[0] == "reload") {
+					debug("onCommand argsLen 1, args[0]: '" + args[0] + "'");
+					if(args[0].equals("reload")) {
 						reload();
 					}else{
 						if(getServer().getPlayerExact(args[0]) != null) {
@@ -143,8 +142,10 @@ public class NoirlandAutoPromote extends JavaPlugin {
 	}
 	
 	public void reload() {
+		debug("Reloading Plugin");
 		saveToDB();
 		confHandler.loadConfig();
+		confHandler.config = this.getConfig();
 		dbHandler.closeConnection();
 		dbHandler.SQLConnect();
 		for(Player player : getServer().getOnlinePlayers()) {
@@ -153,6 +154,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 				promote(player, confHandler.getPromoteTo(gmHandler.getGroup(player))); // Check for promoteable player after reload
 			}
 		}
+		getLogger().info("AutoPromote plugin reloaded successfully.");
 	}
 	
 	public boolean checkForPromotion(Player player) { // Checks if player is eligible for promotion

@@ -11,8 +11,8 @@ public class ConfigHandler {
 	public ConfigHandler(NoirlandAutoPromote plugin) {
 		this.plugin = plugin;
 	        plugin.saveDefaultConfig();
-	        config = plugin.getConfig();
 	        loadConfig();
+	        config = plugin.getConfig();
 	}
 	
 	public void loadConfig() {
@@ -30,28 +30,32 @@ public class ConfigHandler {
 	}
 	
 	public String getPromoteTo(String rank) {
-		plugin.debug("ConfigHandler getPromoteTo: " + config.getString("ranks." + rank + ".promoteTo"));
-		return config.getString("ranks." + rank + ".promoteTo");
+		String promoteTo = config.getString("ranks." + rank.toLowerCase() + ".promoteTo");
+		plugin.debug("ConfigHandler getPromoteTo: " + promoteTo);
+		return promoteTo;
 	}
 	
 	public boolean getNoPromote(String rank) {
-		plugin.debug("ConfigHandler getNoPromote: " + config.getBoolean("ranks." + rank + ".noPromote"));
-		return config.getBoolean("ranks." + rank + ".noPromote");
+		Boolean noPromote = config.getBoolean("ranks." + rank.toLowerCase() + ".noPromote");
+		plugin.debug("ConfigHandler getNoPromote: " + noPromote);
+		return noPromote;
 	}
 	
 	public long getPlayTimeNeededMillis(String rank) {
-		int playTimeNeededHours = config.getInt("ranks." + rank + ".playTimeNeeded");
+		int playTimeNeededHours = config.getInt("ranks." + rank.toLowerCase() + ".playTimeNeeded");
+		long playTimeNeededMillis = TimeUnit.MILLISECONDS.convert(playTimeNeededHours, TimeUnit.HOURS);
 		plugin.debug("ConfigHandler getPlayTimeNeededMillis Hours: " + playTimeNeededHours);
-		plugin.debug("ConfigHandler getPlayTimeNeededMillis: " + TimeUnit.MILLISECONDS.convert(playTimeNeededHours, TimeUnit.HOURS));
-		return TimeUnit.MILLISECONDS.convert(playTimeNeededHours, TimeUnit.HOURS);
+		plugin.debug("ConfigHandler getPlayTimeNeededMillis: " + playTimeNeededMillis);
+		return playTimeNeededMillis;
 	}
 	
 	public long getSaveTimeSeconds() {
-		plugin.debug("ConfigHandler getSaveTimeSeconds: " + TimeUnit.SECONDS.convert(config.getInt("settings.saveTime"),TimeUnit.MINUTES));
-		return TimeUnit.SECONDS.convert(config.getInt("settings.saveTime"),TimeUnit.MINUTES);
+		long saveTimeSeconds = TimeUnit.SECONDS.convert(config.getInt("settings.saveTime"),TimeUnit.MINUTES);
+		plugin.debug("ConfigHandler getSaveTimeSeconds: " + saveTimeSeconds);
+		return saveTimeSeconds;
 	}
 	
 	public boolean getDebug() {
-		return config.getBoolean("settings.debug");
+		return config.getBoolean("settings.debug".toLowerCase());
 	}
 }

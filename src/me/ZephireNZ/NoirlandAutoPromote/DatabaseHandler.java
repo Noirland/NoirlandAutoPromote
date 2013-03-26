@@ -42,6 +42,7 @@ public class DatabaseHandler {
 	
 	public long getPlayTime(String player) {
 		try {
+			player = player.toLowerCase();
 			plugin.debug("DatabaseHandler getPlayTime player: " + player);
 			checkForPlayer(player, 0);
 			ResultSet result = SQLite.query("SELECT * FROM playTime WHERE player='" + player + "';");
@@ -55,6 +56,7 @@ public class DatabaseHandler {
 	}
 	
 	public void setPlayTime(String player, long playTime) {
+		player = player.toLowerCase();
 		try {
 			plugin.debug("DatabaseHandler setPlayTime player: " + player + ", playTime: " + playTime);
 			checkForPlayer(player, playTime);
@@ -65,6 +67,7 @@ public class DatabaseHandler {
 	}
 	
 	public void checkForPlayer(String player, long playTime) {
+		player = player.toLowerCase();
 		plugin.debug("DatabaseHandler checkForPlayer player: " + player + ", playTime: " + playTime);
 		try {
 			ResultSet countResult = SQLite.query("SELECT COUNT(*) AS count FROM playTime WHERE player='" + player + "';");

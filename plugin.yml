@@ -12,8 +12,8 @@ commands:
           Usage:
           /<command> (player) - check player play time
           /<command> promote (player) - promotes player by one step
-          /<command> promote (player) (rank)
-          - Promote player to rank (and annouces in game). RANK IS CASE SENSITIVE
+          /<command> promote (player) (rank) - Promote player to rank (and annouces in game). RANK IS CASE SENSITIVE
+          /<command> reload - Reloads the config file, among other things.
 permissions:
     autopromote.*:
       description: Access to all autopromote commands.

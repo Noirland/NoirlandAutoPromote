@@ -115,6 +115,8 @@ public class NoirlandAutoPromote extends JavaPlugin {
 							getLogger().info("[AutoPromote] That player has never played before.");
 						}
 					}
+				}else{
+					return false;
 				}
 			}
 		}catch(ArrayIndexOutOfBoundsException e) {

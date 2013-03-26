@@ -10,7 +10,10 @@ commands:
         description: Check when you other others will be promoted.
         usage: |
           Usage:
-          /<command> (player)
+          /<command> (player) - check player play time
+          /<command> promote (player) - promotes player by one step
+          /<command> promote (player) (rank)
+          - Promote player to rank (and annouces in game). RANK IS CASE SENSITIVE
 permissions:
     autopromote.*:
       description: Access to all autopromote commands.

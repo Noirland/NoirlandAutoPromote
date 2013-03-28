@@ -13,12 +13,10 @@ public class DatabaseHandler {
 		this.plugin = plugin;
 		SQLConnect();
 		buildTable();
-		plugin.debug("DatabaseHandler loaded");
 	}
 
 	public void SQLConnect() {
-		plugin.debug("DatabaseHandler SQLConnect");
-		SQLite = new SQLite(plugin.getLogger(), "[AutoPromote]",plugin.getDataFolder().getAbsolutePath(), "players" );
+		SQLite = new SQLite(plugin.getLogger(), "[AutoPromote]", plugin.getDataFolder().getAbsolutePath(), "players" );
 		try {
 			SQLite.open();
 		}catch(Exception e){
@@ -29,7 +27,6 @@ public class DatabaseHandler {
 	
 	private void buildTable() {
 		if(!SQLite.isTable("playTime")) {
-			plugin.debug("DatabaseHandler buildTable !SQLite.isTable");
 			try {
 				plugin.getLogger().info("Creating Table");
 				SQLite.query("CREATE TABLE playTime (player TEXT, playTime INTEGER);");
@@ -43,11 +40,9 @@ public class DatabaseHandler {
 	public long getPlayTime(String player) {
 		try {
 			player = player.toLowerCase();
-			plugin.debug("DatabaseHandler getPlayTime player: " + player);
 			checkForPlayer(player, 0);
 			ResultSet result = SQLite.query("SELECT * FROM playTime WHERE player='" + player + "';");
 			long playTime = result.getLong("playTime");
-			plugin.debug("DatabaseHandler getPlayTime: " + playTime);
 			return playTime;
 		} catch (SQLException e) {
 			plugin.getLogger().severe(e.getMessage());
@@ -58,7 +53,6 @@ public class DatabaseHandler {
 	public void setPlayTime(String player, long playTime) {
 		player = player.toLowerCase();
 		try {
-			plugin.debug("DatabaseHandler setPlayTime player: " + player + ", playTime: " + playTime);
 			checkForPlayer(player, playTime);
 			SQLite.query("UPDATE playTime SET playTime='" + playTime + "' WHERE player='" + player + "';");
 		}catch(SQLException e){
@@ -68,12 +62,9 @@ public class DatabaseHandler {
 	
 	public void checkForPlayer(String player, long playTime) {
 		player = player.toLowerCase();
-		plugin.debug("DatabaseHandler checkForPlayer player: " + player + ", playTime: " + playTime);
 		try {
 			ResultSet countResult = SQLite.query("SELECT COUNT(*) AS count FROM playTime WHERE player='" + player + "';");
-			plugin.debug("DatabaseHandler checkForPlayer countResult: " + countResult.getInt("count"));
 			if(countResult.getInt("count") == 0) {
-				plugin.debug("DatabaseHandler checkForPlayer insert");
 				SQLite.query("INSERT INTO playTime(player, playTime) VALUES('" + player + "', '" + playTime + "');");
 			}
 			}catch (SQLException e) {
@@ -82,7 +73,6 @@ public class DatabaseHandler {
 	}
 	
 	public void closeConnection() {
-		plugin.debug("DatabaseHandler closeConnection");
 		SQLite.close();
 	}
 }

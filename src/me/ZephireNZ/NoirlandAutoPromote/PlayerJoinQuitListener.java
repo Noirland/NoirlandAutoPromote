@@ -21,17 +21,14 @@ public class PlayerJoinQuitListener implements Listener {
 		this.dbHandler = plugin.dbHandler;
 		this.confHandler = plugin.confHandler;
 		this.gmHandler = plugin.gmHandler;
-		plugin.debug("PlayerJoinQuiListener started");
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		plugin.debug("PlayerJoinQuitListener onPlayerJoin player: " + player.getName());
 		dbHandler.checkForPlayer(player.getName(), 0);
 		PlayerTimeObject pto = new PlayerTimeObject(player);
 		pto.setJoinTime();
-		plugin.debug("PlayerJoinQuitListener onPlayerJoin joinTime: " + pto.getJoinTime());
 		plugin.playerTimeArray.add(pto);
 		if(plugin.checkForPromotion(player)) {
 			plugin.promote(player, confHandler.getPromoteTo(gmHandler.getGroup(player)));
@@ -41,11 +38,9 @@ public class PlayerJoinQuitListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-		plugin.debug("PlayerJoinQuitListener onPlayerQuit player: " + player);
 		for(Iterator<PlayerTimeObject> it = plugin.playerTimeArray.iterator(); it.hasNext(); ) {
 			PlayerTimeObject pto = it.next();
 			if(pto.getPlayer() == player ) {
-				plugin.debug("PlayerJoinQuitListener pto iterator found player");
 				pto.setQuitTime();
 				dbHandler.setPlayTime(player.getName(), dbHandler.getPlayTime(player.getName()) + pto.getPlayTime());
 				it.remove();

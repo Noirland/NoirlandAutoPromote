@@ -17,12 +17,14 @@ public class NoirlandAutoPromote extends JavaPlugin {
 	DatabaseHandler dbHandler;
 	GMHandler gmHandler;
 	ConfigHandler confHandler;
+	PromotionHandler pmHandler;
 	
 	@Override
 	public void onEnable(){
 		confHandler = new ConfigHandler(this);
 		dbHandler = new DatabaseHandler(this);
 		gmHandler = new GMHandler(this);
+		pmHandler = new PromotionHandler(this);
 		getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(this), this);
 		
 		for(Player player : getServer().getOnlinePlayers()) {
@@ -30,9 +32,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 			pto.setJoinTime();
 			playerTimeArray.add(pto);
 			
-			if(checkForPromotion(player)) {
-				promote(player, confHandler.getPromoteTo(gmHandler.getGroup(player))); // Check for promoteable player after reload
-			}
+			pmHandler.checkForPromotion(player);
 		}
 		
 		new SaveTimesTask(this).runTaskTimer(this, confHandler.getSaveTimeSeconds() * 20L, confHandler.getSaveTimeSeconds() * 20L); // Save times to DB with time in config (in minutes)
@@ -81,7 +81,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 							}else{
 							newRank = confHandler.getPromoteTo(rank);
 							}
-							promote(player, newRank);
+							pmHandler.promote(player, newRank);
 						}
 						else{
 							getLogger().warning("[AutoPromote] Player " + args[1] + " was promoted to by the terminal, but has never played before.");
@@ -126,23 +126,9 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		dbHandler.closeConnection();
 		dbHandler.SQLConnect();
 		for(Player player : getServer().getOnlinePlayers()) {
-			if(checkForPromotion(player)) {
-				promote(player, confHandler.getPromoteTo(gmHandler.getGroup(player))); // Check for promoteable player after reload
-			}
+			pmHandler.checkForPromotion(player);
 		}
 		getLogger().info("Plugin reloaded successfully.");
-	}
-	
-	public boolean checkForPromotion(Player player) { // Checks if player is eligible for promotion
-		String currRank = gmHandler.getGroup(player);
-		long playTime = dbHandler.getPlayTime(player.getName());
-		if(confHandler.getNoPromote(currRank) == true) { // Don't promote ranks with "noPromote"
-			return false;
-		}
-		if(playTime >= confHandler.getPlayTimeNeededMillis(currRank)) { // Check if player has played enough
-			return true;
-		}
-		return false;
 	}
 	
 	public void debug(String message) {
@@ -151,11 +137,11 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		}
 	}
 	
-	public void promote(Player player, String rank) {
-		gmHandler.setGroup(player, rank);
-		dbHandler.setPlayTime(player.getName(), 0);
-		getServer().broadcastMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + player.getName() + " has been promoted to " + gmHandler.getColor(player) + rank + ChatColor.RESET + "!");
-	}
+//	public void promote(Player player, String rank) {
+//		gmHandler.setGroup(player, rank);
+//		dbHandler.setPlayTime(player.getName(), 0);
+//		getServer().broadcastMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + player.getName() + " has been promoted to " + gmHandler.getColor(player) + rank + ChatColor.RESET + "!");
+//	}
 	
 	public String promoteInfo(Player player, Boolean self) {
 		
@@ -208,9 +194,7 @@ class SaveTimesTask extends BukkitRunnable {
 		plugin.saveToDB(); // Save all players to DB on event
 		
 		for(Player player : plugin.getServer().getOnlinePlayers()) { // Check for promoteable player
-			if(plugin.checkForPromotion(player)) {
-				plugin.promote(player, plugin.confHandler.getPromoteTo(plugin.gmHandler.getGroup(player))); 
-			}
+			plugin.pmHandler.checkForPromotion(player);
 		}
 	}
 }

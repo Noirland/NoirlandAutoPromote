@@ -66,15 +66,23 @@ public class NoirlandAutoPromote extends JavaPlugin {
 					debug("onCommand argsLen 1 has perm");
 					if(getServer().getPlayerExact(args[0]) != null) {
 						debug("onCommand Player " + args[0] + " exists");
-						sender.sendMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + "" + promoteInfo(getServer().getPlayerExact(args[0]), false));
+						if(checkForPromotion((Player) sender)) {
+							debug("checkForPromotion Player " + ((Player) sender).getName() + "being promoted");
+							promote((Player) sender, confHandler.getPromoteTo(gmHandler.getGroup((Player) sender))); // Check for promoteable player after reload
+						}
+						sender.sendMessage(ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + "" + promoteInfo(getServer().getPlayerExact(args[0]), false));
 					}else{
-						sender.sendMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + "That player has never played before.");
+						sender.sendMessage(ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + "That player has never played before.");
 					}
 				}else{
 					debug("onCommand argLen not 1 or no perm");
 					if(sender.hasPermission("autopromote.check")){
 						debug("onCommand has perm");
-						sender.sendMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + "" + promoteInfo(((Player) sender).getPlayer(), true));
+						if(checkForPromotion((Player) sender)) {
+							debug("checkForPromotion Player " + ((Player) sender).getName() + "being promoted");
+							promote((Player) sender, confHandler.getPromoteTo(gmHandler.getGroup((Player) sender))); // Check for promoteable player after reload
+						}
+						sender.sendMessage(ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + "" + promoteInfo(((Player) sender).getPlayer(), true));
 					}
 				}
 			}else{
@@ -100,7 +108,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 							promote(player, newRank);
 						}
 						else{
-							getLogger().warning("[AutoPromote] Player " + args[1] + " was promoted to by the terminal, but has never played before.");
+							getLogger().warning("[NoirPromote] Player " + args[1] + " was promoted to by the terminal, but has never played before.");
 						}
 					}
 				}else if(args.length == 1){ 
@@ -110,9 +118,13 @@ public class NoirlandAutoPromote extends JavaPlugin {
 					}else{
 						if(getServer().getPlayerExact(args[0]) != null) {
 							debug("onCommand player " + args[0] + "exists");
-							getLogger().info("[AutoPromote] " + promoteInfo(getServer().getPlayerExact(args[0]), false));
+							if(checkForPromotion((Player) sender)) {
+								debug("checkForPromotion Player " + ((Player) sender).getName() + "being promoted");
+								promote((Player) sender, confHandler.getPromoteTo(gmHandler.getGroup((Player) sender))); // Check for promoteable player after reload
+							}
+							getLogger().info("[NoirPromote] " + promoteInfo(getServer().getPlayerExact(args[0]), false));
 						}else{
-							getLogger().info("[AutoPromote] That player has never played before.");
+							getLogger().info("[NoirPromote] That player has never played before.");
 						}
 					}
 				}else{
@@ -188,7 +200,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		debug("promote player: " + player.getName() + ", rank: " + rank);
 		gmHandler.setGroup(player, rank);
 		dbHandler.setPlayTime(player.getName(), 0);
-		getServer().broadcastMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + player.getName() + " has been promoted to " + gmHandler.getColor(player) + rank + ChatColor.RESET + "!");
+		getServer().broadcastMessage(ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + player.getName() + " has been promoted to " + gmHandler.getColor(player) + rank + ChatColor.RESET + "!");
 	}
 	
 	public String promoteInfo(Player player, Boolean self) {

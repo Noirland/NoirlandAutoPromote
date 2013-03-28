@@ -176,8 +176,15 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		String currRank = gmHandler.getGroup(player);
 		debug("checkForPromotion currRank: " + currRank);
 		long playTime = dbHandler.getPlayTime(player.getName());
+		for(PlayerTimeObject pto : playerTimeArray) {
+			if(pto.getPlayer() == player) {
+				playTime = playTime + (System.currentTimeMillis() - pto.getJoinTime());
+				debug("checkForPromotion for pto newPlayTime: " + playTime);
+			}
+		}
 		debug("checkForPromotion playTime: " + playTime);
 		debug("checkForPromotion noPromote: " + confHandler.getNoPromote(currRank));
+		
 		if(confHandler.getNoPromote(currRank) == true) { // Don't promote ranks with "noPromote"
 			debug("checkForPromotion noPromote");
 			return false;

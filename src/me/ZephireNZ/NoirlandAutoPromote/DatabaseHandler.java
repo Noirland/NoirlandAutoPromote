@@ -33,8 +33,8 @@ public class DatabaseHandler {
 			}
 			ResultSet result = SQLite.query("PRAGMA table_info(playTime);");
 			boolean hasTotal = false;
-			for(@SuppressWarnings("unused") int i = 0; result.next(); i++) {
-				if(result.getString(1) == "totalPlayTime") {
+			for(; result.next();) {
+				if(result.getString(2).equals("totalPlayTime")) {
 					hasTotal = true;
 				}
 			}

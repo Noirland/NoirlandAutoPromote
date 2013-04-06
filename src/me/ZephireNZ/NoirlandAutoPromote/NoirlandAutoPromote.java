@@ -3,8 +3,6 @@ package me.ZephireNZ.NoirlandAutoPromote;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -37,7 +35,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		
 		new SaveTimesTask(this).runTaskTimer(this, confHandler.getSaveTimeSeconds() * 20L, confHandler.getSaveTimeSeconds() * 20L); // Save times to DB with time in config (in minutes)
 		
-		this.getCommand("autopromote").setExecutor(this);
+		this.getCommand("autopromote").setExecutor(pmHandler);
 		
 		getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(this), this);
 		getServer().getPluginManager().registerEvents(gmHandler, this);
@@ -55,65 +53,12 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		getLogger().info(pdfFile.getName() + " version " + pdfFile.getVersion() + " stopped.");
 	}
 	
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) { // Commands control for /autopromote
-		try {
-			if(sender instanceof Player) {
-				if(args.length == 1 && sender.hasPermission("autopromote.check.others")) {
-					if(getServer().getPlayerExact(args[0]) != null) {
-						sender.sendMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + "" + promoteInfo(getServer().getPlayerExact(args[0]), false));
-					}else{
-						sender.sendMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + "That player has never played before.");
-					}
-				}else{
-					if(sender.hasPermission("autopromote.check")){
-						sender.sendMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + "" + promoteInfo(((Player) sender).getPlayer(), true));
-					}
-				}
-			}else{
-				if(args.length >= 2){
-					if(args[0].equals("promote")) {
-						if(getServer().getPlayerExact(args[1]) != null) {
-							Player player = getServer().getPlayerExact(args[1]);
-							String rank = gmHandler.getGroup(player);
-							String newRank;
-							if(args.length == 3) {
-								newRank = args[2];
-							}else{
-							newRank = confHandler.getPromoteTo(rank);
-							}
-							pmHandler.promote(player, newRank);
-						}
-						else{
-							getLogger().warning("[AutoPromote] Player " + args[1] + " was promoted to by the terminal, but has never played before.");
-						}
-					}
-				}else if(args.length == 1){ 
-					if(args[0].equals("reload")) {
-						reload();
-					}else{
-						if(getServer().getPlayerExact(args[0]) != null) {
-							getLogger().info("[AutoPromote] " + promoteInfo(getServer().getPlayerExact(args[0]), false));
-						}else{
-							getLogger().info("[AutoPromote] That player has never played before.");
-						}
-					}
-				}else{
-					return false;
-				}
-			}
-		}catch(ArrayIndexOutOfBoundsException e) {
-			debug("onCommand ArrayIndexOutOfBoundsException: " + e.getMessage());
-			debug(e.getStackTrace().toString());
-			return false;
-		}
-		return true;
-	}
-	
 	public void saveToDB() {
 		for(PlayerTimeObject pto : playerTimeArray) {
 			String player = pto.getPlayer().getName();
 			pto.setQuitTime();
 			dbHandler.setPlayTime(player, pto.getPlayTime() + dbHandler.getPlayTime(player));
+			dbHandler.setTotalPlayTime(player, pto.getPlayTime() + dbHandler.getTotalPlayTime(player));
 			pto.setJoinTime();
 			pto.resetQuitTime();
 		}
@@ -137,46 +82,32 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		}
 	}
 	
-//	public void promote(Player player, String rank) {
-//		gmHandler.setGroup(player, rank);
-//		dbHandler.setPlayTime(player.getName(), 0);
-//		getServer().broadcastMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + player.getName() + " has been promoted to " + gmHandler.getColor(player) + rank + ChatColor.RESET + "!");
-//	}
-	
-	public String promoteInfo(Player player, Boolean self) {
+	public String formatTime(long millis) {
+		long hour = TimeUnit.HOURS.toMillis(1);
+		long day = hour * 24;
 		
-		long playTime = dbHandler.getPlayTime(player.getName());
-		String rank = gmHandler.getGroup(player);
-		for(PlayerTimeObject pto : playerTimeArray) {
-			if(pto.getPlayer() == player) {
-				playTime = playTime + (System.currentTimeMillis() - pto.getJoinTime());
-			}
+		if(millis < hour) {
+			long mins = TimeUnit.MILLISECONDS.toMinutes(millis);
+			return (mins + " Minutes");
 		}
-		long neededMillis = confHandler.getPlayTimeNeededMillis(gmHandler.getGroup(player));
-		long neededLeftHours = TimeUnit.HOURS.convert(neededMillis - playTime, TimeUnit.MILLISECONDS);
-		
-		if(self) {
-			if(confHandler.getNoPromote(rank)) {
-				return "You will not be promoted automatically.";
-			}else{
-				if(neededLeftHours >=1){
-					return "You will be promoted after " + neededLeftHours + " more hours of play.";
-				}else{
-					long neededLeftMinutes = TimeUnit.MINUTES.convert(neededMillis - playTime, TimeUnit.MILLISECONDS);
-					return "You will be promoted after " + neededLeftMinutes + " more minutes of play.";
-				}
-			}
+		else if(millis < day) {
+			long hours = TimeUnit.MILLISECONDS.toHours(millis);
+			return (hours + " Hours");
+		}
+		else{
+			long days = TimeUnit.MILLISECONDS.toDays(millis);
+			long subtrDays = TimeUnit.DAYS.toMillis(days);
+			long hours = TimeUnit.MILLISECONDS.toHours(millis - subtrDays);
+			return (days + " Days, " + hours + " Hours");
+		}
+	}
+	
+	public void sendMessage(CommandSender sender, String msg) {
+		if(sender instanceof Player) {
+			Player pSender = (Player) sender;
+			pSender.sendMessage(msg);
 		}else{
-			if(confHandler.getNoPromote(rank)) {
-				return player.getName() +  ChatColor.RESET + " will not be promoted automatically.";
-			}else{
-				if(neededLeftHours >=1){
-					return player.getName() + ChatColor.RESET + " will be promoted after " + neededLeftHours + " more hours of play.";
-				}else{
-					long neededLeftMinutes = TimeUnit.MINUTES.convert(neededMillis - playTime, TimeUnit.MILLISECONDS);
-					return player.getName() + ChatColor.RESET + " will be promoted after " + neededLeftMinutes + " more minutes of play.";
-				}
-			}
+			getLogger().info(msg);
 		}
 	}
 }

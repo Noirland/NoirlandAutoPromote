@@ -7,13 +7,8 @@ version: 1.1
 depend: [SQLibrary, GroupManager]
 commands:
     autopromote:
-        description: Check when you other others will be promoted.
-        usage: |
-          Usage:
-          /<command> (player) - check player play time
-          /<command> promote (player) - promotes player by one step
-          /<command> promote (player) (rank) - Promote player to rank (and annouces in game). RANK IS CASE SENSITIVE
-          /<command> reload - Reloads the config file, among other things.
+      aliases: ap
+      description: Check when you other others will be promoted.
 permissions:
     autopromote.*:
       description: Access to all autopromote commands.
@@ -21,6 +16,9 @@ permissions:
       children:
         autopromote.check: true
         autopromote.check.others: true
+        autopromote.reload: true
+        autopromote.promote: true
+        autopromote.reset: true
     autopromote.check:
       description: Check own promotion info.
       default: true
@@ -29,3 +27,12 @@ permissions:
       default: op
       children:
         autopromote.check: true
+    autopromote.reload:
+      description: Reload the plugin
+      default: op
+    autopromote.promote:
+      description: Promote a player
+      default: op
+    autopromote.reset:
+      description: Reset a players Play Time
+      default: op

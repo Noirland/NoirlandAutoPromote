@@ -43,6 +43,7 @@ public class PlayerJoinQuitListener implements Listener {
 			if(pto.getPlayer() == player ) {
 				pto.setQuitTime();
 				dbHandler.setPlayTime(player.getName(), dbHandler.getPlayTime(player.getName()) + pto.getPlayTime());
+				dbHandler.setTotalPlayTime(player.getName(), dbHandler.getTotalPlayTime(player.getName()) + pto.getPlayTime());
 				it.remove();
 			}
 		}

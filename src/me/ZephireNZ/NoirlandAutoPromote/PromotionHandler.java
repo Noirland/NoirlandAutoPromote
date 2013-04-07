@@ -88,7 +88,7 @@ public class PromotionHandler implements CommandExecutor{
 	public void promote(Player player, String rank) {
 		gmHandler.setGroup(player, rank);
 		dbHandler.setPlayTime(player.getName(), 0);
-		plugin.getServer().broadcastMessage(ChatColor.RED + "[AutoPromote] " + ChatColor.RESET + player.getName() + " has been promoted to " + gmHandler.getColor(player) + rank + ChatColor.RESET + "!");
+		plugin.getServer().broadcastMessage(ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + player.getName() + " has been promoted to " + gmHandler.getColor(player) + rank + ChatColor.RESET + "!");
 	}
 	
 	public void checkForPromotion(Player player) { // Checks if player is eligible for promotion
@@ -120,7 +120,7 @@ public class PromotionHandler implements CommandExecutor{
 		String pColor = gmHandler.getColor(player);
 		String nextRank = confHandler.getPromoteTo(gmHandler.getGroup(player));
 		
-		plugin.sendMessage(sender,"==== " + ChatColor.RED + "AUTOPROMOTE" + ChatColor.RESET + " ====");
+		plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
 		plugin.sendMessage(sender,"Time until " + pColor + nextRank + ChatColor.RESET + ": " + plugin.formatTime(neededMillis));
 		plugin.sendMessage(sender,"Total Play Time: " + plugin.formatTime(totalPlayTime));
 	}

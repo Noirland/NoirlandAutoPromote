@@ -3,6 +3,7 @@ package me.ZephireNZ.NoirlandAutoPromote;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -107,7 +108,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 			Player pSender = (Player) sender;
 			pSender.sendMessage(msg);
 		}else{
-			getLogger().info(msg);
+			getLogger().info(ChatColor.stripColor(msg));
 		}
 	}
 }

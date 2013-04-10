@@ -127,9 +127,13 @@ public class DatabaseHandler {
 			crs.populate(result);
 			crs.beforeFirst();
 			
-			for(int i = 1; crs.next();i++) {
-				if(crs.getString("player") != null) {
-					map.put(i, crs.getString("player"));
+			for(int i = 1; i <=10;i++) {
+				if(crs.next()) {
+					if(crs.getString("player") != null) {
+						map.put(i, crs.getString("player"));
+					}
+				}else{
+					return map;
 				}
 			}
 			return map;

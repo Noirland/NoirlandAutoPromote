@@ -2,6 +2,10 @@ package me.ZephireNZ.NoirlandAutoPromote;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.sun.rowset.CachedRowSetImpl;
 
 import lib.PatPeter.SQLibrary.SQLite;
 
@@ -53,8 +57,14 @@ public class DatabaseHandler {
 		player = player.toLowerCase();
 		try {
 			ResultSet countResult = SQLite.query("SELECT COUNT(*) AS count FROM playTime WHERE player='" + player + "';");
+			ResultSet result = SQLite.query("SELECT * FROM playTime WHERE player='" + player + "';");
 			if(countResult.getInt("count") == 0) {
 				SQLite.query("INSERT INTO playTime(player, playTime, totalPlayTime) VALUES('" + player + "', '0', '0');");
+			}
+			else if(result.getInt("totalPlayTime") == 0){
+				ResultSet playTimeResult = SQLite.query("SELECT * FROM playTime WHERE player='" + player + "';");
+				long playTime = playTimeResult.getLong("playTime");
+				SQLite.query("UPDATE playTime SET totalPlayTime='" + playTime + "' WHERE player='" + player + "';");
 			}
 			}catch (SQLException e) {
 				plugin.getLogger().severe(e.getMessage());
@@ -106,6 +116,30 @@ public class DatabaseHandler {
 			plugin.getLogger().severe(e.getMessage());
 		}
 	}
+	
+	public Map<Integer, String> getRankedList(int startPage) {
+		Map<Integer, String> map = new HashMap<Integer, String>();
+		try {
+			ResultSet result = SQLite.query("SELECT * FROM playTime ORDER BY totalPLayTime DESC;");
+			
+			CachedRowSetImpl crs = new CachedRowSetImpl();
+			crs.setPageSize(10);
+			crs.populate(result);
+			crs.beforeFirst();
+			
+			for(int i = 1; crs.next();i++) {
+				if(crs.getString("player") != null) {
+					map.put(i, crs.getString("player"));
+				}
+			}
+			return map;
+		} catch (SQLException e) {
+			plugin.getLogger().severe(e.getMessage());
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	public void closeConnection() {
 		SQLite.close();

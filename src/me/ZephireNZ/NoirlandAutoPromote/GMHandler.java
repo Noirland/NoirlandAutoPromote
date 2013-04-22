@@ -16,10 +16,12 @@ import org.bukkit.plugin.PluginManager;
 
 public class GMHandler implements Listener {
 	private GroupManager gm;
+	private ConfigHandler confHandler;
 	
 	public GMHandler(NoirlandAutoPromote plugin) {
 		final PluginManager pm = plugin.getServer().getPluginManager();
 		final Plugin GMplugin = pm.getPlugin("GroupManager");
+		confHandler = plugin.confHandler;
  
 		if (GMplugin != null && GMplugin.isEnabled()) {
 			gm = (GroupManager)GMplugin;
@@ -43,21 +45,18 @@ public class GMHandler implements Listener {
 		return group;
 	}
 	
-	public String getPrefix(final Player player) {
+	public String getColor(final Player player, boolean next) {
 		final AnjoPermissionsHandler handler = gm.getWorldsHolder().getWorldPermissions(player);
+		String color = "";
 		if (handler == null) {
 			return null;
 		}
-		String prefix = handler.getGroupPrefix(getGroup(player));
-		return prefix;
-	}
-	
-	public String getColor(final Player player) {
-		final AnjoPermissionsHandler handler = gm.getWorldsHolder().getWorldPermissions(player);
-		if (handler == null) {
-			return null;
+		if(next) {
+			String nextRank = confHandler.getPromoteTo(getGroup(player));
+			color = ChatColor.translateAlternateColorCodes("&".charAt(0), handler.getGroupPrefix(nextRank));
+		}else{
+			color = ChatColor.translateAlternateColorCodes("&".charAt(0), handler.getGroupPrefix(getGroup(player)));
 		}
-		String color = ChatColor.translateAlternateColorCodes("&".charAt(0), handler.getGroupPrefix(getGroup(player)));
 		return color;
 	}
  

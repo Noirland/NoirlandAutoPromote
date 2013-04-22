@@ -48,18 +48,13 @@ public class PromotionHandler implements CommandExecutor{
 					String pString;
 					String color;
 					if(player != null) {
-						 color = gmHandler.getColor(player);
+						 color = gmHandler.getColor(player, false);
 						 pString = player.getName();
 					}else{
 						color = ChatColor.RESET.toString();
 						pString = oPlayer.getName();
 					}
 					long totalPlayTime = dbHandler.getTotalPlayTime(pString);
-//					for(PlayerTimeObject pto : plugin.playerTimeArray) {
-//						if(pto.getPlayer() == player) {
-//							totalPlayTime += (System.currentTimeMillis() - pto.getJoinTime());
-//						}
-//					}
 					String msg = i + ". " + color + pString + ChatColor.RESET + ": " + plugin.formatTime(totalPlayTime); 
 					plugin.sendMessage(sender, msg);
 				}	
@@ -142,7 +137,7 @@ public class PromotionHandler implements CommandExecutor{
 	public void promote(Player player, String rank) {
 		gmHandler.setGroup(player, rank);
 		dbHandler.setPlayTime(player.getName(), 0);
-		plugin.getServer().broadcastMessage(ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + player.getName() + " has been promoted to " + gmHandler.getColor(player) + rank + ChatColor.RESET + "!");
+		plugin.getServer().broadcastMessage(ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + player.getName() + " has been promoted to " + gmHandler.getColor(player, false) + rank + ChatColor.RESET + "!");
 	}
 	
 	public void checkForPromotion(Player player) { // Checks if player is eligible for promotion
@@ -175,9 +170,9 @@ public class PromotionHandler implements CommandExecutor{
 		
 		plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
 		if(!confHandler.getNoPromote(gmHandler.getGroup(player))){
-			String pColor = gmHandler.getColor(player);
+			String nextColor = gmHandler.getColor(player, true);
 			String nextRank = confHandler.getPromoteTo(gmHandler.getGroup(player));
-			plugin.sendMessage(sender,"Time until " + pColor + nextRank + ChatColor.RESET + ": " + plugin.formatTime(neededMillis));
+			plugin.sendMessage(sender,"Time until " + nextColor + nextRank + ChatColor.RESET + ": " + plugin.formatTime(neededMillis));
 		}
 		plugin.sendMessage(sender,"Total Play Time: " + plugin.formatTime(totalPlayTime));
 	}

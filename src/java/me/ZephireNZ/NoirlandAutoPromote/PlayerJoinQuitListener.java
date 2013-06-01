@@ -28,9 +28,11 @@ public class PlayerJoinQuitListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
+		plugin.debug("Player " + player.getName() + " joined.");
 		dbHandler.checkForPlayer(player.getName());
 		PlayerTimeObject pto = new PlayerTimeObject(player);
 		pto.setJoinTime();
+		plugin.debug(player.getName()+ " join: " + pto.getJoinTime());
 		plugin.playerTimeArray.add(pto);
 		pmHandler.checkForPromotion(player);
 	}
@@ -38,12 +40,16 @@ public class PlayerJoinQuitListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
+		plugin.debug("Player " + player.getName() + " left.");
 		for(Iterator<PlayerTimeObject> it = plugin.playerTimeArray.iterator(); it.hasNext(); ) {
 			PlayerTimeObject pto = it.next();
 			if(pto.getPlayer() == player ) {
 				pto.setQuitTime();
+				plugin.debug(player.getName()+ " quit: " + pto.getQuitTime());
 				dbHandler.setPlayTime(player.getName(), dbHandler.getPlayTime(player.getName()) + pto.getPlayTime());
+				plugin.debug(player.getName()+ " playtime: " + dbHandler.getPlayTime(player.getName()));
 				dbHandler.setTotalPlayTime(player.getName(), dbHandler.getTotalPlayTime(player.getName()) + pto.getPlayTime());
+				plugin.debug(player.getName()+ " join: " + dbHandler.getTotalPlayTime(player.getName()));
 				it.remove();
 			}
 		}

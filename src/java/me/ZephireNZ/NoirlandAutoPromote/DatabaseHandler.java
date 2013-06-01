@@ -50,7 +50,6 @@ public class DatabaseHandler {
 			e.printStackTrace();
 			plugin.getPluginLoader().disablePlugin(plugin);
 		}
-		
 	}
 	
 	public void checkForPlayer(String player) {

@@ -15,39 +15,41 @@ public class PlayerJoinQuitListener implements Listener {
 	DatabaseHandler dbHandler;
 	ConfigHandler confHandler;
 	GMHandler gmHandler;
+	PromotionHandler pmHandler;
 	
 	public PlayerJoinQuitListener(NoirlandAutoPromote plugin) {
 		this.plugin = plugin;
 		this.dbHandler = plugin.dbHandler;
 		this.confHandler = plugin.confHandler;
 		this.gmHandler = plugin.gmHandler;
-		plugin.debug("PlayerJoinQuiListener started");
+		this.pmHandler = plugin.pmHandler;
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		plugin.debug("PlayerJoinQuitListener onPlayerJoin player: " + player.getName());
-		dbHandler.checkForPlayer(player.getName(), 0);
+		plugin.debug("Player " + player.getName() + " joined.");
+		dbHandler.checkForPlayer(player.getName());
 		PlayerTimeObject pto = new PlayerTimeObject(player);
 		pto.setJoinTime();
-		plugin.debug("PlayerJoinQuitListener onPlayerJoin joinTime: " + pto.getJoinTime());
+		plugin.debug(player.getName()+ " join: " + pto.getJoinTime());
 		plugin.playerTimeArray.add(pto);
-		if(plugin.checkForPromotion(player)) {
-			plugin.promote(player, confHandler.getPromoteTo(gmHandler.getGroup(player)));
-		}
+		pmHandler.checkForPromotion(player);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-		plugin.debug("PlayerJoinQuitListener onPlayerQuit player: " + player);
+		plugin.debug("Player " + player.getName() + " left.");
 		for(Iterator<PlayerTimeObject> it = plugin.playerTimeArray.iterator(); it.hasNext(); ) {
 			PlayerTimeObject pto = it.next();
 			if(pto.getPlayer() == player ) {
-				plugin.debug("PlayerJoinQuitListener pto iterator found player");
 				pto.setQuitTime();
+				plugin.debug(player.getName()+ " quit: " + pto.getQuitTime());
 				dbHandler.setPlayTime(player.getName(), dbHandler.getPlayTime(player.getName()) + pto.getPlayTime());
+				plugin.debug(player.getName()+ " playtime: " + dbHandler.getPlayTime(player.getName()));
+				dbHandler.setTotalPlayTime(player.getName(), dbHandler.getTotalPlayTime(player.getName()) + pto.getPlayTime());
+				plugin.debug(player.getName()+ " join: " + dbHandler.getTotalPlayTime(player.getName()));
 				it.remove();
 			}
 		}

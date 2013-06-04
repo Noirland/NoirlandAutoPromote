@@ -16,68 +16,56 @@ import org.bukkit.plugin.PluginManager;
 
 public class GMHandler implements Listener {
 	private GroupManager gm;
-	private NoirlandAutoPromote plugin;
+	private ConfigHandler confHandler;
 	
 	public GMHandler(NoirlandAutoPromote plugin) {
 		final PluginManager pm = plugin.getServer().getPluginManager();
 		final Plugin GMplugin = pm.getPlugin("GroupManager");
-		this.plugin = plugin;
+		confHandler = plugin.confHandler;
  
 		if (GMplugin != null && GMplugin.isEnabled()) {
 			gm = (GroupManager)GMplugin;
- 
 		}
 		
-		plugin.debug("GMHandler started");
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPluginDisable(PluginDisableEvent event) {
-		plugin.debug("GMHandler onPluginDisable plugin: " + event.getPlugin().getName());
 		if (gm != null) {
 				gm = null;
 		}
 	}
 	
 	public String getGroup(final Player player) {
-		plugin.debug("GMHandler getGroup player: " + player.getName());
 		final AnjoPermissionsHandler handler = gm.getWorldsHolder().getWorldPermissions(player);
 		if (handler == null) {
 			return null;
 		}
 		String group = handler.getGroup(player.getName());
-		plugin.debug("GMHandler getGroup group: " + group);
 		return group;
 	}
 	
-	public String getPrefix(final Player player) {
-		plugin.debug("GMHandler getPrefix player: " + player.getName());
+	public String getColor(final Player player, boolean next) {
 		final AnjoPermissionsHandler handler = gm.getWorldsHolder().getWorldPermissions(player);
+		String color = "";
 		if (handler == null) {
 			return null;
 		}
-		String prefix = handler.getGroupPrefix(getGroup(player));
-		return prefix;
-	}
-	
-	public String getColor(final Player player) {
-		plugin.debug("GMHandler getColor player: " + player.getName());
-		final AnjoPermissionsHandler handler = gm.getWorldsHolder().getWorldPermissions(player);
-		if (handler == null) {
-			return null;
+		if(next) {
+			String nextRank = confHandler.getPromoteTo(getGroup(player));
+			color = ChatColor.translateAlternateColorCodes("&".charAt(0), handler.getGroupPrefix(nextRank));
+		}else{
+			color = ChatColor.translateAlternateColorCodes("&".charAt(0), handler.getGroupPrefix(getGroup(player)));
 		}
-		String color = ChatColor.translateAlternateColorCodes("&".charAt(0), handler.getGroupPrefix(getGroup(player)));
 		return color;
 	}
  
 	public boolean setGroup(final Player player, final String group) {
-		plugin.debug("GMHandler setGroup player: " + player.getName() + ", group: " + group);
 		final OverloadedWorldHolder handler = gm.getWorldsHolder().getWorldData(player);
 		if (handler == null) {
 			return false;
 		}
 		Group newGroup = handler.getGroup(group);
-		plugin.debug("GMHandler setGroup newGroup: " + newGroup.getName());
 		handler.getUser(player.getName()).setGroup(newGroup);
 		return true;
 	}

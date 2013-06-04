@@ -35,30 +35,17 @@ public class PromotionHandler implements CommandExecutor{
 			}
 		}
 		else if(args.length == 1) {
-			if(args[0].toLowerCase().equals("reload") && sender.hasPermission("autopromote.reload")) {
+			if(args[0].toLowerCase().equals("reload") && sender.hasPermission("autopromote.reload")) {  //autopromote reload
 				plugin.reload();
 				plugin.sendMessage(sender, ChatColor.RED + "[NoirPromote]" + ChatColor.RESET + " Reload successful.");
-			}else if(args[0].toLowerCase().equals("top") && sender.hasPermission("autopromote.check.others")) {
+			}else if(args[0].toLowerCase().equals("top") && sender.hasPermission("autopromote.check.others")) { // autopromote top
 //				plugin.saveToDB();
-				Map<Integer, String> map = dbHandler.getRankedList(1);
 				plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
-				for(int i = 1; i <=map.size();i++) {
-					OfflinePlayer oPlayer = plugin.getServer().getOfflinePlayer(map.get(i));
-					Player player = oPlayer.getPlayer();
-					String pString;
-					String color;
-					if(player != null) {
-						 color = gmHandler.getColor(player, false);
-						 pString = player.getName();
-					}else{
-						color = ChatColor.RESET.toString();
-						pString = oPlayer.getName();
-					}
-					long totalPlayTime = dbHandler.getTotalPlayTime(pString);
-					String msg = i + ". " + color + pString + ChatColor.RESET + ": " + plugin.formatTime(totalPlayTime); 
-					plugin.sendMessage(sender, msg);
-				}	
-			}else if(args[0].equals("help")) {
+				String[] rankList = getRankedPlayerList(1);
+                for(String msg : rankList) {
+                    plugin.sendMessage(sender, msg);
+                }
+			}else if(args[0].equals("help")) { // autopromote help
 				plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
 				if(sender.hasPermission("autopromote.check")) {
 					plugin.sendMessage(sender, ChatColor.GRAY + "/autopromote " + ChatColor.RESET + "Show your promotion stats.");
@@ -94,6 +81,23 @@ public class PromotionHandler implements CommandExecutor{
 			}
 		}
 		else if(args.length == 2) {
+            if(args[0].toLowerCase().equals("top") && sender.hasPermission("autopromote.check.others")) {
+                int page;
+                try {
+                    page = Integer.parseInt(args[1]);
+                }catch(NumberFormatException e) {
+                    page = 1;
+                }
+                String[] rankList = getRankedPlayerList(page);
+                if(rankList.length > 0) {
+                    plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
+                    for(String msg : rankList) {
+                        plugin.sendMessage(sender, msg);
+                    }
+                }else{
+                    plugin.sendMessage(sender,ChatColor.RED + "That page does not exist");
+                }
+            }
 			OfflinePlayer oPlayer = plugin.getServer().getOfflinePlayer(args[1]);
 			Player player = oPlayer.getPlayer();
 			if(player != null && args[0].toLowerCase().equals("promote") && sender.hasPermission("autopromote.promote")) {
@@ -176,6 +180,30 @@ public class PromotionHandler implements CommandExecutor{
 		}
 		plugin.sendMessage(sender,"Total Play Time: " + plugin.formatTime(totalPlayTime));
 	}
+
+    public String[] getRankedPlayerList(int startPage) {
+        if(startPage <= 0) { return new String[0];} // Don't allow negative or zero pages
+        Map<Integer, String> map = dbHandler.getRankedList(startPage);
+        String[] returnArray = new String[map.size()];
+        int offset = ((startPage-1)*10);
+        for(int i = 1 + offset; i <=(map.size()+offset);i++) {
+            OfflinePlayer oPlayer = plugin.getServer().getOfflinePlayer(map.get(i));
+            Player player = oPlayer.getPlayer();
+            String pString;
+            String color;
+            if(player != null) {
+                color = gmHandler.getColor(player, false);
+                pString = player.getName();
+            }else{
+                color = ChatColor.RESET.toString();
+                pString = oPlayer.getName();
+            }
+            long totalPlayTime = dbHandler.getTotalPlayTime(pString);
+            String msg = i + ". " + color + pString + ChatColor.RESET + ": " + plugin.formatTime(totalPlayTime);
+            returnArray[i-offset-1] = msg;
+        }
+        return returnArray;
+    }
 	
 
 }

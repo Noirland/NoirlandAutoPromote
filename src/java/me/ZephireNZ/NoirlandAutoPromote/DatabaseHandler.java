@@ -119,17 +119,13 @@ public class DatabaseHandler {
 	public Map<Integer, String> getRankedList(int startPage) {
 		Map<Integer, String> map = new HashMap<Integer, String>();
 		try {
-			ResultSet result = SQLite.query("SELECT * FROM playTime ORDER BY totalPLayTime DESC;");
-			
-			CachedRowSetImpl crs = new CachedRowSetImpl();
-			crs.setPageSize(10);
-			crs.populate(result);
-			crs.beforeFirst();
-			
+            int StartNum = ((startPage-1)*10);
+			ResultSet result = SQLite.query("SELECT * FROM playTime ORDER BY totalPlayTime DESC LIMIT 10 OFFSET " + StartNum + ";");
+
 			for(int i = 1; i <=10;i++) {
-				if(crs.next()) {
-					if(crs.getString("player") != null) {
-						map.put(i, crs.getString("player"));
+				if(result.next()) {
+					if(result.getString("player") != null) {
+						map.put(StartNum + (i), result.getString("player"));
 					}
 				}else{
 					return map;

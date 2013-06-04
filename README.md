@@ -7,3 +7,5 @@ Planned features
 - Show your rank in the top lists with /autopromote
   * Show as "Total Play Time: Xh (&7#RANK)
 - Ability to set a player's play time (for admin purposes)
+
+Ignore me!

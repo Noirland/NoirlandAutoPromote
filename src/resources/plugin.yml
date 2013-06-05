@@ -9,6 +9,8 @@ commands:
     autopromote:
       aliases: [noirpromote]
       description: Check when you other others will be promoted.
+    agree:
+      description: Agree to the server rules, and be promoted from the default rank.
 permissions:
     autopromote.*:
       description: Access to all autopromote commands.
@@ -23,7 +25,7 @@ permissions:
       description: Check own promotion info.
       default: true
     autopromote.check.others:
-      description: Check anothers promotion info.
+      description: Check another player's promotion info.
       default: op
       children:
         autopromote.check: true

@@ -1,6 +1,7 @@
 package me.ZephireNZ.NoirlandAutoPromote;
 
 import me.ZephireNZ.NoirlandAutoPromote.commands.Command;
+import me.ZephireNZ.NoirlandAutoPromote.commands.CommandAgree;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -38,6 +39,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		new SaveTimesTask(this).runTaskTimer(this, confHandler.getSaveTimeSeconds() * 20L, confHandler.getSaveTimeSeconds() * 20L); // Save times to DB with time in config (in minutes)
 		
 		this.getCommand("autopromote").setExecutor(new Command(this));
+        this.getCommand("agree").setExecutor((new CommandAgree(this)));
 		
 		getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(this), this);
 		getServer().getPluginManager().registerEvents(gmHandler, this);

@@ -8,6 +8,10 @@ ranks:
   NonPromotingRank:
     noPromote: true
 
+defaultPromote:
+  default: DefaultRankHere
+  promoteTo: NewRankHere
+
 settings:
   saveTime: 10
-  debug: true
+  debug: false

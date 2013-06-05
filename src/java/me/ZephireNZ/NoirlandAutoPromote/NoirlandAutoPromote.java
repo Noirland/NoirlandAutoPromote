@@ -1,8 +1,6 @@
 package me.ZephireNZ.NoirlandAutoPromote;
 
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-
+import me.ZephireNZ.NoirlandAutoPromote.commands.Command;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -10,13 +8,16 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+
 public class NoirlandAutoPromote extends JavaPlugin {
 	
 	ArrayList<PlayerTimeObject> playerTimeArray = new ArrayList<PlayerTimeObject>();
-	DatabaseHandler dbHandler;
-	GMHandler gmHandler;
-	ConfigHandler confHandler;
-	PromotionHandler pmHandler;
+	public DatabaseHandler dbHandler;
+    public GMHandler gmHandler;
+    public ConfigHandler confHandler;
+    public PromotionHandler pmHandler;
 	
 	@Override
 	public void onEnable(){
@@ -36,7 +37,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		
 		new SaveTimesTask(this).runTaskTimer(this, confHandler.getSaveTimeSeconds() * 20L, confHandler.getSaveTimeSeconds() * 20L); // Save times to DB with time in config (in minutes)
 		
-		this.getCommand("autopromote").setExecutor(pmHandler);
+		this.getCommand("autopromote").setExecutor(new Command(this));
 		
 		getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(this), this);
 		getServer().getPluginManager().registerEvents(gmHandler, this);

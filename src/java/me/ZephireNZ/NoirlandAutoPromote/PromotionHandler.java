@@ -2,7 +2,6 @@ package me.ZephireNZ.NoirlandAutoPromote;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -38,27 +37,6 @@ public class PromotionHandler {
         if(!confHandler.getNoPromote(currRank) && playTime >= confHandler.getPlayTimeNeededMillis(currRank)) { // Only promote those without noPromote
             promote(player, confHandler.getPromoteTo(gmHandler.getGroup(player)));
         }
-    }
-
-    public void promoteInfo(CommandSender sender, Player player) {
-        checkForPromotion(player);
-        long playTime = dbHandler.getPlayTime(player.getName());
-        long totalPlayTime = dbHandler.getTotalPlayTime(player.getName());
-        for(PlayerTimeObject pto : plugin.playerTimeArray) {
-            if(pto.getPlayer() == player) {
-                playTime += (System.currentTimeMillis() - pto.getJoinTime());
-                totalPlayTime += (System.currentTimeMillis() - pto.getJoinTime());
-            }
-        }
-        long neededMillis = confHandler.getPlayTimeNeededMillis(gmHandler.getGroup(player)) - playTime;
-
-        plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
-        if(!confHandler.getNoPromote(gmHandler.getGroup(player))){
-            String nextColor = gmHandler.getColor(player, true);
-            String nextRank = confHandler.getPromoteTo(gmHandler.getGroup(player));
-            plugin.sendMessage(sender,"Time until " + nextColor + nextRank + ChatColor.RESET + ": " + plugin.formatTime(neededMillis));
-        }
-        plugin.sendMessage(sender,"Total Play Time: " + plugin.formatTime(totalPlayTime));
     }
 
     public String[] getRankedPlayerList(int startPage) {

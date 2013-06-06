@@ -10,15 +10,15 @@ import java.util.Map;
 
 public class Command implements CommandExecutor {
 
-    NoirlandAutoPromote plugin;
-    GMHandler gmHandler;
-    DatabaseHandler dbHandler;
-    ConfigHandler confHandler;
-    PromotionHandler pmHandler;
-    Map<String, Command> commands = new HashMap<String, Command>();
-    Command fallback;
+    final NoirlandAutoPromote plugin;
+    final GMHandler gmHandler;
+    final DatabaseHandler dbHandler;
+    final ConfigHandler confHandler;
+    final PromotionHandler pmHandler;
+    private final Map<String, Command> commands = new HashMap<String, Command>();
+    private Command fallback;
     boolean creatingCommands = false;
-    Map<String, String> commandHelp = new HashMap <String, String>();
+    private final Map<String, String> commandHelp = new HashMap <String, String>();
 
     public Command(NoirlandAutoPromote plugin) {
         this.plugin = plugin;
@@ -28,14 +28,14 @@ public class Command implements CommandExecutor {
         this.pmHandler = plugin.pmHandler;
 
         commandHelp.put("check", ChatColor.GRAY + "/autopromote " + ChatColor.RESET +                           "Show your promotion stats.");
-        commandHelp.put("check.others", ChatColor.GRAY + "/autopromote [player] " + ChatColor.RESET +           "Show anothers promotion stats.");
+        commandHelp.put("check.others", ChatColor.GRAY + "/autopromote [player] " + ChatColor.RESET +           "Show another's promotion stats.");
         commandHelp.put("reload", ChatColor.GRAY + "/autopromote reload " + ChatColor.RESET +                   "Reload the plugin.");
         commandHelp.put("promote", ChatColor.GRAY + "/autopromote promote [player] (rank) " + ChatColor.RESET + "Promote a player (optionally to specified rank).");
         commandHelp.put("reset", ChatColor.GRAY + "/autopromote reset [player] (hours) " + ChatColor.RESET +    "Reset a player's play time, 0 hours by default.");
 
     }
 
-    public boolean run(CommandSender sender, String[] args) {
+    boolean run(CommandSender sender, String[] args) {
         return false;
     }
 
@@ -64,7 +64,7 @@ public class Command implements CommandExecutor {
         }
     }
 
-    public void printHelp(CommandSender sender, String command) {
+    void printHelp(CommandSender sender, String command) {
 //        plugin.sendMessage(sender, "==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
 
 //        for(Map.Entry<String, String> perm : perms.entrySet()) {

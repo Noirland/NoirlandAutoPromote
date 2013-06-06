@@ -1,17 +1,15 @@
 package me.ZephireNZ.NoirlandAutoPromote;
 
+import lib.PatPeter.SQLibrary.SQLite;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.rowset.CachedRowSetImpl;
-
-import lib.PatPeter.SQLibrary.SQLite;
-
 public class DatabaseHandler {
 	private SQLite SQLite;
-	private NoirlandAutoPromote plugin;
+	private final NoirlandAutoPromote plugin;
 	
 	public DatabaseHandler(NoirlandAutoPromote plugin) {
 		this.plugin = plugin;
@@ -75,8 +73,7 @@ public class DatabaseHandler {
 			player = player.toLowerCase();
 			checkForPlayer(player);
 			ResultSet result = SQLite.query("SELECT * FROM playTime WHERE player='" + player + "';");
-			long playTime = result.getLong("playTime");
-			return playTime;
+            return result.getLong("playTime");
 		} catch (SQLException e) {
 			plugin.getLogger().severe(e.getMessage());
 			return 0;
@@ -98,8 +95,7 @@ public class DatabaseHandler {
 			player = player.toLowerCase();
 			checkForPlayer(player);
 			ResultSet result = SQLite.query("SELECT * FROM playTime WHERE player='" + player + "';");
-			long playTime = result.getLong("totalPlayTime");
-			return playTime;
+            return result.getLong("totalPlayTime");
 		} catch (SQLException e) {
 			plugin.getLogger().severe(e.getMessage());
 			return 0;

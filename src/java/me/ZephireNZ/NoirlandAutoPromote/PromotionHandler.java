@@ -9,10 +9,10 @@ import java.util.Map;
 
 public class PromotionHandler {
 
-    public NoirlandAutoPromote plugin;
-    public GMHandler gmHandler;
-    public DatabaseHandler dbHandler;
-    public ConfigHandler confHandler;
+    private final NoirlandAutoPromote plugin;
+    private final GMHandler gmHandler;
+    private final DatabaseHandler dbHandler;
+    private final ConfigHandler confHandler;
 
     public PromotionHandler(NoirlandAutoPromote plugin) {
         this.plugin = plugin;

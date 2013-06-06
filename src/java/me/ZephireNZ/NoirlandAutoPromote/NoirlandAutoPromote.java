@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class NoirlandAutoPromote extends JavaPlugin {
 	
-	ArrayList<PlayerTimeObject> playerTimeArray = new ArrayList<PlayerTimeObject>();
+	final ArrayList<PlayerTimeObject> playerTimeArray = new ArrayList<PlayerTimeObject>();
 	public DatabaseHandler dbHandler;
     public GMHandler gmHandler;
     public ConfigHandler confHandler;
@@ -118,7 +118,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 
 class SaveTimesTask extends BukkitRunnable {
 	
-	NoirlandAutoPromote plugin;
+	private final NoirlandAutoPromote plugin;
 	
 	public SaveTimesTask(NoirlandAutoPromote plugin) {
 		this.plugin = plugin;

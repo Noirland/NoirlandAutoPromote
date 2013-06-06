@@ -18,17 +18,22 @@ permissions:
       children:
         autopromote.check: true
         autopromote.check.others: true
+        autopromote.check.top: true
         autopromote.reload: true
         autopromote.promote: true
         autopromote.reset: true
     autopromote.check:
       description: Check own promotion info.
       default: true
+    autopromote.check.top:
+      description: Show the top command.
+      default: true
     autopromote.check.others:
       description: Check another player's promotion info.
       default: op
       children:
         autopromote.check: true
+        autopromote.check.top: true
     autopromote.reload:
       description: Reload the plugin
       default: op

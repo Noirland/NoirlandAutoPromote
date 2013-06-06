@@ -11,7 +11,7 @@ public class CommandTop extends Command {
     }
 
     public boolean run(CommandSender sender, String[] args) {
-        if(sender.hasPermission("autopromote.check.others")) {
+        if(sender.hasPermission("autopromote.check.top")) {
             switch(args.length) {
                 case 1:
                     plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");

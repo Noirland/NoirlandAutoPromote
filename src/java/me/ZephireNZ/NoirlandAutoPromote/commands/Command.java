@@ -29,6 +29,7 @@ public class Command implements CommandExecutor {
 
         commandHelp.put("check", ChatColor.GRAY + "/autopromote " + ChatColor.RESET +                           "Show your promotion stats.");
         commandHelp.put("check.others", ChatColor.GRAY + "/autopromote [player] " + ChatColor.RESET +           "Show another's promotion stats.");
+        commandHelp.put("check.top", ChatColor.GRAY + "/autopromote top (page) " + ChatColor.RESET +                   "List highest total play times, in groups of 10.");
         commandHelp.put("reload", ChatColor.GRAY + "/autopromote reload " + ChatColor.RESET +                   "Reload the plugin.");
         commandHelp.put("promote", ChatColor.GRAY + "/autopromote promote [player] (rank) " + ChatColor.RESET + "Promote a player (optionally to specified rank).");
         commandHelp.put("reset", ChatColor.GRAY + "/autopromote reset [player] (hours) " + ChatColor.RESET +    "Reset a player's play time, 0 hours by default.");
@@ -76,7 +77,7 @@ public class Command implements CommandExecutor {
             plugin.sendMessage(sender, "==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
 
             for(Map.Entry<String, String> entry : commandHelp.entrySet()) {
-                if(sender.hasPermission(entry.getKey())) {
+                if(sender.hasPermission("autopromote." + entry.getKey())) {
                     plugin.sendMessage(sender, entry.getValue());
                 }
             }

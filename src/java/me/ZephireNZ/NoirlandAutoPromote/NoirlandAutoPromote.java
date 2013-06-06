@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class NoirlandAutoPromote extends JavaPlugin {
 	
-	final ArrayList<PlayerTimeObject> playerTimeArray = new ArrayList<PlayerTimeObject>();
+	public final ArrayList<PlayerTimeObject> playerTimeArray = new ArrayList<PlayerTimeObject>();
 	public DatabaseHandler dbHandler;
     public GMHandler gmHandler;
     public ConfigHandler confHandler;

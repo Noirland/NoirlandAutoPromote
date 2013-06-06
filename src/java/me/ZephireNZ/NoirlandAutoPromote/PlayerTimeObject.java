@@ -2,7 +2,7 @@ package me.ZephireNZ.NoirlandAutoPromote;
 
 import org.bukkit.entity.Player;
 
-class PlayerTimeObject {
+public class PlayerTimeObject {
 	
 	private final Player player;
 	private long joinTime;

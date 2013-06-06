@@ -52,8 +52,6 @@ public class ConfigHandler {
         for(String key : plugin.getConfig().getConfigurationSection("ranks").getKeys(false)) {
             if(config.isSet("ranks."+key+".default")) {
                 return key;
-            }else{
-                return null;
             }
         }
         return null;

@@ -13,15 +13,11 @@ class PlayerJoinQuitListener implements Listener {
 	
 	private final NoirlandAutoPromote plugin;
 	private final DatabaseHandler dbHandler;
-	private final ConfigHandler confHandler;
-	private final GMHandler gmHandler;
 	private final PromotionHandler pmHandler;
 	
 	public PlayerJoinQuitListener(NoirlandAutoPromote plugin) {
 		this.plugin = plugin;
 		this.dbHandler = plugin.dbHandler;
-		this.confHandler = plugin.confHandler;
-		this.gmHandler = plugin.gmHandler;
 		this.pmHandler = plugin.pmHandler;
 	}
 

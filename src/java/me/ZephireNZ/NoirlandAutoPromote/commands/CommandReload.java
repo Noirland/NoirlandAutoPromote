@@ -4,7 +4,7 @@ import me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class CommandReload extends Command {
+class CommandReload extends Command {
 
     public CommandReload(NoirlandAutoPromote plugin) {
         super(plugin);

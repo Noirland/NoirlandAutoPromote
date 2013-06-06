@@ -15,10 +15,8 @@ import java.util.Map;
 public class GMHandler implements Listener {
 	private GroupManager gm;
 	private final ConfigHandler confHandler;
-    private NoirlandAutoPromote plugin;
-	
+
 	public GMHandler(NoirlandAutoPromote plugin) {
-        this.plugin = plugin;
 		final PluginManager pm = plugin.getServer().getPluginManager();
 		final Plugin GMplugin = pm.getPlugin("GroupManager");
 		confHandler = plugin.confHandler;
@@ -67,16 +65,12 @@ public class GMHandler implements Listener {
         }
     }
 
-    public boolean isGroup(String group) {
+    boolean isGroup(String group) {
         final OverloadedWorldHolder handler = gm.getWorldsHolder().getDefaultWorld();
         if (handler == null) {
             return false;
         }
         Map<String, Group> groups = handler.getGroups();
-        if(groups.containsKey(group)) {
-            return true;
-        }else{
-            return false;
-        }
+        return groups.containsKey(group);
     }
 }

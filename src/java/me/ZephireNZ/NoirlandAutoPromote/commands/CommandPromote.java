@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandPromote extends Command {
+class CommandPromote extends Command {
 
     public CommandPromote(NoirlandAutoPromote plugin) {
         super(plugin);

@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.concurrent.TimeUnit;
 
-public class CommandReset extends Command {
+class CommandReset extends Command {
 
     public CommandReset(NoirlandAutoPromote plugin) {
         super(plugin);

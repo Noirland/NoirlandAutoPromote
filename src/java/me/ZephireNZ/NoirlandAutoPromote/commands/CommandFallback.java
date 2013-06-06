@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandFallback extends Command {
+class CommandFallback extends Command {
 
     public CommandFallback(NoirlandAutoPromote plugin) {
         super(plugin);
@@ -49,7 +49,7 @@ public class CommandFallback extends Command {
         }
     }
 
-    public void promoteInfo(CommandSender sender, Player player) {
+    void promoteInfo(CommandSender sender, Player player) {
         pmHandler.checkForPromotion(player);
         long playTime = dbHandler.getPlayTime(player.getName());
         long totalPlayTime = dbHandler.getTotalPlayTime(player.getName());

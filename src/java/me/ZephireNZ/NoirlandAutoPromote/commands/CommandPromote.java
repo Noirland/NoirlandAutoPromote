@@ -27,7 +27,7 @@ public class CommandPromote extends Command {
                         String rank = gmHandler.getGroup(player);
                         if(!confHandler.getNoPromote(rank)){
                             String newRank = confHandler.getPromoteTo(rank);
-                            pmHandler.promote(player, newRank);
+                            pmHandler.promote(sender, player, newRank);
                         }else{
                             plugin.sendMessage(sender, ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + player.getName() + " cannot be promoted further.");
                             return false;
@@ -42,7 +42,7 @@ public class CommandPromote extends Command {
                     player = oPlayer.getPlayer();
                     if(player != null) {
                         String newRank = args[2];
-                        pmHandler.promote(player, newRank);
+                        pmHandler.promote(sender, player, newRank);
                         return true;
                     }else{
                         printHelp(sender, "promote");

@@ -18,7 +18,7 @@ public class CommandAgree extends Command {
             String rankDefault = confHandler.getDefault();
             if(currRank.equalsIgnoreCase(rankDefault)) {
                 String newRank = confHandler.getPromoteTo(rankDefault);
-                pmHandler.promote(player, newRank);
+                pmHandler.promote(sender, player, newRank);
                 return true;
             }else{
                 plugin.sendMessage(sender, ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + "You cannot be promoted, you are not " + confHandler.getDefault());

@@ -10,11 +10,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+import java.util.Map;
+
 public class GMHandler implements Listener {
 	private GroupManager gm;
 	private final ConfigHandler confHandler;
+    private NoirlandAutoPromote plugin;
 	
 	public GMHandler(NoirlandAutoPromote plugin) {
+        this.plugin = plugin;
 		final PluginManager pm = plugin.getServer().getPluginManager();
 		final Plugin GMplugin = pm.getPlugin("GroupManager");
 		confHandler = plugin.confHandler;
@@ -48,12 +52,31 @@ public class GMHandler implements Listener {
 		return color;
 	}
  
-	public void setGroup(final Player player, final String group) {
+	public boolean setGroup(final Player player, final String group) {
 		final OverloadedWorldHolder handler = gm.getWorldsHolder().getWorldData(player);
+        Group newGroup;
 		if (handler == null) {
-            return;
+            return false;
 		}
-		Group newGroup = handler.getGroup(group);
-		handler.getUser(player.getName()).setGroup(newGroup);
+        if(isGroup(group)) {
+            newGroup = handler.getGroup(group);
+            handler.getUser(player.getName()).setGroup(newGroup);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public boolean isGroup(String group) {
+        final OverloadedWorldHolder handler = gm.getWorldsHolder().getDefaultWorld();
+        if (handler == null) {
+            return false;
+        }
+        Map<String, Group> groups = handler.getGroups();
+        if(groups.containsKey(group)) {
+            return true;
+        }else{
+            return false;
+        }
     }
 }

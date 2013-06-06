@@ -2,6 +2,7 @@ package me.ZephireNZ.NoirlandAutoPromote;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -20,10 +21,16 @@ public class PromotionHandler {
         this.confHandler = plugin.confHandler;
     }
 
-    public void promote(Player player, String rank) {
-        gmHandler.setGroup(player, rank);
+    public void promote(CommandSender sender, Player player, String rank) {
+        if(sender == null) {
+            sender = plugin.getServer().getConsoleSender();
+        }
+        if(!gmHandler.setGroup(player, rank)) {
+            plugin.sendMessage(sender, ChatColor.RED + "That rank does not exist!");
+        }else{
         dbHandler.setPlayTime(player.getName(), 0);
         plugin.getServer().broadcastMessage(ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + player.getName() + " has been promoted to " + gmHandler.getColor(player, false) + rank + ChatColor.RESET + "!");
+        }
     }
 
     public void checkForPromotion(Player player) { // Checks if player is eligible for promotion
@@ -35,7 +42,7 @@ public class PromotionHandler {
             }
         }
         if(!confHandler.getNoPromote(currRank) && playTime >= confHandler.getPlayTimeNeededMillis(currRank)) { // Only promote those without noPromote
-            promote(player, confHandler.getPromoteTo(gmHandler.getGroup(player)));
+            promote(null, player, confHandler.getPromoteTo(gmHandler.getGroup(player)));
         }
     }
 

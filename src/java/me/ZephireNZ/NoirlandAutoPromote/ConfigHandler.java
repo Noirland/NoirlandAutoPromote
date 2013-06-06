@@ -1,8 +1,8 @@
 package me.ZephireNZ.NoirlandAutoPromote;
 
-import java.util.concurrent.TimeUnit;
-
 import org.bukkit.configuration.file.FileConfiguration;
+
+import java.util.concurrent.TimeUnit;
 
 public class ConfigHandler {
 	NoirlandAutoPromote plugin;
@@ -51,4 +51,16 @@ public class ConfigHandler {
 	public boolean getDebug() {
 		return config.getBoolean("settings.debug".toLowerCase());
 	}
+
+    public String getDefault() {
+        for(String key : plugin.getConfig().getConfigurationSection("ranks").getKeys(false)) {
+            if(config.isSet("ranks."+key+".default")) {
+                return key;
+            }else{
+            }
+            //return plugin.getConfig().getString("messages."+key+".message").substring(0, 42);
+        }
+        // return config.getString("defaultPromote.default");
+        return null;
+    }
 }

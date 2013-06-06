@@ -1,4 +1,8 @@
 ranks:
+  DefaultRankHere:
+    noPromote: true
+    default: true
+    promoteTo: NewRankHere
   InsertRankHere:
     playTimeNeeded: 5
     promoteTo: NewRankHere
@@ -8,6 +12,10 @@ ranks:
   NonPromotingRank:
     noPromote: true
 
+defaultPromote:
+  default: DefaultRankHere
+  promoteTo: NewRankHere
+
 settings:
   saveTime: 10
-  debug: true
+  debug: false

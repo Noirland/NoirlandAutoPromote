@@ -26,7 +26,6 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		dbHandler = new DatabaseHandler(this);
 		gmHandler = new GMHandler(this);
 		pmHandler = new PromotionHandler(this);
-		getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(this), this);
 		
 		for(Player player : getServer().getOnlinePlayers()) {
 			PlayerTimeObject pto = new PlayerTimeObject(player); // Add online players to pto object after reload

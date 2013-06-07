@@ -50,7 +50,6 @@ public class PromotionHandler {
     public ArrayList<String> getRankedPlayerList(int startPage) {
         if(startPage <= 0) { return new ArrayList<String>();} // Don't allow negative or zero pages
         Map<Integer, String> map = dbHandler.getRankedList(startPage);
-//        String[] returnArray = new String[map.size()];
         ArrayList<String> list = new ArrayList<String>();
         for(Map.Entry<Integer, String> entry : map.entrySet()) {
             OfflinePlayer oPlayer = plugin.getServer().getOfflinePlayer(entry.getValue());
@@ -61,7 +60,6 @@ public class PromotionHandler {
             }
             long totalPlayTime = dbHandler.getTotalPlayTime(pString);
             String msg = entry.getKey() + ". " + color + pString + ChatColor.RESET + ": " + plugin.formatTime(totalPlayTime);
-//            returnArray[entry.getKey()-offset] = msg;
             list.add(msg);
         }
         return list;

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +20,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
     public GMHandler gmHandler;
     public ConfigHandler confHandler;
     public PromotionHandler pmHandler;
+    BukkitTask saveTimesTask;
 	
 	@Override
 	public void onEnable(){
@@ -35,7 +37,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 			pmHandler.checkForPromotion(player);
 		}
 		
-		new SaveTimesTask(this).runTaskTimer(this, confHandler.getSaveTimeSeconds() * 20L, confHandler.getSaveTimeSeconds() * 20L); // Save times to DB with time in config (in minutes)
+		startSaveTimes();
 		
 		this.getCommand("autopromote").setExecutor(new Command(this));
         this.getCommand("agree").setExecutor((new CommandAgree(this)));
@@ -76,6 +78,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		for(Player player : getServer().getOnlinePlayers()) {
 			pmHandler.checkForPromotion(player);
 		}
+        startSaveTimes();
 		getLogger().info("Plugin reloaded successfully.");
 	}
 	
@@ -116,6 +119,13 @@ public class NoirlandAutoPromote extends JavaPlugin {
 			getLogger().info(ChatColor.stripColor(msg));
 		}
 	}
+
+    public void startSaveTimes() {
+        if(saveTimesTask != null) {
+            saveTimesTask.cancel();
+        }
+        saveTimesTask = new SaveTimesTask(this).runTaskTimer(this, confHandler.getSaveTimeSeconds() * 20L, confHandler.getSaveTimeSeconds() * 20L);
+    }
 }
 
 class SaveTimesTask extends BukkitRunnable {

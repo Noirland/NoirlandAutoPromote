@@ -5,6 +5,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class PromotionHandler {
@@ -46,27 +47,23 @@ public class PromotionHandler {
         }
     }
 
-    public String[] getRankedPlayerList(int startPage) {
-        if(startPage <= 0) { return new String[0];} // Don't allow negative or zero pages
+    public ArrayList<String> getRankedPlayerList(int startPage) {
+        if(startPage <= 0) { return new ArrayList<String>();} // Don't allow negative or zero pages
         Map<Integer, String> map = dbHandler.getRankedList(startPage);
-        String[] returnArray = new String[map.size()];
-        int offset = ((startPage-1)*10);
-        for(int i = 1 + offset; i <=(map.size()+offset);i++) {
-            OfflinePlayer oPlayer = plugin.getServer().getOfflinePlayer(map.get(i));
-            Player player = oPlayer.getPlayer();
-            String pString;
-            String color;
-            if(player != null) {
-                color = gmHandler.getColor(player, false);
-                pString = player.getName();
-            }else{
+//        String[] returnArray = new String[map.size()];
+        ArrayList<String> list = new ArrayList<String>();
+        for(Map.Entry<Integer, String> entry : map.entrySet()) {
+            OfflinePlayer oPlayer = plugin.getServer().getOfflinePlayer(entry.getValue());
+            String pString = oPlayer.getName();
+            String color = gmHandler.getGroupColor(gmHandler.getGroup(entry.getValue()));
+            if(color == null) {
                 color = ChatColor.RESET.toString();
-                pString = oPlayer.getName();
             }
             long totalPlayTime = dbHandler.getTotalPlayTime(pString);
-            String msg = i + ". " + color + pString + ChatColor.RESET + ": " + plugin.formatTime(totalPlayTime);
-            returnArray[i-offset-1] = msg;
+            String msg = entry.getKey() + ". " + color + pString + ChatColor.RESET + ": " + plugin.formatTime(totalPlayTime);
+//            returnArray[entry.getKey()-offset] = msg;
+            list.add(msg);
         }
-        return returnArray;
+        return list;
     }
 }

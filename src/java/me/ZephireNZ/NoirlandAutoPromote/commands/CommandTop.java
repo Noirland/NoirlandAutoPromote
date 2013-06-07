@@ -4,6 +4,8 @@ import me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
+
 class CommandTop extends Command {
 
     public CommandTop(NoirlandAutoPromote plugin) {
@@ -15,7 +17,7 @@ class CommandTop extends Command {
             switch(args.length) {
                 case 1:
                     plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
-                    String[] rankList = pmHandler.getRankedPlayerList(1);
+                    ArrayList<String> rankList = pmHandler.getRankedPlayerList(1);
                     for(String msg : rankList) {
                         plugin.sendMessage(sender, msg);
                     }
@@ -28,8 +30,8 @@ class CommandTop extends Command {
                         plugin.sendMessage(sender,ChatColor.RED + "That page does not exist");
                         return false;
                     }
-                    String[] pagedRankList = pmHandler.getRankedPlayerList(page);
-                    if(pagedRankList.length > 0) {
+                    ArrayList<String> pagedRankList = pmHandler.getRankedPlayerList(page);
+                    if(pagedRankList.size() > 0) {
                         plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
                         for(String msg : pagedRankList) {
                             plugin.sendMessage(sender, msg);

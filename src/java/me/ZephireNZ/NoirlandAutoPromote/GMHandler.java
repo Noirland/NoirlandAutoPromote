@@ -34,8 +34,16 @@ public class GMHandler implements Listener {
 		}
         return handler.getGroup(player.getName());
 	}
+
+    public String getGroup(final String player) {
+        final OverloadedWorldHolder handler = gm.getWorldsHolder().getDefaultWorld();
+        if(handler == null) {
+            return null;
+        }
+        return handler.getUser(player).getGroupName();
+    }
 	
-	public String getColor(final Player player, boolean next) {
+	public String getColor(final String player, boolean next) {
 		final AnjoPermissionsHandler handler = gm.getWorldsHolder().getWorldPermissions(player);
 		String color;
 		if (handler == null) {
@@ -49,6 +57,19 @@ public class GMHandler implements Listener {
 		}
 		return color;
 	}
+
+    public String getColor(final Player player, boolean next) {
+        return getColor(player.getName(), next);
+    }
+
+    public String getGroupColor(final String group) {
+        final AnjoPermissionsHandler handler = gm.getWorldsHolder().getDefaultWorld().getPermissionsHandler();
+        if (handler == null) {
+            return null;
+        }
+
+        return ChatColor.translateAlternateColorCodes("&".charAt(0), handler.getGroupPrefix(group));
+    }
  
 	public boolean setGroup(final Player player, final String group) {
 		final OverloadedWorldHolder handler = gm.getWorldsHolder().getWorldData(player);

@@ -3,6 +3,7 @@ package me.ZephireNZ.NoirlandAutoPromote.commands;
 import me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote;
 import me.ZephireNZ.NoirlandAutoPromote.PlayerTimeObject;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -22,25 +23,19 @@ class CommandFallback extends Command {
                         promoteInfo(sender, pSender);
                         return true;
                     }else{
-                        plugin.sendMessage(sender, ChatColor.RED + "You do not have access to that.");
+                        plugin.sendMessage(sender, ChatColor.RED + "You do not have access to that.", false);
                         return false;
                     }
                 }else{
-                    plugin.sendMessage(sender, "Consoles cannot check their own play time.");
+                    plugin.sendMessage(sender, "Consoles cannot check their own play time.", false);
                     return false;
                 }
             case 1:
                 if(sender.hasPermission("autopromote.check.others")) {
-                    Player player = plugin.getServer().getPlayerExact(args[0]);
-                    if(player != null) {
-                        promoteInfo(sender, player);
+                        promoteInfo(sender, args[0]);
                         return true;
-                    }else{
-                        plugin.sendMessage(sender, ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + "You can't check the times of offline or nonexistent players.");
-                        return false;
-                    }
                 }else{
-                    plugin.sendMessage(sender, ChatColor.RED + "You do not have access to that.");
+                    plugin.sendMessage(sender, ChatColor.RED + "You do not have access to that.", false);
                     return false;
                 }
             default:
@@ -49,28 +44,35 @@ class CommandFallback extends Command {
         }
     }
 
-    void promoteInfo(CommandSender sender, Player player) {
-        pmHandler.checkForPromotion(player);
-        long playTime = dbHandler.getPlayTime(player.getName());
-        long totalPlayTime = dbHandler.getTotalPlayTime(player.getName());
-        for(PlayerTimeObject pto : plugin.playerTimeArray) {
-            if(pto.getPlayer() == player) {
-                playTime += (System.currentTimeMillis() - pto.getJoinTime());
-                totalPlayTime += (System.currentTimeMillis() - pto.getJoinTime());
+    void promoteInfo(CommandSender sender, String player) {
+        Player p = plugin.getServer().getPlayer(player);
+        OfflinePlayer oPlayer = plugin.getServer().getOfflinePlayer(player);
+        if(!oPlayer.hasPlayedBefore()) {
+            plugin.sendMessage(sender, "That player has not played on this server.", true);
+            return;
+        }
+        long playTime = dbHandler.getPlayTime(player);
+        long totalPlayTime = dbHandler.getTotalPlayTime(player);
+        if(p != null) {
+            pmHandler.checkForPromotion(p);
+            for(PlayerTimeObject pto : plugin.playerTimeArray) {
+                if(pto.getPlayer() == p) {
+                    playTime += (System.currentTimeMillis() - pto.getJoinTime());
+                    totalPlayTime += (System.currentTimeMillis() - pto.getJoinTime());
+                }
             }
         }
         long neededMillis = confHandler.getPlayTimeNeededMillis(gmHandler.getGroup(player)) - playTime;
-
-        plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
+        plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====", false);
         if(!confHandler.getNoPromote(gmHandler.getGroup(player))){
             String nextColor = gmHandler.getColor(player, true);
             String nextRank = confHandler.getPromoteTo(gmHandler.getGroup(player));
-            plugin.sendMessage(sender,"Time until " + nextColor + nextRank + ChatColor.RESET + ": " + plugin.formatTime(neededMillis));
+            plugin.sendMessage(sender,"Time until " + nextColor + nextRank + ChatColor.RESET + ": " + plugin.formatTime(neededMillis), false);
         }
-        plugin.sendMessage(sender,"Total Play Time: " + plugin.formatTime(totalPlayTime));
+        plugin.sendMessage(sender,"Total Play Time: " + plugin.formatTime(totalPlayTime), false);
+    }
 
-        // Start new total rank testing
-
-
+    void promoteInfo(CommandSender sender, Player player) {
+        promoteInfo(sender, player.getName());
     }
 }

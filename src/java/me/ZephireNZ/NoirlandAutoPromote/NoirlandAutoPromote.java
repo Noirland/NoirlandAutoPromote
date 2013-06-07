@@ -105,7 +105,10 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		}
 	}
 	
-	public void sendMessage(CommandSender sender, String msg) {
+	public void sendMessage(CommandSender sender, String msg, Boolean prefix) {
+        if(prefix) {
+            msg = ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + msg;
+        }
 		if(sender instanceof Player) {
 			Player pSender = (Player) sender;
 			pSender.sendMessage(msg);

@@ -23,7 +23,7 @@ class CommandReset extends Command {
                 case 2:
                         oPlayer = plugin.getServer().getOfflinePlayer(args[1]);
                         dbHandler.setPlayTime(oPlayer.getName(), 0);
-                        plugin.sendMessage(sender, ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + oPlayer.getName() + "'s play time was reset.");
+                        plugin.sendMessage(sender, oPlayer.getName() + "'s play time was reset.", true);
                         return true;
                 case 3:
                     int hours;
@@ -35,11 +35,11 @@ class CommandReset extends Command {
                     }
                         oPlayer = plugin.getServer().getOfflinePlayer(args[1]);
                         dbHandler.setPlayTime(oPlayer.getName(), TimeUnit.MILLISECONDS.convert(hours, TimeUnit.HOURS));
-                        plugin.sendMessage(sender, ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + oPlayer.getName() + "'s play time was reset to " + hours + " hours.");
+                        plugin.sendMessage(sender, oPlayer.getName() + "'s play time was reset to " + hours + " hours.", true);
                         return true;
             }
         }else{
-            plugin.sendMessage(sender, ChatColor.RED + "You do not have access to that.");
+            plugin.sendMessage(sender, ChatColor.RED + "You do not have access to that.", false);
             return false;
         }
         return false;

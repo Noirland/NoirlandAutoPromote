@@ -16,10 +16,10 @@ class CommandTop extends Command {
         if(sender.hasPermission("autopromote.check.top")) {
             switch(args.length) {
                 case 1:
-                    plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
+                    plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====", false);
                     ArrayList<String> rankList = pmHandler.getRankedPlayerList(1);
                     for(String msg : rankList) {
-                        plugin.sendMessage(sender, msg);
+                        plugin.sendMessage(sender, msg, false);
                     }
                     return true;
                 case 2:
@@ -27,18 +27,18 @@ class CommandTop extends Command {
                     try {
                         page = Integer.parseInt(args[1]);
                     }catch(NumberFormatException e) {
-                        plugin.sendMessage(sender,ChatColor.RED + "That page does not exist");
+                        plugin.sendMessage(sender, "That page does not exist", true);
                         return false;
                     }
                     ArrayList<String> pagedRankList = pmHandler.getRankedPlayerList(page);
                     if(pagedRankList.size() > 0) {
-                        plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
+                        plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====", false);
                         for(String msg : pagedRankList) {
-                            plugin.sendMessage(sender, msg);
+                            plugin.sendMessage(sender, msg, false);
                         }
                         return true;
                     }else{
-                        plugin.sendMessage(sender,ChatColor.RED + "That page does not exist");
+                        plugin.sendMessage(sender, "That page does not exist", true);
                         return false;
                     }
                 default:
@@ -46,7 +46,7 @@ class CommandTop extends Command {
                     return false;
             }
         }else{
-            plugin.sendMessage(sender, ChatColor.RED + "You do not have access to that.");
+            plugin.sendMessage(sender, ChatColor.RED + "You do not have access to that.", false);
             return false;
         }
     }

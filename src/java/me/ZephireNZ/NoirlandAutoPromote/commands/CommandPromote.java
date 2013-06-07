@@ -29,7 +29,7 @@ class CommandPromote extends Command {
                             String newRank = confHandler.getPromoteTo(rank);
                             pmHandler.promote(sender, player, newRank);
                         }else{
-                            plugin.sendMessage(sender, ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + player.getName() + " cannot be promoted further.");
+                            plugin.sendMessage(sender, player.getName() + " cannot be promoted further.", true);
                             return false;
                         }
                         return true;
@@ -53,7 +53,7 @@ class CommandPromote extends Command {
                     return false;
             }
         }else{
-            plugin.sendMessage(sender, ChatColor.RED + "You do not have access to that.");
+            plugin.sendMessage(sender, ChatColor.RED + "You do not have access to that.", false);
             return false;
         }
     }

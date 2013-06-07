@@ -1,7 +1,6 @@
 package me.ZephireNZ.NoirlandAutoPromote.commands;
 
 import me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -21,11 +20,11 @@ public class CommandAgree extends Command {
                 pmHandler.promote(sender, player, newRank);
                 return true;
             }else{
-                plugin.sendMessage(sender, ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + "You cannot be promoted, you are not " + confHandler.getDefault());
+                plugin.sendMessage(sender, "You cannot be promoted, you are not " + confHandler.getDefault(), true);
                 return false;
             }
         }
-        plugin.sendMessage(sender, "The console cannot be promoted");
+        plugin.sendMessage(sender, "The console cannot be promoted", false);
         return false;
     }
 }

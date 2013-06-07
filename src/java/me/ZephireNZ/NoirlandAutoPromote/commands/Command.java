@@ -74,17 +74,17 @@ public class Command implements CommandExecutor {
 //            }
 //        }
         if(command.equals("help")) {
-            plugin.sendMessage(sender, "==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====");
+            plugin.sendMessage(sender, "==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====", false);
 
             for(Map.Entry<String, String> entry : commandHelp.entrySet()) {
                 if(sender.hasPermission("autopromote." + entry.getKey())) {
-                    plugin.sendMessage(sender, entry.getValue());
+                    plugin.sendMessage(sender, entry.getValue(), false);
                 }
             }
         }else{
             for(Map.Entry<String, String> entry : commandHelp.entrySet()) {
                 if(command.equals(entry.getKey())) {
-                    plugin.sendMessage(sender, entry.getValue());
+                    plugin.sendMessage(sender, entry.getValue(), false);
                 }
             }
         }

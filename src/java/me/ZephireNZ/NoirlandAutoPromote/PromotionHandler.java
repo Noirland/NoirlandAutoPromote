@@ -27,7 +27,7 @@ public class PromotionHandler {
             sender = plugin.getServer().getConsoleSender();
         }
         if(!gmHandler.setGroup(player, rank)) {
-            plugin.sendMessage(sender, ChatColor.RED + "That rank does not exist!");
+            plugin.sendMessage(sender, ChatColor.RED + "That rank does not exist!", false);
         }else{
         dbHandler.setPlayTime(player.getName(), 0);
         plugin.getServer().broadcastMessage(ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + player.getName() + " has been promoted to " + gmHandler.getColor(player, false) + rank + ChatColor.RESET + "!");

@@ -60,7 +60,6 @@ public class PromotionHandler {
             if(color == null) {
                 color = ChatColor.RESET.toString();
             }
-            plugin.debug(entry.getKey() + " : " + entry.getValue());
             long totalPlayTime = dbHandler.getTotalPlayTime(pString);
             String msg = entry.getKey() + ". " + color + pString + ChatColor.RESET + ": " + plugin.formatTime(totalPlayTime);
             list.add(i++, msg);

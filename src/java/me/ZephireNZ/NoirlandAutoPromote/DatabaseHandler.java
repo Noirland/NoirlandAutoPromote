@@ -125,7 +125,6 @@ public class DatabaseHandler {
 				if(result.next()) {
 					if(result.getString("player") != null) {
 						map.put(StartNum + (i), result.getString("player"));
-                        plugin.debug(StartNum + " : " + i + " : " + result.getString("player"));
 					}
 				}else{
 					return map;

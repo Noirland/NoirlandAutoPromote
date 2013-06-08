@@ -40,6 +40,7 @@ class CommandFallback extends Command {
                 }
             default:
                 printHelp(sender, "check");
+                printHelp(sender, "check.others");
                 return false;
         }
     }

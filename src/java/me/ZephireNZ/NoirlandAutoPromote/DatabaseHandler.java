@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class DatabaseHandler {
 	private SQLite SQLite;
@@ -114,8 +115,8 @@ public class DatabaseHandler {
 		}
 	}
 	
-	public Map<Integer, String> getRankedList(int startPage) {
-		Map<Integer, String> map = new HashMap<Integer, String>();
+	public TreeMap<Integer, String> getRankedList(int startPage) {
+		TreeMap<Integer, String> map = new TreeMap<Integer, String>();
 		try {
             int StartNum = ((startPage-1)*10);
 			ResultSet result = SQLite.query("SELECT * FROM playTime ORDER BY totalPlayTime DESC LIMIT 10 OFFSET " + StartNum + ";");
@@ -124,6 +125,7 @@ public class DatabaseHandler {
 				if(result.next()) {
 					if(result.getString("player") != null) {
 						map.put(StartNum + (i), result.getString("player"));
+                        plugin.debug(StartNum + " : " + i + " : " + result.getString("player"));
 					}
 				}else{
 					return map;

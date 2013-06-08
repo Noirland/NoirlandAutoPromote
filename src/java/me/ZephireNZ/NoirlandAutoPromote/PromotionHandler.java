@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class PromotionHandler {
 
@@ -49,8 +50,9 @@ public class PromotionHandler {
 
     public ArrayList<String> getRankedPlayerList(int startPage) {
         if(startPage <= 0) { return new ArrayList<String>();} // Don't allow negative or zero pages
-        Map<Integer, String> map = dbHandler.getRankedList(startPage);
+        TreeMap<Integer, String> map = dbHandler.getRankedList(startPage);
         ArrayList<String> list = new ArrayList<String>();
+        int i = 0;
         for(Map.Entry<Integer, String> entry : map.entrySet()) {
             OfflinePlayer oPlayer = plugin.getServer().getOfflinePlayer(entry.getValue());
             String pString = oPlayer.getName();
@@ -58,9 +60,10 @@ public class PromotionHandler {
             if(color == null) {
                 color = ChatColor.RESET.toString();
             }
+            plugin.debug(entry.getKey() + " : " + entry.getValue());
             long totalPlayTime = dbHandler.getTotalPlayTime(pString);
             String msg = entry.getKey() + ". " + color + pString + ChatColor.RESET + ": " + plugin.formatTime(totalPlayTime);
-            list.add(msg);
+            list.add(i++, msg);
         }
         return list;
     }

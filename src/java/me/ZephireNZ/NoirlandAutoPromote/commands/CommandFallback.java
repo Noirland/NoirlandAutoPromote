@@ -70,7 +70,11 @@ class CommandFallback extends Command {
             String nextRank = confHandler.getPromoteTo(gmHandler.getGroup(player));
             plugin.sendMessage(sender,"Time until " + nextColor + nextRank + ChatColor.RESET + ": " + plugin.formatTime(neededMillis), false);
         }
-        plugin.sendMessage(sender,"Total Play Time: " + plugin.formatTime(totalPlayTime), false);
+        String rankString = "";
+        if(dbHandler.getPlayerRank(player) != 0) {
+            rankString = ChatColor.DARK_GRAY + " (#" + dbHandler.getPlayerRank(player) + ")";
+        }
+        plugin.sendMessage(sender,"Total Play Time: " + plugin.formatTime(totalPlayTime) + rankString, false);
     }
 
     void promoteInfo(CommandSender sender, Player player) {

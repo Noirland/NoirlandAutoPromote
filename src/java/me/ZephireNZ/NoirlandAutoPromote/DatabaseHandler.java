@@ -1,6 +1,7 @@
 package me.ZephireNZ.NoirlandAutoPromote;
 
 import lib.PatPeter.SQLibrary.SQLite;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +11,7 @@ import java.util.Map;
 public class DatabaseHandler {
 	private SQLite SQLite;
 	private final NoirlandAutoPromote plugin;
+    final Map<Integer, String> cachedRanks = new HashMap<Integer, String>();
 	
 	public DatabaseHandler(NoirlandAutoPromote plugin) {
 		this.plugin = plugin;
@@ -134,9 +136,63 @@ public class DatabaseHandler {
 		}
 		return null;
 	}
-	
-	
+
+    public void refreshCachedRanks() {
+
+        new RefreshCachedRanks(plugin, SQLite, cachedRanks).runTask(plugin);
+    }
+
+    public int getPlayerRank(String player) {
+        if(!cachedRanks.isEmpty()) {
+            for(Map.Entry<Integer, String> entry : cachedRanks.entrySet()) {
+                if(entry.getValue().equalsIgnoreCase(player)) {
+                    return entry.getKey();
+                }
+            }
+        }
+        return 0;
+    }
+
 	public void closeConnection() {
 		SQLite.close();
 	}
+
+
+}
+
+class RefreshCachedRanks extends BukkitRunnable {
+
+    private final NoirlandAutoPromote plugin;
+    private final SQLite SQLite;
+    private final Map<Integer, String> tempMap = new HashMap<Integer, String>();
+    private final Map<Integer, String> map;
+
+    public RefreshCachedRanks(NoirlandAutoPromote plugin, SQLite SQLite, Map<Integer, String> map) {
+        this.SQLite = SQLite;
+        this.map = map;
+        this.plugin = plugin;
+
+    }
+
+    @Override
+    public void run() {
+        try {
+            int i = 1;
+            tempMap.clear();
+            ResultSet result = SQLite.query("SELECT * FROM playTime ORDER BY totalPlayTime DESC");
+
+            while(result.next()) {
+
+                tempMap.put(i, result.getString("player"));
+                i++;
+
+            }
+            map.clear();
+            map.putAll(tempMap);
+            plugin.debug("Rank cache refreshed successfully");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -20,7 +20,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
     public GMHandler gmHandler;
     public ConfigHandler confHandler;
     public PromotionHandler pmHandler;
-    BukkitTask saveTimesTask;
+    private BukkitTask saveTimesTask;
 	
 	@Override
 	public void onEnable(){
@@ -38,6 +38,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		}
 		
 		startSaveTimes();
+        dbHandler.refreshCachedRanks();
 		
 		this.getCommand("autopromote").setExecutor(new Command(this));
         this.getCommand("agree").setExecutor((new CommandAgree(this)));
@@ -51,14 +52,14 @@ public class NoirlandAutoPromote extends JavaPlugin {
 	
 	@Override
 	public void onDisable(){
-		saveToDB(); // Save temporary playTimes to Database
+		saveToDB(false); // Save temporary playTimes to Database
 		dbHandler.closeConnection();
 		
 		PluginDescriptionFile pdfFile = this.getDescription();
 		getLogger().info(pdfFile.getName() + " version " + pdfFile.getVersion() + " stopped.");
 	}
 	
-	public void saveToDB() {
+	public void saveToDB(boolean reload) {
 		for(PlayerTimeObject pto : playerTimeArray) {
 			String player = pto.getPlayer().getName();
 			pto.setQuitTime();
@@ -67,14 +68,15 @@ public class NoirlandAutoPromote extends JavaPlugin {
 			pto.setJoinTime();
 			pto.resetQuitTime();
 		}
+        if(reload) {
+            dbHandler.refreshCachedRanks();
+        }
 	}
 	
 	public void reload() {
-		saveToDB();
+		saveToDB(true);
 		confHandler.loadConfig();
 		confHandler.config = this.getConfig();
-		dbHandler.closeConnection();
-		dbHandler.SQLConnect();
 		for(Player player : getServer().getOnlinePlayers()) {
 			pmHandler.checkForPromotion(player);
 		}
@@ -120,7 +122,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		}
 	}
 
-    public void startSaveTimes() {
+    void startSaveTimes() {
         if(saveTimesTask != null) {
             saveTimesTask.cancel();
         }
@@ -138,10 +140,9 @@ class SaveTimesTask extends BukkitRunnable {
 	
 	@Override
 	public void run() {
-		plugin.saveToDB(); // Save all players to DB on event
-		
 		for(Player player : plugin.getServer().getOnlinePlayers()) { // Check for promoteable player
 			plugin.pmHandler.checkForPromotion(player);
 		}
+        plugin.saveToDB(true); // Save all players to DB on event
 	}
 }

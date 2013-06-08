@@ -49,5 +49,6 @@ class PlayerJoinQuitListener implements Listener {
 				it.remove();
 			}
 		}
+    dbHandler.refreshCachedRanks();
 	}
 }

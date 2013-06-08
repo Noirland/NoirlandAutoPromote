@@ -33,8 +33,11 @@ class CommandPromote extends Command {
                             return false;
                         }
                         return true;
-                    }else{
-                        printHelp(sender, "promote");
+                    }else if (oPlayer.hasPlayedBefore()) {
+                        plugin.sendMessage(sender, oPlayer.getName() + " must be online to be promoted.", true);
+                        return false;
+                    } else {
+                        plugin.sendMessage(sender, oPlayer.getName() + " has never player on this server.", true);
                         return false;
                     }
                 case 3:

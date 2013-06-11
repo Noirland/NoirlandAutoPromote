@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 
 public class PlayerTimeObject {
 	
-	private Player player;
+	private final Player player;
 	private long joinTime;
 	private long quitTime;
 	
@@ -33,8 +33,7 @@ public class PlayerTimeObject {
 	}
 	
 	public long getPlayTime() {
-		long playTime = quitTime - joinTime;
-		return playTime;
+        return quitTime - joinTime;
 	}
 	
 	public void resetQuitTime() {

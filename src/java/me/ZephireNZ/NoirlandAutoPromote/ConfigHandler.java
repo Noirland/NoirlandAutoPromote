@@ -1,11 +1,11 @@
 package me.ZephireNZ.NoirlandAutoPromote;
 
-import java.util.concurrent.TimeUnit;
-
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.util.concurrent.TimeUnit;
+
 public class ConfigHandler {
-	NoirlandAutoPromote plugin;
+	private final NoirlandAutoPromote plugin;
 	FileConfiguration config;
 	
 	public ConfigHandler(NoirlandAutoPromote plugin) {
@@ -28,27 +28,32 @@ public class ConfigHandler {
 	}
 	
 	public String getPromoteTo(String rank) {
-		String promoteTo = config.getString("ranks." + rank.toLowerCase() + ".promoteTo");
-		return promoteTo;
+        return config.getString("ranks." + rank.toLowerCase() + ".promoteTo");
 	}
 	
 	public boolean getNoPromote(String rank) {
-		Boolean noPromote = config.getBoolean("ranks." + rank.toLowerCase() + ".noPromote");
-		return noPromote;
+        return config.getBoolean("ranks." + rank.toLowerCase() + ".noPromote");
 	}
 	
 	public long getPlayTimeNeededMillis(String rank) {
 		int playTimeNeededHours = config.getInt("ranks." + rank.toLowerCase() + ".playTimeNeeded");
-		long playTimeNeededMillis = TimeUnit.MILLISECONDS.convert(playTimeNeededHours, TimeUnit.HOURS);
-		return playTimeNeededMillis;
+        return TimeUnit.MILLISECONDS.convert(playTimeNeededHours, TimeUnit.HOURS);
 	}
 	
 	public long getSaveTimeSeconds() {
-		long saveTimeSeconds = TimeUnit.SECONDS.convert(config.getInt("settings.saveTime"),TimeUnit.MINUTES);
-		return saveTimeSeconds;
+        return TimeUnit.SECONDS.convert(config.getInt("settings.saveTime"),TimeUnit.MINUTES);
 	}
 	
 	public boolean getDebug() {
 		return config.getBoolean("settings.debug".toLowerCase());
 	}
+
+    public String getDefault() {
+        for(String key : plugin.getConfig().getConfigurationSection("ranks").getKeys(false)) {
+            if(config.isSet("ranks."+key+".default")) {
+                return key;
+            }
+        }
+        return null;
+    }
 }

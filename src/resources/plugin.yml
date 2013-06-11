@@ -3,12 +3,14 @@ database: false
 main: me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote
 name: NoirlandAutoPromote
 startup: postworld
-version: 1.23
+version: 2.0
 depend: [SQLibrary, GroupManager]
 commands:
     autopromote:
       aliases: [noirpromote]
       description: Check when you other others will be promoted.
+    agree:
+      description: Agree to the server rules, and be promoted from the default rank.
 permissions:
     autopromote.*:
       description: Access to all autopromote commands.
@@ -16,17 +18,22 @@ permissions:
       children:
         autopromote.check: true
         autopromote.check.others: true
+        autopromote.check.top: true
         autopromote.reload: true
         autopromote.promote: true
         autopromote.reset: true
     autopromote.check:
       description: Check own promotion info.
       default: true
+    autopromote.check.top:
+      description: Show the top command.
+      default: true
     autopromote.check.others:
-      description: Check anothers promotion info.
+      description: Check another player's promotion info.
       default: op
       children:
         autopromote.check: true
+        autopromote.check.top: true
     autopromote.reload:
       description: Reload the plugin
       default: op

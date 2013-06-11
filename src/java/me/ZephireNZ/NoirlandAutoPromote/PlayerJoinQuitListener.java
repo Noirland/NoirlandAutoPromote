@@ -1,7 +1,5 @@
 package me.ZephireNZ.NoirlandAutoPromote;
 
-import java.util.Iterator;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,19 +7,17 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerJoinQuitListener implements Listener {
+import java.util.Iterator;
+
+class PlayerJoinQuitListener implements Listener {
 	
-	NoirlandAutoPromote plugin;
-	DatabaseHandler dbHandler;
-	ConfigHandler confHandler;
-	GMHandler gmHandler;
-	PromotionHandler pmHandler;
+	private final NoirlandAutoPromote plugin;
+	private final DatabaseHandler dbHandler;
+	private final PromotionHandler pmHandler;
 	
 	public PlayerJoinQuitListener(NoirlandAutoPromote plugin) {
 		this.plugin = plugin;
 		this.dbHandler = plugin.dbHandler;
-		this.confHandler = plugin.confHandler;
-		this.gmHandler = plugin.gmHandler;
 		this.pmHandler = plugin.pmHandler;
 	}
 
@@ -53,5 +49,6 @@ public class PlayerJoinQuitListener implements Listener {
 				it.remove();
 			}
 		}
+    dbHandler.refreshCachedRanks();
 	}
 }

@@ -3,7 +3,7 @@ database: false
 main: me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote
 name: NoirlandAutoPromote
 startup: postworld
-version: 1.23
+version: 2.0
 depend: [SQLibrary, GroupManager]
 commands:
     autopromote:

@@ -13,7 +13,7 @@
         </repository>
         <repository>
             <id>brynley-repo</id>
-            <url>http://192.168.0.11:8081/content/groups/public/</url>
+            <url>http://repo.brynley.tk/content/groups/public/</url>
         </repository>
     </repositories>
 
@@ -62,4 +62,17 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>brynley-repo</id>
+            <name>Releases</name>
+            <url>http://repo.brynley.tk/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>brynley-repo</id>
+            <name>Snapshots</name>
+            <url>http://repo.brynley.tk/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

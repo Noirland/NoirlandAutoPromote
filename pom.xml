@@ -43,10 +43,10 @@
     </dependencies>
 
     <build>
-        <sourceDirectory>src/java</sourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <resources>
             <resource>
-                <directory>src/resources</directory>
+                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>

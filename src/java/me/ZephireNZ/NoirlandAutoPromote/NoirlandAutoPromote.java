@@ -2,12 +2,12 @@ package me.ZephireNZ.NoirlandAutoPromote;
 
 import me.ZephireNZ.NoirlandAutoPromote.commands.Command;
 import me.ZephireNZ.NoirlandAutoPromote.commands.CommandAgree;
+import me.ZephireNZ.NoirlandAutoPromote.tasks.SaveTimesTask;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
@@ -130,19 +130,3 @@ public class NoirlandAutoPromote extends JavaPlugin {
     }
 }
 
-class SaveTimesTask extends BukkitRunnable {
-	
-	private final NoirlandAutoPromote plugin;
-	
-	public SaveTimesTask(NoirlandAutoPromote plugin) {
-		this.plugin = plugin;
-	}
-	
-	@Override
-	public void run() {
-		for(Player player : plugin.getServer().getOnlinePlayers()) { // Check for promoteable player
-			plugin.pmHandler.checkForPromotion(player);
-		}
-        plugin.saveToDB(true); // Save all players to DB on event
-	}
-}

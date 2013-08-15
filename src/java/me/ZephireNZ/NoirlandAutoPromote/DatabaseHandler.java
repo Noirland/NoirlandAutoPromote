@@ -1,7 +1,7 @@
 package me.ZephireNZ.NoirlandAutoPromote;
 
 import lib.PatPeter.SQLibrary.SQLite;
-import org.bukkit.scheduler.BukkitRunnable;
+import me.ZephireNZ.NoirlandAutoPromote.tasks.RefreshCachedRanksTask;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -140,7 +140,7 @@ public class DatabaseHandler {
 
     public void refreshCachedRanks() {
 
-        new RefreshCachedRanks(plugin, SQLite, cachedRanks).runTask(plugin);
+        new RefreshCachedRanksTask(plugin, SQLite, cachedRanks).runTask(plugin);
     }
 
     public int getPlayerRank(String player) {
@@ -161,39 +161,3 @@ public class DatabaseHandler {
 
 }
 
-class RefreshCachedRanks extends BukkitRunnable {
-
-    private final NoirlandAutoPromote plugin;
-    private final SQLite SQLite;
-    private final Map<Integer, String> tempMap = new HashMap<Integer, String>();
-    private final Map<Integer, String> map;
-
-    public RefreshCachedRanks(NoirlandAutoPromote plugin, SQLite SQLite, Map<Integer, String> map) {
-        this.SQLite = SQLite;
-        this.map = map;
-        this.plugin = plugin;
-
-    }
-
-    @Override
-    public void run() {
-        try {
-            int i = 1;
-            tempMap.clear();
-            ResultSet result = SQLite.query("SELECT * FROM playTime ORDER BY totalPlayTime DESC");
-
-            while(result.next()) {
-
-                tempMap.put(i, result.getString("player"));
-                i++;
-
-            }
-            map.clear();
-            map.putAll(tempMap);
-            plugin.debug("Rank cache refreshed successfully");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-}

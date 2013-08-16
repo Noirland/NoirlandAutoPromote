@@ -6,13 +6,12 @@ import org.anjocaido.groupmanager.dataholder.OverloadedWorldHolder;
 import org.anjocaido.groupmanager.permissions.AnjoPermissionsHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.Map;
 
-public class GMHandler implements Listener {
+public class GMHandler {
 	private GroupManager gm;
 	private final ConfigHandler confHandler;
 

@@ -11,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class NoirlandAutoPromote extends JavaPlugin {
 	
@@ -44,8 +43,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
         this.getCommand("agree").setExecutor((new CommandAgree(this)));
 		
 		getServer().getPluginManager().registerEvents(new PlayerJoinQuitListener(this), this);
-		getServer().getPluginManager().registerEvents(gmHandler, this);
-		
+
 		PluginDescriptionFile pdfFile = this.getDescription();
 		getLogger().info(pdfFile.getName() + " version " + pdfFile.getVersion() + " started.");
 	}

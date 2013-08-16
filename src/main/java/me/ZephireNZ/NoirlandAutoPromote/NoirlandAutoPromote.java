@@ -90,26 +90,6 @@ public class NoirlandAutoPromote extends JavaPlugin {
 		}
 	}
 	
-	public String formatTime(long millis) {
-		long hour = TimeUnit.HOURS.toMillis(1);
-		long day = hour * 24;
-		
-		if(millis < hour) {
-			long mins = TimeUnit.MILLISECONDS.toMinutes(millis);
-			return (mins + " Minutes");
-		}
-		else if(millis < day) {
-			long hours = TimeUnit.MILLISECONDS.toHours(millis);
-			return (hours + " Hours");
-		}
-		else{
-			long days = TimeUnit.MILLISECONDS.toDays(millis);
-			long subtrDays = TimeUnit.DAYS.toMillis(days);
-			long hours = TimeUnit.MILLISECONDS.toHours(millis - subtrDays);
-			return (days + " Days, " + hours + " Hours");
-		}
-	}
-	
 	public void sendMessage(CommandSender sender, String msg, Boolean prefix) {
         if(prefix) {
             msg = ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + msg;

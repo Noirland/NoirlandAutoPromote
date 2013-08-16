@@ -2,6 +2,7 @@ package me.ZephireNZ.NoirlandAutoPromote.commands;
 
 import me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote;
 import me.ZephireNZ.NoirlandAutoPromote.PlayerTimeObject;
+import me.ZephireNZ.NoirlandAutoPromote.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -68,13 +69,13 @@ class CommandFallback extends Command {
         if(!confHandler.getNoPromote(gmHandler.getGroup(player))){
             String nextColor = gmHandler.getColor(player, true);
             String nextRank = confHandler.getPromoteTo(gmHandler.getGroup(player));
-            plugin.sendMessage(sender,"Time until " + nextColor + nextRank + ChatColor.RESET + ": " + plugin.formatTime(neededMillis), false);
+            plugin.sendMessage(sender,"Time until " + nextColor + nextRank + ChatColor.RESET + ": " + Util.formatTime(neededMillis), false);
         }
         String rankString = "";
         if(dbHandler.getPlayerRank(player) != 0) {
             rankString = ChatColor.DARK_GRAY + " (#" + dbHandler.getPlayerRank(player) + ")";
         }
-        plugin.sendMessage(sender,"Total Play Time: " + plugin.formatTime(totalPlayTime) + rankString, false);
+        plugin.sendMessage(sender,"Total Play Time: " + Util.formatTime(totalPlayTime) + rankString, false);
     }
 
     void promoteInfo(CommandSender sender, Player player) {

@@ -93,4 +93,22 @@ public class GMHandler {
         Map<String, Group> groups = handler.getGroups();
         return groups.containsKey(group);
     }
+
+    public void toFemale(final Player player) {
+        final OverloadedWorldHolder handler = gm.getWorldsHolder().getWorldData(player);
+        if (handler == null) {
+            return;
+        }
+
+        if(!confHandler.isFemale(getGroup(player))) {
+            String femRank = confHandler.getFemale(getGroup(player));
+            if(femRank != null) {
+                setGroup(player, femRank);
+                return;
+            }
+        }
+
+
+
+    }
 }

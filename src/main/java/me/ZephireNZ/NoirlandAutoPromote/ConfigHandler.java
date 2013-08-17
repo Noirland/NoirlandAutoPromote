@@ -56,4 +56,27 @@ public class ConfigHandler {
         }
         return null;
     }
+
+    public boolean isFemale(String group) {
+        for(String key : plugin.getConfig().getConfigurationSection("ranks").getKeys(false)) {
+            String female = config.getString("ranks."+key+".female");
+            if(female != null && female.equalsIgnoreCase(group)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public String getFemale(String group) {
+
+        if(!isFemale(group)) {
+            return config.getString("ranks."+group.toLowerCase()+".female");
+        }else{
+            return null;
+        }
+
+    }
+
+
 }

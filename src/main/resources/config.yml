@@ -8,9 +8,11 @@ ranks:
     promoteTo: NewRankHere
   AnotherRankHere:
     playTimeNeeded: 5
+    female: FemaleRank
     promoteTo: NewRankHere
   NonPromotingRank:
     noPromote: true
+    female: NonPromotingFemaleRank
 
 defaultPromote:
   default: DefaultRankHere

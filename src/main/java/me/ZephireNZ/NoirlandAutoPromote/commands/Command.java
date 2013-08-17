@@ -33,6 +33,7 @@ public class Command implements CommandExecutor {
         commandHelp.put("reload", ChatColor.GRAY + "/autopromote reload " + ChatColor.RESET +                   "Reload the plugin.");
         commandHelp.put("promote", ChatColor.GRAY + "/autopromote promote [player] (rank) " + ChatColor.RESET + "Promote a player (optionally to specified rank).");
         commandHelp.put("reset", ChatColor.GRAY + "/autopromote reset [player] (hours) " + ChatColor.RESET +    "Reset a player's play time, 0 hours by default.");
+        commandHelp.put("female", ChatColor.GRAY + "/autopromote female " + ChatColor.RESET + "Change your rank's gender to female " + ChatColor.BOLD + " CAN'T BE REVERSED");
 
     }
 
@@ -40,7 +41,6 @@ public class Command implements CommandExecutor {
         return false;
     }
 
-    @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
 
         fillCommands();
@@ -61,6 +61,7 @@ public class Command implements CommandExecutor {
         commands.put("reset", new CommandReset(plugin));
         commands.put("promote", new CommandPromote(plugin));
         commands.put("help", new CommandHelp(plugin));
+        commands.put("female", new CommandFemale(plugin));
         fallback = new CommandFallback(plugin);
         }
     }

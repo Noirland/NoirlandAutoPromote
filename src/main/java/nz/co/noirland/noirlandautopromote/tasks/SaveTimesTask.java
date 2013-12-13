@@ -1,8 +1,8 @@
-package me.ZephireNZ.NoirlandAutoPromote.tasks;
+package nz.co.noirland.noirlandautopromote.tasks;
 
-import me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote;
-import me.ZephireNZ.NoirlandAutoPromote.PlayerTimeData;
-import me.ZephireNZ.NoirlandAutoPromote.database.Database;
+import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
+import nz.co.noirland.noirlandautopromote.PlayerTimeData;
+import nz.co.noirland.noirlandautopromote.database.Database;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class SaveTimesTask extends BukkitRunnable {

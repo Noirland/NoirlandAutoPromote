@@ -1,6 +1,6 @@
-package me.ZephireNZ.NoirlandAutoPromote;
+package nz.co.noirland.noirlandautopromote;
 
-import me.ZephireNZ.NoirlandAutoPromote.config.PluginConfig;
+import nz.co.noirland.noirlandautopromote.config.PluginConfig;
 import org.anjocaido.groupmanager.GroupManager;
 import org.anjocaido.groupmanager.data.Group;
 import org.anjocaido.groupmanager.dataholder.OverloadedWorldHolder;

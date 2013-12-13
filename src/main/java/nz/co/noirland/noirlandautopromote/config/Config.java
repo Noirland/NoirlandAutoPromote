@@ -1,6 +1,6 @@
-package me.ZephireNZ.NoirlandAutoPromote.config;
+package nz.co.noirland.noirlandautopromote.config;
 
-import me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote;
+import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 

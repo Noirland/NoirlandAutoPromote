@@ -1,12 +1,12 @@
-package me.ZephireNZ.NoirlandAutoPromote;
+package nz.co.noirland.noirlandautopromote;
 
-import me.ZephireNZ.NoirlandAutoPromote.commands.Command;
-import me.ZephireNZ.NoirlandAutoPromote.commands.CommandAgree;
-import me.ZephireNZ.NoirlandAutoPromote.config.PluginConfig;
-import me.ZephireNZ.NoirlandAutoPromote.database.Database;
-import me.ZephireNZ.NoirlandAutoPromote.tasks.SaveTimesTask;
-import me.ZephireNZ.NoirlandAutoPromote.util.Debug;
-import me.ZephireNZ.NoirlandAutoPromote.util.Util;
+import nz.co.noirland.noirlandautopromote.commands.Command;
+import nz.co.noirland.noirlandautopromote.commands.CommandAgree;
+import nz.co.noirland.noirlandautopromote.config.PluginConfig;
+import nz.co.noirland.noirlandautopromote.database.Database;
+import nz.co.noirland.noirlandautopromote.tasks.SaveTimesTask;
+import nz.co.noirland.noirlandautopromote.util.Debug;
+import nz.co.noirland.noirlandautopromote.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;

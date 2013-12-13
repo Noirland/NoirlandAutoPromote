@@ -1,9 +1,9 @@
-package me.ZephireNZ.NoirlandAutoPromote.commands;
+package nz.co.noirland.noirlandautopromote.commands;
 
-import me.ZephireNZ.NoirlandAutoPromote.GMHandler;
-import me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote;
-import me.ZephireNZ.NoirlandAutoPromote.PromotionHandler;
-import me.ZephireNZ.NoirlandAutoPromote.config.PluginConfig;
+import nz.co.noirland.noirlandautopromote.GMHandler;
+import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
+import nz.co.noirland.noirlandautopromote.PromotionHandler;
+import nz.co.noirland.noirlandautopromote.config.PluginConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

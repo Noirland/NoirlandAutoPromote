@@ -1,6 +1,6 @@
-package me.ZephireNZ.NoirlandAutoPromote.database;
+package nz.co.noirland.noirlandautopromote.database;
 
-import me.ZephireNZ.NoirlandAutoPromote.util.Debug;
+import nz.co.noirland.noirlandautopromote.util.Debug;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.PreparedStatement;

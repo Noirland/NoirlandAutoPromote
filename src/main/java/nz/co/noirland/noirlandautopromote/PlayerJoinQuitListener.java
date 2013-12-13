@@ -1,6 +1,6 @@
-package me.ZephireNZ.NoirlandAutoPromote;
+package nz.co.noirland.noirlandautopromote;
 
-import me.ZephireNZ.NoirlandAutoPromote.database.Database;
+import nz.co.noirland.noirlandautopromote.database.Database;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

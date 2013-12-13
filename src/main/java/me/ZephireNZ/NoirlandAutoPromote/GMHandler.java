@@ -1,26 +1,34 @@
 package me.ZephireNZ.NoirlandAutoPromote;
 
+import me.ZephireNZ.NoirlandAutoPromote.config.PluginConfig;
 import org.anjocaido.groupmanager.GroupManager;
 import org.anjocaido.groupmanager.data.Group;
 import org.anjocaido.groupmanager.dataholder.OverloadedWorldHolder;
 import org.anjocaido.groupmanager.permissions.AnjoPermissionsHandler;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.Map;
 
-public class GMHandler implements Listener {
+public class GMHandler {
+    private NoirlandAutoPromote plugin = NoirlandAutoPromote.inst();
 	private GroupManager gm;
-	private final ConfigHandler confHandler;
+	private PluginConfig config = PluginConfig.inst();
+    private static GMHandler inst;
 
-	public GMHandler(NoirlandAutoPromote plugin) {
+    public static GMHandler inst() {
+        if(inst == null) {
+            inst = new GMHandler();
+        }
+        return inst;
+    }
+
+	private GMHandler() {
 		final PluginManager pm = plugin.getServer().getPluginManager();
 		final Plugin GMplugin = pm.getPlugin("GroupManager");
-		confHandler = plugin.confHandler;
- 
+
 		if (GMplugin != null && GMplugin.isEnabled()) {
 			gm = (GroupManager)GMplugin;
 		}
@@ -50,7 +58,7 @@ public class GMHandler implements Listener {
 			return null;
 		}
 		if(next) {
-			String nextRank = confHandler.getPromoteTo(getGroup(player));
+			String nextRank = config.getPromoteTo(getGroup(player));
 			color = ChatColor.translateAlternateColorCodes("&".charAt(0), handler.getGroupPrefix(nextRank));
 		}else{
 			color = ChatColor.translateAlternateColorCodes("&".charAt(0), handler.getGroupPrefix(getGroup(player)));

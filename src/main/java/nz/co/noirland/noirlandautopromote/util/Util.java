@@ -11,15 +11,15 @@ import java.util.concurrent.TimeUnit;
 
 public class Util {
 
-    public static String formatTime(long millis) {
-        long hour = TimeUnit.HOURS.toMillis(1);
-        long day = hour * 24;
+    public static final long HOUR = TimeUnit.HOURS.toMillis(1);
+    public static final long DAY = TimeUnit.DAYS.toMillis(1);
 
-        if(millis < hour) {
+    public static String formatTime(long millis) {
+        if(millis < HOUR) {
             long mins = TimeUnit.MILLISECONDS.toMinutes(millis);
             return (mins + " Minutes");
         }
-        else if(millis < day) {
+        else if(millis < DAY) {
             long hours = TimeUnit.MILLISECONDS.toHours(millis);
             return (hours + " Hours");
         }

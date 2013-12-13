@@ -1,6 +1,7 @@
 package nz.co.noirland.noirlandautopromote;
 
 import nz.co.noirland.noirlandautopromote.database.Database;
+import nz.co.noirland.noirlandautopromote.tasks.PlayerPromoteTask;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,6 +23,7 @@ class PlayerJoinQuitListener implements Listener {
         PlayerTimeData data = plugin.getTimeData(player.getName());
         data.joined();
 		pmHandler.checkForPromotion(player);
+        new PlayerPromoteTask(player.getName());
     }
 	
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -31,5 +33,9 @@ class PlayerJoinQuitListener implements Listener {
         data.left();
         Database.inst().updatePlayerTimes(data.getPlayer(), data.getPlayTime(), data.getTotalPlayTime(), true);
         data.setChanged(false);
+        if(data.getPromoteTask() != null) {
+            data.getPromoteTask().cancel();
+            data.setPromoteTask(null);
+        }
 	}
 }

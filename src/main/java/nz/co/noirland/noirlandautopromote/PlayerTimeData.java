@@ -1,5 +1,7 @@
 package nz.co.noirland.noirlandautopromote;
 
+import nz.co.noirland.noirlandautopromote.tasks.PlayerPromoteTask;
+
 public class PlayerTimeData implements Comparable<PlayerTimeData> {
 
     private String player;
@@ -8,6 +10,7 @@ public class PlayerTimeData implements Comparable<PlayerTimeData> {
     private long totalPlayTime;
     private boolean changed = false;
     private boolean online = false;
+    private PlayerPromoteTask promoteTask;
 
     public PlayerTimeData(String player, long playTime, long totalPlayTime) {
         this.player = player;
@@ -61,13 +64,20 @@ public class PlayerTimeData implements Comparable<PlayerTimeData> {
         return changed;
     }
 
+    public PlayerPromoteTask getPromoteTask() {
+        return promoteTask;
+    }
+
+    public void setPromoteTask(PlayerPromoteTask promoteTask) {
+        this.promoteTask = promoteTask;
+    }
+
     public void setChanged(boolean changed) {
         this.changed = changed;
     }
 
     @Override
     public int compareTo(PlayerTimeData other) {
-//        return (int) (other.getTotalPlayTime() - getTotalPlayTime());
         if(getTotalPlayTime() > other.getTotalPlayTime()) return -1;
         if(getTotalPlayTime() < other.getTotalPlayTime()) return 1;
         return 0;

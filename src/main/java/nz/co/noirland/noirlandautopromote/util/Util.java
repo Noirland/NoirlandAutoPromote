@@ -1,7 +1,7 @@
-package me.ZephireNZ.NoirlandAutoPromote.util;
+package nz.co.noirland.noirlandautopromote.util;
 
-import me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote;
-import me.ZephireNZ.NoirlandAutoPromote.PlayerTimeData;
+import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
+import nz.co.noirland.noirlandautopromote.PlayerTimeData;
 import org.bukkit.OfflinePlayer;
 
 import java.util.Iterator;

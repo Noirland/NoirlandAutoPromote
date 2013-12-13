@@ -1,4 +1,4 @@
-package me.ZephireNZ.NoirlandAutoPromote;
+package nz.co.noirland.noirlandautopromote;
 
 public class PlayerTimeData implements Comparable<PlayerTimeData> {
 

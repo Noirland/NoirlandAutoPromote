@@ -1,7 +1,7 @@
-package me.ZephireNZ.NoirlandAutoPromote.util;
+package nz.co.noirland.noirlandautopromote.util;
 
-import me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote;
-import me.ZephireNZ.NoirlandAutoPromote.config.PluginConfig;
+import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
+import nz.co.noirland.noirlandautopromote.config.PluginConfig;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

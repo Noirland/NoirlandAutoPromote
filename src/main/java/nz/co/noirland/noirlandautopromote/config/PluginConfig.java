@@ -1,4 +1,4 @@
-package me.ZephireNZ.NoirlandAutoPromote.config;
+package nz.co.noirland.noirlandautopromote.config;
 
 import java.util.concurrent.TimeUnit;
 

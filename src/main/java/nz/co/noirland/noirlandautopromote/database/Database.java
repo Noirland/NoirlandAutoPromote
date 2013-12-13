@@ -1,9 +1,9 @@
-package me.ZephireNZ.NoirlandAutoPromote.database;
+package nz.co.noirland.noirlandautopromote.database;
 
-import me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote;
-import me.ZephireNZ.NoirlandAutoPromote.PlayerTimeData;
-import me.ZephireNZ.NoirlandAutoPromote.config.PluginConfig;
-import me.ZephireNZ.NoirlandAutoPromote.util.Debug;
+import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
+import nz.co.noirland.noirlandautopromote.PlayerTimeData;
+import nz.co.noirland.noirlandautopromote.config.PluginConfig;
+import nz.co.noirland.noirlandautopromote.util.Debug;
 
 import java.sql.*;
 import java.util.ArrayList;

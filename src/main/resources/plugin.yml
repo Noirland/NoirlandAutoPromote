@@ -1,6 +1,6 @@
 author: ZephireNZ
 database: false
-main: me.ZephireNZ.NoirlandAutoPromote.NoirlandAutoPromote
+main: nz.co.noirland.noirlandautopromote.NoirlandAutoPromote
 name: NoirlandAutoPromote
 startup: postworld
 version: ${version}

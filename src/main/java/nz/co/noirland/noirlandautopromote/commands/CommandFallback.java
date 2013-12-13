@@ -1,7 +1,7 @@
-package me.ZephireNZ.NoirlandAutoPromote.commands;
+package nz.co.noirland.noirlandautopromote.commands;
 
-import me.ZephireNZ.NoirlandAutoPromote.PlayerTimeData;
-import me.ZephireNZ.NoirlandAutoPromote.util.Util;
+import nz.co.noirland.noirlandautopromote.PlayerTimeData;
+import nz.co.noirland.noirlandautopromote.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;

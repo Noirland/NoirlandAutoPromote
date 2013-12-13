@@ -1,4 +1,4 @@
-package me.ZephireNZ.NoirlandAutoPromote.commands;
+package nz.co.noirland.noirlandautopromote.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

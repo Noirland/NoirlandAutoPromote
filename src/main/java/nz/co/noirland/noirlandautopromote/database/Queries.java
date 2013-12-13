@@ -1,4 +1,4 @@
-package me.ZephireNZ.NoirlandAutoPromote.database;
+package nz.co.noirland.noirlandautopromote.database;
 
 public class Queries {
 

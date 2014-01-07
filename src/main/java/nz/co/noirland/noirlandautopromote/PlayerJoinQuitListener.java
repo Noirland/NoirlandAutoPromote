@@ -13,6 +13,7 @@ class PlayerJoinQuitListener implements Listener {
 	
 	private final NoirlandAutoPromote plugin = NoirlandAutoPromote.inst();
     private final PromotionHandler pmHandler = PromotionHandler.inst();
+    private final Database db = Database.inst();
 
 	public PlayerJoinQuitListener() {
 	}
@@ -31,7 +32,7 @@ class PlayerJoinQuitListener implements Listener {
 		Player player = event.getPlayer();
         PlayerTimeData data = plugin.getTimeData(player.getName());
         data.left();
-        Database.inst().updatePlayerTimes(data.getPlayer(), data.getPlayTime(), data.getTotalPlayTime(), true);
+        db.updatePlayerTimes(data.getPlayer(), data.getPlayTime(), data.getTotalPlayTime(), true);
         data.setChanged(false);
         if(data.getPromoteTask() != null) {
             data.getPromoteTask().cancel();

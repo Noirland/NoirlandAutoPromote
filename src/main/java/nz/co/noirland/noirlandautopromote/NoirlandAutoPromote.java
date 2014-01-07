@@ -69,13 +69,14 @@ public class NoirlandAutoPromote extends JavaPlugin {
             }
         }
         PlayerTimeData data = new PlayerTimeData(player, 0, 0);
+        db.addPlayer(player, 0, 0);
         playerTimeData.add(data);
         return data;
     }
 
 	public void saveToDB(boolean thread) {
         for(PlayerTimeData data : getPlayerTimeData()) {
-            if(data.isOnline() || data.isChanged()) {
+            if(Util.isOnline(data.getPlayer()) || data.isChanged()) {
                 data.updatePlayTime();
                 Database.inst().updatePlayerTimes(data.getPlayer(), data.getPlayTime(), data.getTotalPlayTime(), thread);
                 data.setChanged(false);

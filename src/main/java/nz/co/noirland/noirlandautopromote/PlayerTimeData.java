@@ -1,6 +1,7 @@
 package nz.co.noirland.noirlandautopromote;
 
 import nz.co.noirland.noirlandautopromote.tasks.PlayerPromoteTask;
+import nz.co.noirland.noirlandautopromote.util.Util;
 
 public class PlayerTimeData implements Comparable<PlayerTimeData> {
 
@@ -9,23 +10,21 @@ public class PlayerTimeData implements Comparable<PlayerTimeData> {
     private long playTime;
     private long totalPlayTime;
     private boolean changed = false;
-    private boolean online = false;
     private PlayerPromoteTask promoteTask;
 
     public PlayerTimeData(String player, long playTime, long totalPlayTime) {
         this.player = player;
         this.playTime = playTime;
         this.totalPlayTime = totalPlayTime;
+        joined = System.currentTimeMillis();
     }
 
     public void joined() {
         joined = System.currentTimeMillis();
-        online = true;
     }
 
     public void left() {
         updatePlayTime();
-        online = false;
     }
 
     public void updatePlayTime() {
@@ -37,7 +36,7 @@ public class PlayerTimeData implements Comparable<PlayerTimeData> {
     }
 
     public long getPlayTime() {
-        return playTime + (online ? (System.currentTimeMillis() - joined) : 0);
+        return playTime + (Util.isOnline(player) ? (System.currentTimeMillis() - joined) : 0);
     }
 
     public void setPlayTime(long playTime) {
@@ -45,7 +44,7 @@ public class PlayerTimeData implements Comparable<PlayerTimeData> {
     }
 
     public long getTotalPlayTime() {
-        return totalPlayTime + (online ? (System.currentTimeMillis() - joined) : 0);
+        return totalPlayTime + (Util.isOnline(player) ? (System.currentTimeMillis() - joined) : 0);
     }
 
     public void setTotalPlayTime(long totalPlayTime) {
@@ -54,10 +53,6 @@ public class PlayerTimeData implements Comparable<PlayerTimeData> {
 
     public String getPlayer() {
         return player;
-    }
-
-    public boolean isOnline() {
-        return online;
     }
 
     public boolean isChanged() {

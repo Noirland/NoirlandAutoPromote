@@ -74,6 +74,14 @@ public class NoirlandAutoPromote extends JavaPlugin {
         return data;
     }
 
+    public void sortPlayerTimeData() {
+        SortedSet<PlayerTimeData> temp = new TreeSet<PlayerTimeData>();
+        for(PlayerTimeData data: playerTimeData) {
+            temp.add(data);
+        }
+        playerTimeData = temp;
+    }
+
 	public void saveToDB(boolean thread) {
         for(PlayerTimeData data : getPlayerTimeData()) {
             if(Util.isOnline(data.getPlayer()) || data.isChanged()) {

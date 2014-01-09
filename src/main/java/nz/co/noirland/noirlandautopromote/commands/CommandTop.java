@@ -18,6 +18,7 @@ class CommandTop extends Command {
 
         int low;
         int up;
+        plugin.sortPlayerTimeData();
         TreeMap<Integer, PlayerTimeData> map = Util.getSortedMap(plugin.getPlayerTimeData());
         switch(args.length) {
             case 1:

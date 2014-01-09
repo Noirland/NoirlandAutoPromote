@@ -74,9 +74,19 @@ public class Database {
             }
         } catch (SQLException e) {
             Debug.debug("Could not create statement for updating player times for " + player, e);
-            return;
         }
+    }
 
+    public void addPlayer(String player, long playTime, long totalPlayTime) {
+        PreparedStatement statement = prepareStatement(Queries.ADD_PLAYER);
+        try {
+            statement.setString(1, player);
+            statement.setLong(2, playTime);
+            statement.setLong(3, totalPlayTime);
+            runStatementAsync(statement);
+        }catch (SQLException e) {
+            Debug.debug("Could not create statement for creating entry for " + player, e);
+        }
     }
 
     // -- DATABASE FUNCTIONS -- //

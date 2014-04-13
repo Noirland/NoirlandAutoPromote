@@ -3,7 +3,7 @@ package nz.co.noirland.noirlandautopromote.database;
 import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
 import nz.co.noirland.noirlandautopromote.PlayerTimeData;
 import nz.co.noirland.noirlandautopromote.config.PluginConfig;
-import nz.co.noirland.noirlandautopromote.util.Debug;
+import nz.co.noirland.noirlandautopromote.database.schema.Schema;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class Database {
 
     private static Database inst;
-    private NoirlandAutoPromote plugin = NoirlandAutoPromote.inst();
     private Connection con;
 
     public static Database inst() {
@@ -23,18 +22,7 @@ public class Database {
 
     private Database() {
         open();
-        createDatabase();
-    }
-
-    private void createDatabase() {
-
-        try {
-            PreparedStatement statement = prepareStatement(Queries.CREATE_TABLE);
-            statement.execute();
-        } catch (SQLException e) {
-            plugin.disable("Could not create/check main table!", e);
-        }
-
+        new AsyncDatabaseUpdateTask().runTaskTimerAsynchronously(NoirlandAutoPromote.inst(), 0, 2);
     }
 
     public ArrayList<PlayerTimeData> getTimeData() {
@@ -52,9 +40,9 @@ public class Database {
                 times.add(new PlayerTimeData(player, playTime, totalPlayTime));
             }
             res.close();
-            Debug.debug("Found " + times.size() + " time entries.");
+            NoirlandAutoPromote.debug().debug("Found " + times.size() + " time entries.");
         } catch (SQLException e) {
-            plugin.disable("Couldn't get play times!", e);
+            NoirlandAutoPromote.debug().disable("Couldn't get play times!", e);
             return null;
         }
         return times;
@@ -73,7 +61,7 @@ public class Database {
                 statement.execute();
             }
         } catch (SQLException e) {
-            Debug.debug("Could not create statement for updating player times for " + player, e);
+            NoirlandAutoPromote.debug().debug("Could not create statement for updating player times for " + player, e);
         }
     }
 
@@ -85,7 +73,16 @@ public class Database {
             statement.setLong(3, totalPlayTime);
             runStatementAsync(statement);
         }catch (SQLException e) {
-            Debug.debug("Could not create statement for creating entry for " + player, e);
+            NoirlandAutoPromote.debug().debug("Could not create statement for creating entry for " + player, e);
+        }
+    }
+
+    public boolean isTable(String table) {
+        try {
+            prepareStatement("SELECT * FROM " + table).execute();
+            return true; // Result can never be null, bad logic from earlier versions.
+        } catch (SQLException e) {
+            return false; // Query failed, table does not exist.
         }
     }
 
@@ -98,13 +95,45 @@ public class Database {
             }
             return con.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
         } catch (SQLException e) {
-            plugin.disable("Could not create statement for database!", e);
+            NoirlandAutoPromote.debug().disable("Could not create statement for database!", e);
             return null;
         }
     }
 
+    public void checkSchema() {
+        int version = getSchema();
+        int latest = Schema.getCurrentSchema();
+        if(version == latest) {
+            return;
+        }
+        if(version > latest) {
+            NoirlandAutoPromote.debug().disable("Database schema is newer than this plugin version!");
+        }
+
+        for(int i = version + 1; i <= latest; i++) {
+            Schema.getSchema(i).updateDatabase();
+        }
+
+    }
+
+    private int getSchema() {
+        try {
+            if(isTable(DatabaseTables.SCHEMA.toString())) {
+                ResultSet res = con.prepareStatement(Queries.GET_SCHEMA).executeQuery();
+                res.first();
+                return res.getInt("version");
+            }else{
+                // SCHEMA table does not exist, tables not set up
+                return 0;
+            }
+        } catch (SQLException e) {
+            NoirlandAutoPromote.debug().disable("Could not get database schema!", e);
+            return 0;
+        }
+    }
+
     public void runStatementAsync(PreparedStatement statement) {
-        new AsyncStatementTask(statement).runTaskAsynchronously(plugin);
+        AsyncDatabaseUpdateTask.updates.add(statement);
     }
 
     public void open() {
@@ -113,7 +142,7 @@ public class Database {
         try {
             con = DriverManager.getConnection(url, config.getUsername(), config.getPassword());
         } catch (SQLException e) {
-            plugin.disable("Couldn't connect to database!", e);
+            NoirlandAutoPromote.debug().disable("Couldn't connect to database!", e);
         }
     }
 
@@ -121,7 +150,7 @@ public class Database {
         try {
             con.close();
         } catch (SQLException e) {
-            Debug.debug("Couldn't close connection to database.", e);
+            NoirlandAutoPromote.debug().debug("Couldn't close connection to database.", e);
         }
     }
 
@@ -132,7 +161,7 @@ public class Database {
             rs.last();
             return rs.getRow();
         } catch (SQLException e) {
-            Debug.debug("Could not get number of rows of result set!", e);
+            NoirlandAutoPromote.debug().debug("Could not get number of rows of result set!", e);
             return -1;
         }
     }

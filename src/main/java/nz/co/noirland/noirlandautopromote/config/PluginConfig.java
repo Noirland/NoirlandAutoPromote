@@ -23,6 +23,7 @@ public class PluginConfig extends Config {
     public String  getPassword() { return config.getString("mysql.password"); }
     public int     getPort()     { return config.getInt   ("mysql.port", 3306); }
     public String  getHost()     { return config.getString("mysql.host", "localhost"); }
+    public String  getPrefix()   { return config.getString("mysql.prefix", "promote_"); }
 
     public boolean getDebug()    { return config.getBoolean("noirstore.debug", false);}
 

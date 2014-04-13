@@ -5,8 +5,8 @@ import nz.co.noirland.noirlandautopromote.commands.CommandAgree;
 import nz.co.noirland.noirlandautopromote.config.PluginConfig;
 import nz.co.noirland.noirlandautopromote.database.Database;
 import nz.co.noirland.noirlandautopromote.tasks.SaveTimesTask;
-import nz.co.noirland.noirlandautopromote.util.Debug;
 import nz.co.noirland.noirlandautopromote.util.Util;
+import nz.co.noirland.zephcore.Debug;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -22,6 +22,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
     private PluginConfig config;
     private BukkitTask saveTimesTask;
     private static NoirlandAutoPromote inst;
+    private static Debug debug;
 
     private SortedSet<PlayerTimeData> playerTimeData = new TreeSet<PlayerTimeData>();
 
@@ -29,13 +30,17 @@ public class NoirlandAutoPromote extends JavaPlugin {
         return inst;
     }
 
+    public static Debug debug() { return debug; }
+
 
     @Override
 	public void onEnable() {
         inst = this;
-
         config = PluginConfig.inst();
+        debug = new Debug(this, config.getDebug());
+
         db = Database.inst();
+        db.checkSchema();
 
         playerTimeData.addAll(db.getTimeData());
 
@@ -100,12 +105,6 @@ public class NoirlandAutoPromote extends JavaPlugin {
         startSaveTimes();
 	}
 
-	public void debug(String message) {
-		if(config.getDebug()) {
-			getLogger().info("[DEBUG] " + message);
-		}
-	}
-
 	public void sendMessage(CommandSender sender, String msg, Boolean prefix) {
         if(prefix) {
             msg = ChatColor.RED + "[NoirPromote] " + ChatColor.RESET + msg;
@@ -121,25 +120,6 @@ public class NoirlandAutoPromote extends JavaPlugin {
             saveTimesTask.cancel();
         }
         saveTimesTask = new SaveTimesTask().runTaskTimer(this, config.getSaveTimeSeconds() * 20L, config.getSaveTimeSeconds() * 20L);
-    }
-
-    /**
-     * Disable plugin and show a severe message
-     * @param error message to be shown
-     */
-    public void disable(String error) {
-        getLogger().severe(error);
-        getPluginLoader().disablePlugin(this);
-    }
-
-    /**
-     * Disable plugin with severe message and stack trace if debug is enabled.
-     * @param error message to be shown
-     * @param e execption to be shown
-     */
-    public void disable(String error, Throwable e) {
-        Debug.debug(e);
-        disable(error);
     }
 }
 

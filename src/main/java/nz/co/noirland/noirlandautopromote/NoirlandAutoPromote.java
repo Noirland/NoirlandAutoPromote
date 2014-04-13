@@ -5,8 +5,8 @@ import nz.co.noirland.noirlandautopromote.commands.CommandAgree;
 import nz.co.noirland.noirlandautopromote.config.PluginConfig;
 import nz.co.noirland.noirlandautopromote.database.Database;
 import nz.co.noirland.noirlandautopromote.tasks.SaveTimesTask;
-import nz.co.noirland.noirlandautopromote.util.Util;
 import nz.co.noirland.zephcore.Debug;
+import nz.co.noirland.zephcore.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -15,6 +15,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.UUID;
 
 public class NoirlandAutoPromote extends JavaPlugin {
 
@@ -45,7 +46,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
         playerTimeData.addAll(db.getTimeData());
 
 		for(PlayerTimeData data : playerTimeData) {
-			if(Util.isOnline(data.getPlayer())) {
+			if(Util.player(data.getPlayer()).isOnline()) {
                 data.joined();
             }
 		}
@@ -67,9 +68,9 @@ public class NoirlandAutoPromote extends JavaPlugin {
         return playerTimeData;
     }
 
-    public PlayerTimeData getTimeData(String player) {
+    public PlayerTimeData getTimeData(UUID player) {
         for(PlayerTimeData data : playerTimeData) {
-            if(data.getPlayer().equalsIgnoreCase(player)) {
+            if(data.getPlayer().equals(player)) {
                 return data;
             }
         }
@@ -89,7 +90,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 
 	public void saveToDB(boolean thread) {
         for(PlayerTimeData data : getPlayerTimeData()) {
-            if(Util.isOnline(data.getPlayer()) || data.isChanged()) {
+            if(Util.player(data.getPlayer()).isOnline() || data.isChanged()) {
                 data.updatePlayTime();
                 Database.inst().updatePlayerTimes(data.getPlayer(), data.getPlayTime(), data.getTotalPlayTime(), thread);
                 data.setChanged(false);

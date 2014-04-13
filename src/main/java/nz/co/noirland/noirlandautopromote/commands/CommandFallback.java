@@ -1,7 +1,7 @@
 package nz.co.noirland.noirlandautopromote.commands;
 
 import nz.co.noirland.noirlandautopromote.PlayerTimeData;
-import nz.co.noirland.noirlandautopromote.util.Util;
+import nz.co.noirland.zephcore.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -41,13 +41,13 @@ class CommandFallback extends Command {
     }
 
     void promoteInfo(CommandSender sender, String player) {
-        OfflinePlayer oPlayer = plugin.getServer().getOfflinePlayer(player);
+        OfflinePlayer oPlayer = Util.player(player);
         if(!oPlayer.hasPlayedBefore() && !oPlayer.isOnline()) {
             plugin.sendMessage(sender, "That player has not played on this server.", true);
             return;
         }
         Player p = oPlayer.getPlayer();
-        PlayerTimeData data = plugin.getTimeData(player);
+        PlayerTimeData data = plugin.getTimeData(oPlayer.getUniqueId());
         if(p != null) {
             pmHandler.checkForPromotion(p);
         }

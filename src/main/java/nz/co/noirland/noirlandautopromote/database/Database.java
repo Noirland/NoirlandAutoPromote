@@ -7,6 +7,7 @@ import nz.co.noirland.noirlandautopromote.database.schema.Schema;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Database {
 
@@ -34,7 +35,7 @@ public class Database {
         try {
             res = statement.executeQuery();
             while(res.next()) {
-                String player = res.getString("player");
+                UUID player = UUID.fromString(res.getString("player"));
                 long playTime = res.getLong("playTime");
                 long totalPlayTime = res.getLong("totalPlayTime");
                 times.add(new PlayerTimeData(player, playTime, totalPlayTime));
@@ -48,13 +49,13 @@ public class Database {
         return times;
     }
 
-    public void updatePlayerTimes(String player, long playTime, long totalPlayTime, boolean thread) {
+    public void updatePlayerTimes(UUID player, long playTime, long totalPlayTime, boolean thread) {
 
         PreparedStatement statement = prepareStatement(Queries.UPDATE_PLAY_TIMES);
         try {
             statement.setLong(1, playTime);
             statement.setLong(2, totalPlayTime);
-            statement.setString(3, player);
+            statement.setString(3, player.toString());
             if(thread) {
                 runStatementAsync(statement);
             }else{
@@ -65,10 +66,10 @@ public class Database {
         }
     }
 
-    public void addPlayer(String player, long playTime, long totalPlayTime) {
+    public void addPlayer(UUID player, long playTime, long totalPlayTime) {
         PreparedStatement statement = prepareStatement(Queries.ADD_PLAYER);
         try {
-            statement.setString(1, player);
+            statement.setString(1, player.toString());
             statement.setLong(2, playTime);
             statement.setLong(3, totalPlayTime);
             runStatementAsync(statement);

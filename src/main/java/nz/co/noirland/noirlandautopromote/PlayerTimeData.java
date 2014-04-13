@@ -1,18 +1,20 @@
 package nz.co.noirland.noirlandautopromote;
 
 import nz.co.noirland.noirlandautopromote.tasks.PlayerPromoteTask;
-import nz.co.noirland.noirlandautopromote.util.Util;
+import nz.co.noirland.zephcore.Util;
+
+import java.util.UUID;
 
 public class PlayerTimeData implements Comparable<PlayerTimeData> {
 
-    private String player;
+    private UUID player;
     private long joined;
     private long playTime;
     private long totalPlayTime;
     private boolean changed = false;
     private PlayerPromoteTask promoteTask;
 
-    public PlayerTimeData(String player, long playTime, long totalPlayTime) {
+    public PlayerTimeData(UUID player, long playTime, long totalPlayTime) {
         this.player = player;
         this.playTime = playTime;
         this.totalPlayTime = totalPlayTime;
@@ -36,7 +38,7 @@ public class PlayerTimeData implements Comparable<PlayerTimeData> {
     }
 
     public long getPlayTime() {
-        return playTime + (Util.isOnline(player) ? (System.currentTimeMillis() - joined) : 0);
+        return playTime + (Util.player(player).isOnline() ? (System.currentTimeMillis() - joined) : 0);
     }
 
     public void setPlayTime(long playTime) {
@@ -44,14 +46,14 @@ public class PlayerTimeData implements Comparable<PlayerTimeData> {
     }
 
     public long getTotalPlayTime() {
-        return totalPlayTime + (Util.isOnline(player) ? (System.currentTimeMillis() - joined) : 0);
+        return totalPlayTime + (Util.player(player).isOnline() ? (System.currentTimeMillis() - joined) : 0);
     }
 
     public void setTotalPlayTime(long totalPlayTime) {
         this.totalPlayTime = totalPlayTime;
     }
 
-    public String getPlayer() {
+    public UUID getPlayer() {
         return player;
     }
 

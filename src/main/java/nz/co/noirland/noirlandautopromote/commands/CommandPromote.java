@@ -1,5 +1,6 @@
 package nz.co.noirland.noirlandautopromote.commands;
 
+import nz.co.noirland.zephcore.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -19,9 +20,9 @@ class CommandPromote extends Command {
                 printHelp(sender, "promote");
                 return false;
             case 2:
-                oPlayer = plugin.getServer().getOfflinePlayer(args[1]);
-                player = oPlayer.getPlayer();
-                if(player != null) {
+                oPlayer = Util.player(args[1]);
+                if(oPlayer.isOnline()) {
+                    player = oPlayer.getPlayer();
                     String rank = gmHandler.getGroup(player);
                     if (config.getNoPromote(rank)) {
                         plugin.sendMessage(sender, player.getName() + " cannot be promoted further.", true);
@@ -38,7 +39,7 @@ class CommandPromote extends Command {
                     return false;
                 }
             case 3:
-                oPlayer = plugin.getServer().getOfflinePlayer(args[1]);
+                oPlayer = Util.player(args[1]);
                 player = oPlayer.getPlayer();
                 if (player == null) {
                     printHelp(sender, "promote");

@@ -4,6 +4,7 @@ import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
 import nz.co.noirland.noirlandautopromote.PlayerTimeData;
 import nz.co.noirland.noirlandautopromote.config.PluginConfig;
 import nz.co.noirland.noirlandautopromote.database.schema.Schema;
+import nz.co.noirland.zephcore.database.AsyncDatabaseUpdateTask;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,7 +24,6 @@ public class Database {
 
     private Database() {
         open();
-        new AsyncDatabaseUpdateTask().runTaskTimerAsynchronously(NoirlandAutoPromote.inst(), 0, 2);
     }
 
     public ArrayList<PlayerTimeData> getTimeData() {

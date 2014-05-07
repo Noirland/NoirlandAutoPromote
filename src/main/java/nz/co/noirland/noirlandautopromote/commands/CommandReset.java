@@ -1,6 +1,7 @@
 package nz.co.noirland.noirlandautopromote.commands;
 
 import nz.co.noirland.noirlandautopromote.PlayerTimeData;
+import nz.co.noirland.zephcore.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -23,8 +24,8 @@ class CommandReset extends Command {
                 printHelp(sender, "reset");
                 return false;
             case 2:
-                oPlayer = plugin.getServer().getOfflinePlayer(args[1]);
-                data = plugin.getTimeData(oPlayer.getName());
+                oPlayer = Util.player(args[1]);
+                data = plugin.getTimeData(oPlayer.getUniqueId());
                 data.setPlayTime(0);
                 plugin.sendMessage(sender, oPlayer.getName() + "'s play time was reset.", true);
                 return true;
@@ -36,8 +37,8 @@ class CommandReset extends Command {
                     printHelp(sender, "reset");
                     return false;
                 }
-                oPlayer = plugin.getServer().getOfflinePlayer(args[1]);
-                data = plugin.getTimeData(oPlayer.getName());
+                oPlayer = Util.player(args[1]);
+                data = plugin.getTimeData(oPlayer.getUniqueId());
                 data.setPlayTime(TimeUnit.MILLISECONDS.convert(hours, TimeUnit.HOURS));
                 plugin.sendMessage(sender, oPlayer.getName() + "'s play time was reset to " + hours + " hours.", true);
                 return true;

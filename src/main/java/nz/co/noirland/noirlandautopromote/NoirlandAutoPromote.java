@@ -5,8 +5,8 @@ import nz.co.noirland.noirlandautopromote.commands.CommandAgree;
 import nz.co.noirland.noirlandautopromote.config.PluginConfig;
 import nz.co.noirland.noirlandautopromote.database.Database;
 import nz.co.noirland.noirlandautopromote.tasks.SaveTimesTask;
-import nz.co.noirland.noirlandautopromote.util.Debug;
-import nz.co.noirland.noirlandautopromote.util.Util;
+import nz.co.noirland.zephcore.Debug;
+import nz.co.noirland.zephcore.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -15,6 +15,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.UUID;
 
 public class NoirlandAutoPromote extends JavaPlugin {
 
@@ -22,6 +23,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
     private PluginConfig config;
     private BukkitTask saveTimesTask;
     private static NoirlandAutoPromote inst;
+    private static Debug debug;
 
     private SortedSet<PlayerTimeData> playerTimeData = new TreeSet<PlayerTimeData>();
 
@@ -29,18 +31,22 @@ public class NoirlandAutoPromote extends JavaPlugin {
         return inst;
     }
 
+    public static Debug debug() { return debug; }
+
 
     @Override
 	public void onEnable() {
         inst = this;
-
         config = PluginConfig.inst();
+        debug = new Debug(this);
+
         db = Database.inst();
+        db.checkSchema();
 
         playerTimeData.addAll(db.getTimeData());
 
 		for(PlayerTimeData data : playerTimeData) {
-			if(Util.isOnline(data.getPlayer())) {
+			if(Util.player(data.getPlayer()).isOnline()) {
                 data.joined();
             }
 		}
@@ -62,9 +68,9 @@ public class NoirlandAutoPromote extends JavaPlugin {
         return playerTimeData;
     }
 
-    public PlayerTimeData getTimeData(String player) {
+    public PlayerTimeData getTimeData(UUID player) {
         for(PlayerTimeData data : playerTimeData) {
-            if(data.getPlayer().equalsIgnoreCase(player)) {
+            if(data.getPlayer().equals(player)) {
                 return data;
             }
         }
@@ -84,7 +90,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 
 	public void saveToDB(boolean thread) {
         for(PlayerTimeData data : getPlayerTimeData()) {
-            if(Util.isOnline(data.getPlayer()) || data.isChanged()) {
+            if(Util.player(data.getPlayer()).isOnline() || data.isChanged()) {
                 data.updatePlayTime();
                 Database.inst().updatePlayerTimes(data.getPlayer(), data.getPlayTime(), data.getTotalPlayTime(), thread);
                 data.setChanged(false);
@@ -98,12 +104,6 @@ public class NoirlandAutoPromote extends JavaPlugin {
         db.open();
         config.loadFile();
         startSaveTimes();
-	}
-
-	public void debug(String message) {
-		if(config.getDebug()) {
-			getLogger().info("[DEBUG] " + message);
-		}
 	}
 
 	public void sendMessage(CommandSender sender, String msg, Boolean prefix) {
@@ -121,25 +121,6 @@ public class NoirlandAutoPromote extends JavaPlugin {
             saveTimesTask.cancel();
         }
         saveTimesTask = new SaveTimesTask().runTaskTimer(this, config.getSaveTimeSeconds() * 20L, config.getSaveTimeSeconds() * 20L);
-    }
-
-    /**
-     * Disable plugin and show a severe message
-     * @param error message to be shown
-     */
-    public void disable(String error) {
-        getLogger().severe(error);
-        getPluginLoader().disablePlugin(this);
-    }
-
-    /**
-     * Disable plugin with severe message and stack trace if debug is enabled.
-     * @param error message to be shown
-     * @param e execption to be shown
-     */
-    public void disable(String error, Throwable e) {
-        Debug.debug(e);
-        disable(error);
     }
 }
 

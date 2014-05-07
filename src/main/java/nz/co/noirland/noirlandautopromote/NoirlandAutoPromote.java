@@ -38,7 +38,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 	public void onEnable() {
         inst = this;
         config = PluginConfig.inst();
-        debug = new Debug(this, config.getDebug());
+        debug = new Debug(this);
 
         db = Database.inst();
         db.checkSchema();

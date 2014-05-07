@@ -4,7 +4,7 @@ main: nz.co.noirland.noirlandautopromote.NoirlandAutoPromote
 name: NoirlandAutoPromote
 startup: postworld
 version: ${version}
-depend: [GroupManager]
+depend: [GroupManager, ZephCore]
 commands:
     autopromote:
       aliases: [noirpromote]

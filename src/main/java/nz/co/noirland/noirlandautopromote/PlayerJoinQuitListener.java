@@ -21,16 +21,16 @@ class PlayerJoinQuitListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-        PlayerTimeData data = plugin.getTimeData(player.getName());
+        PlayerTimeData data = plugin.getTimeData(player.getUniqueId());
         data.joined();
 		pmHandler.checkForPromotion(player);
-        new PlayerPromoteTask(player.getName());
+        new PlayerPromoteTask(player.getUniqueId());
     }
 	
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
-        PlayerTimeData data = plugin.getTimeData(player.getName());
+        PlayerTimeData data = plugin.getTimeData(player.getUniqueId());
         data.left();
         db.updatePlayerTimes(data.getPlayer(), data.getPlayTime(), data.getTotalPlayTime(), true);
         data.setChanged(false);

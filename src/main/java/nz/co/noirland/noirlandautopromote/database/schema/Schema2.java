@@ -43,6 +43,10 @@ public class Schema2 extends Schema {
 
             Map<String, UUID> uuids = UUIDFetcher.getUUIDs(names);
             for(Map.Entry<String, UUID> entry : uuids.entrySet()) {
+                if(entry.getValue() == null) {
+                    db.prepareStatement("DELETE FROM `promote_times` WHERE player='" + entry.getKey() + "';").execute();
+                    continue;
+                }
                 PreparedStatement s = db.prepareStatement("UPDATE " + DatabaseTables.TIMES.toString() + " SET player=? WHERE player=?");
                 s.setString(1, entry.getValue().toString());
                 s.setString(2, entry.getKey());

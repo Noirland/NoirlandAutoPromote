@@ -75,7 +75,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
             }
         }
         PlayerTimeData data = new PlayerTimeData(player, 0, 0);
-        db.addPlayer(player, 0, 0);
+        db.updatePlayerTimes(player, 0, 0, true);
         playerTimeData.add(data);
         return data;
     }

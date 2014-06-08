@@ -53,9 +53,9 @@ public class Database {
 
         PreparedStatement statement = prepareStatement(Queries.UPDATE_PLAY_TIMES);
         try {
-            statement.setLong(1, playTime);
-            statement.setLong(2, totalPlayTime);
-            statement.setString(3, player.toString());
+            statement.setString(1, player.toString());
+            statement.setLong(2, playTime);
+            statement.setLong(3, totalPlayTime);
             if(thread) {
                 runStatementAsync(statement);
             }else{
@@ -63,18 +63,6 @@ public class Database {
             }
         } catch (SQLException e) {
             NoirlandAutoPromote.debug().debug("Could not create statement for updating player times for " + player, e);
-        }
-    }
-
-    public void addPlayer(UUID player, long playTime, long totalPlayTime) {
-        PreparedStatement statement = prepareStatement(Queries.ADD_PLAYER);
-        try {
-            statement.setString(1, player.toString());
-            statement.setLong(2, playTime);
-            statement.setLong(3, totalPlayTime);
-            runStatementAsync(statement);
-        }catch (SQLException e) {
-            NoirlandAutoPromote.debug().debug("Could not create statement for creating entry for " + player, e);
         }
     }
 

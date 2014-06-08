@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public class PlayerTimeData implements Comparable<PlayerTimeData> {
 
-    private UUID player;
+    private final UUID player;
     private long joined;
     private long playTime;
     private long totalPlayTime;

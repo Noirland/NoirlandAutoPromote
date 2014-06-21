@@ -5,15 +5,14 @@ import org.anjocaido.groupmanager.GroupManager;
 import org.anjocaido.groupmanager.data.Group;
 import org.anjocaido.groupmanager.dataholder.OverloadedWorldHolder;
 import org.anjocaido.groupmanager.permissions.AnjoPermissionsHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 
 import java.util.Map;
 
 public class GMHandler {
-    private NoirlandAutoPromote plugin = NoirlandAutoPromote.inst();
 	private GroupManager gm;
 	private PluginConfig config = PluginConfig.inst();
     private static GMHandler inst;
@@ -26,8 +25,7 @@ public class GMHandler {
     }
 
 	private GMHandler() {
-		final PluginManager pm = plugin.getServer().getPluginManager();
-		final Plugin GMplugin = pm.getPlugin("GroupManager");
+		final Plugin GMplugin = Bukkit.getPluginManager().getPlugin("GroupManager");
 
 		if (GMplugin != null && GMplugin.isEnabled()) {
 			gm = (GroupManager)GMplugin;

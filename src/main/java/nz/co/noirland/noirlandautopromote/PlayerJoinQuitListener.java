@@ -32,8 +32,7 @@ class PlayerJoinQuitListener implements Listener {
 		Player player = event.getPlayer();
         PlayerTimeData data = plugin.getTimeData(player.getUniqueId());
         data.left();
-        db.updatePlayerTimes(data.getPlayer(), data.getPlayTime(), data.getTotalPlayTime(), true);
-        data.setChanged(false);
+        db.updatePlayerTimes(data, true);
         if(data.getPromoteTask() != null) {
             data.getPromoteTask().cancel();
             data.setPromoteTask(null);

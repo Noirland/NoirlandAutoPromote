@@ -75,7 +75,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
             }
         }
         PlayerTimeData data = new PlayerTimeData(player, 0, 0);
-        db.updatePlayerTimes(player, 0, 0, true);
+        db.updatePlayerTimes(data, true);
         playerTimeData.add(data);
         return data;
     }
@@ -90,10 +90,8 @@ public class NoirlandAutoPromote extends JavaPlugin {
 
 	public void saveToDB(boolean thread) {
         for(PlayerTimeData data : getPlayerTimeData()) {
-            if(Util.player(data.getPlayer()).isOnline() || data.isChanged()) {
-                data.updatePlayTime();
-                Database.inst().updatePlayerTimes(data.getPlayer(), data.getPlayTime(), data.getTotalPlayTime(), thread);
-                data.setChanged(false);
+            if(data.hasChanged()) {
+                Database.inst().updatePlayerTimes(data, thread);
             }
         }
 	}

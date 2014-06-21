@@ -49,20 +49,19 @@ public class Database {
         return times;
     }
 
-    public void updatePlayerTimes(UUID player, long playTime, long totalPlayTime, boolean thread) {
-
+    public void updatePlayerTimes(PlayerTimeData data, boolean thread) {
         PreparedStatement statement = prepareStatement(Queries.UPDATE_PLAY_TIMES);
         try {
-            statement.setString(1, player.toString());
-            statement.setLong(2, playTime);
-            statement.setLong(3, totalPlayTime);
+            statement.setString(1, data.getPlayer().toString());
+            statement.setLong(2, data.getPlayTime());
+            statement.setLong(3, data.getTotalPlayTime());
             if(thread) {
                 runStatementAsync(statement);
             }else{
                 statement.execute();
             }
         } catch (SQLException e) {
-            NoirlandAutoPromote.debug().debug("Could not create statement for updating player times for " + player, e);
+            NoirlandAutoPromote.debug().debug("Could not create statement for updating player times for " + data.getPlayer().toString(), e);
         }
     }
 

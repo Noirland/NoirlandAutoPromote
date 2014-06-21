@@ -30,7 +30,7 @@ public class PlayerTimeData implements Comparable<PlayerTimeData> {
     }
 
     public boolean hasChanged() {
-        return playTime == getPlayTime() && totalPlayTime == getTotalPlayTime();
+        return playTime != getPlayTime() || totalPlayTime != getTotalPlayTime();
     }
 
     public long getPlayTime() {

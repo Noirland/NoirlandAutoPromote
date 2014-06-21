@@ -26,9 +26,9 @@ public class PlayerPromoteTask extends BukkitRunnable {
             return;
         }
         NoirlandAutoPromote plugin = NoirlandAutoPromote.inst();
-        Player p = plugin.getServer().getPlayer(player);
+        Player p = Util.player(player).getPlayer();
         this.data = plugin.getTimeData(player);
-        String group = gmHandler.getGroup(nz.co.noirland.zephcore.Util.player(player).getName());
+        String group = gmHandler.getGroup(Util.player(player).getName());
         long needed = config.getPlayTimeNeededMillis(group);
         long left = needed - data.getPlayTime();
         if(left <= 0) {

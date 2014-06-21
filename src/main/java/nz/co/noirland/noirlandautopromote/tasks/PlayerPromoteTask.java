@@ -6,6 +6,7 @@ import nz.co.noirland.noirlandautopromote.PlayerTimeData;
 import nz.co.noirland.noirlandautopromote.PromotionHandler;
 import nz.co.noirland.noirlandautopromote.config.PluginConfig;
 import nz.co.noirland.zephcore.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 
 public class PlayerPromoteTask extends BukkitRunnable {
 
-    private final NoirlandAutoPromote plugin = NoirlandAutoPromote.inst();
     private final PromotionHandler pmHandler = PromotionHandler.inst();
     private final GMHandler gmHandler = GMHandler.inst();
     private final PluginConfig config = PluginConfig.inst();
@@ -25,6 +25,7 @@ public class PlayerPromoteTask extends BukkitRunnable {
         if(!Util.player(player).isOnline()) {
             return;
         }
+        NoirlandAutoPromote plugin = NoirlandAutoPromote.inst();
         Player p = plugin.getServer().getPlayer(player);
         this.data = plugin.getTimeData(player);
         String group = gmHandler.getGroup(nz.co.noirland.zephcore.Util.player(player).getName());
@@ -44,7 +45,7 @@ public class PlayerPromoteTask extends BukkitRunnable {
     @Override
     public void run() {
         if(!Util.player(data.getPlayer()).isOnline()) return;
-        Player player = plugin.getServer().getPlayer(data.getPlayer());
+        Player player = Bukkit.getPlayer(data.getPlayer());
         String group = gmHandler.getGroup(Util.player(data.getPlayer()).getName());
         long needed = config.getPlayTimeNeededMillis(group);
         long left = needed - data.getPlayTime();

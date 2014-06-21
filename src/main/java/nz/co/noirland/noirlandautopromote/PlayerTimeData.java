@@ -1,44 +1,40 @@
 package nz.co.noirland.noirlandautopromote;
 
 import nz.co.noirland.noirlandautopromote.tasks.PlayerPromoteTask;
-import nz.co.noirland.zephcore.Util;
 
 import java.util.UUID;
 
 public class PlayerTimeData implements Comparable<PlayerTimeData> {
 
     private final UUID player;
-    private long joined;
+    private Long join;
     private long playTime;
     private long totalPlayTime;
-    private boolean changed = false;
     private PlayerPromoteTask promoteTask;
 
     public PlayerTimeData(UUID player, long playTime, long totalPlayTime) {
         this.player = player;
         this.playTime = playTime;
         this.totalPlayTime = totalPlayTime;
-        joined = System.currentTimeMillis();
+        join = null;
     }
 
     public void joined() {
-        joined = System.currentTimeMillis();
+        join = System.currentTimeMillis();
     }
 
     public void left() {
-        updatePlayTime();
+        playTime = getPlayTime();
+        totalPlayTime = getTotalPlayTime();
+        join = null;
     }
 
-    public void updatePlayTime() {
-        long time = System.currentTimeMillis();
-        playTime += time - joined;
-        totalPlayTime += time - joined;
-        joined = time;
-        changed = true;
+    public boolean hasChanged() {
+        return playTime == getPlayTime() && totalPlayTime == getTotalPlayTime();
     }
 
     public long getPlayTime() {
-        return playTime + (Util.player(player).isOnline() ? (System.currentTimeMillis() - joined) : 0);
+        return playTime + (join != null ? (System.currentTimeMillis() - join) : 0);
     }
 
     public void setPlayTime(long playTime) {
@@ -46,7 +42,7 @@ public class PlayerTimeData implements Comparable<PlayerTimeData> {
     }
 
     public long getTotalPlayTime() {
-        return totalPlayTime + (Util.player(player).isOnline() ? (System.currentTimeMillis() - joined) : 0);
+        return totalPlayTime + (join != null ? (System.currentTimeMillis() - join) : 0);
     }
 
     public void setTotalPlayTime(long totalPlayTime) {
@@ -57,20 +53,12 @@ public class PlayerTimeData implements Comparable<PlayerTimeData> {
         return player;
     }
 
-    public boolean isChanged() {
-        return changed;
-    }
-
     public PlayerPromoteTask getPromoteTask() {
         return promoteTask;
     }
 
     public void setPromoteTask(PlayerPromoteTask promoteTask) {
         this.promoteTask = promoteTask;
-    }
-
-    public void setChanged(boolean changed) {
-        this.changed = changed;
     }
 
     @Override

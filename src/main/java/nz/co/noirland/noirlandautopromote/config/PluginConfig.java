@@ -25,8 +25,6 @@ public class PluginConfig extends Config {
     public String  getHost()     { return config.getString("mysql.host", "localhost"); }
     public String  getPrefix()   { return config.getString("mysql.prefix", "promote_"); }
 
-    public boolean getDebug()    { return config.getBoolean("noirstore.debug", false);}
-
     public String getPromoteTo(String rank)  { return config.getString("ranks." + rank.toLowerCase() + ".promoteTo"); }
     public boolean getNoPromote(String rank) { return config.getBoolean("ranks." + rank.toLowerCase() + ".noPromote"); }
     public long getSaveTimeSeconds() { return TimeUnit.SECONDS.convert(config.getInt("settings.saveTime"),TimeUnit.MINUTES); }

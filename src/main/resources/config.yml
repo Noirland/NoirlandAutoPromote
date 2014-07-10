@@ -18,5 +18,5 @@ defaultPromote:
 
 settings:
   saveTime: 10
-  sortTime 5
+  sortTime: 5
   debug: false

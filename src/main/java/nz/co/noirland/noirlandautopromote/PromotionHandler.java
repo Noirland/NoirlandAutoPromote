@@ -1,14 +1,9 @@
 package nz.co.noirland.noirlandautopromote;
 
 import nz.co.noirland.noirlandautopromote.config.PluginConfig;
-import nz.co.noirland.zephcore.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.NavigableMap;
 
 public class PromotionHandler {
 
@@ -46,20 +41,5 @@ public class PromotionHandler {
         if(!config.getNoPromote(currRank) && data.getPlayTime() >= config.getPlayTimeNeededMillis(currRank)) { // Only promote those without noPromote
             promote(null, player, config.getPromoteTo(gmHandler.getGroup(player)));
         }
-    }
-
-    public ArrayList<String> createRankedPlayerList(NavigableMap<Integer, PlayerTimeData> page) {
-        ArrayList<String> ret = new ArrayList<String>();
-        for(Map.Entry<Integer, PlayerTimeData> entry : page.entrySet()) {
-            PlayerTimeData data = entry.getValue();
-            String pString = Util.player(data.getPlayer()).getName();
-            String color = gmHandler.getGroupColor(gmHandler.getGroup(pString));
-            if(color == null) {
-                color = ChatColor.RESET.toString();
-            }
-            String msg = entry.getKey() + ". " + color + pString + ChatColor.RESET + ": " + Util.formatTime(data.getTotalPlayTime());
-            ret.add(msg);
-        }
-        return ret;
     }
 }

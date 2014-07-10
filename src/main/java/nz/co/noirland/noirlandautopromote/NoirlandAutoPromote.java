@@ -45,6 +45,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
         db.checkSchema();
 
         playerTimeData.addAll(db.getTimeData());
+        sortPlayerTimeData();
 
 		for(PlayerTimeData data : playerTimeData) {
 			if(Util.player(data.getPlayer()).isOnline()) {

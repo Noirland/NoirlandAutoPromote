@@ -7,7 +7,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.SortedSet;
+import java.util.ArrayList;
 
 class CommandFallback extends Command {
 
@@ -59,9 +59,9 @@ class CommandFallback extends Command {
             String nextRank = config.getPromoteTo(gmHandler.getGroup(player));
             plugin.sendMessage(sender,"Time until " + nextColor + nextRank + ChatColor.RESET + ": " + Util.formatTime(neededMillis), false);
         }
-        plugin.sortPlayerTimeData();
-        SortedSet<PlayerTimeData> set = plugin.getPlayerTimeData();
-        int rank = set.size() - set.tailSet(data).size() + 1;
+
+        ArrayList<PlayerTimeData> set = plugin.getPlayerTimeData();
+        int rank = set.indexOf(data) + 1;
         plugin.sendMessage(sender,"Total Play Time: " + Util.formatTime(data.getTotalPlayTime()) + ChatColor.DARK_GRAY + " (#" + rank + ")", false);
     }
 

@@ -5,6 +5,7 @@ import nz.co.noirland.noirlandautopromote.commands.CommandAgree;
 import nz.co.noirland.noirlandautopromote.config.PluginConfig;
 import nz.co.noirland.noirlandautopromote.database.Database;
 import nz.co.noirland.noirlandautopromote.tasks.SaveTimesTask;
+import nz.co.noirland.noirlandautopromote.tasks.SortTimesTask;
 import nz.co.noirland.zephcore.Debug;
 import nz.co.noirland.zephcore.Util;
 import org.bukkit.ChatColor;
@@ -13,8 +14,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.UUID;
 
 public class NoirlandAutoPromote extends JavaPlugin {
@@ -25,7 +26,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
     private static NoirlandAutoPromote inst;
     private static Debug debug;
 
-    private SortedSet<PlayerTimeData> playerTimeData = new TreeSet<PlayerTimeData>();
+    private ArrayList<PlayerTimeData> playerTimeData = new ArrayList<PlayerTimeData>();
 
     public static NoirlandAutoPromote inst() {
         return inst;
@@ -51,6 +52,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
             }
 		}
 		startSaveTimes();
+        new SortTimesTask(config.getSortTimeSeconds() * 20L);
 
 		this.getCommand("autopromote").setExecutor(new Command());
         this.getCommand("agree").setExecutor((new CommandAgree()));
@@ -64,7 +66,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
         db.close();
 	}
 
-    public SortedSet<PlayerTimeData> getPlayerTimeData() {
+    public ArrayList<PlayerTimeData> getPlayerTimeData() {
         return playerTimeData;
     }
 
@@ -81,11 +83,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
     }
 
     public void sortPlayerTimeData() {
-        SortedSet<PlayerTimeData> temp = new TreeSet<PlayerTimeData>();
-        for(PlayerTimeData data: playerTimeData) {
-            temp.add(data);
-        }
-        playerTimeData = temp;
+        Collections.sort(playerTimeData);
     }
 
 	public void saveToDB(boolean thread) {

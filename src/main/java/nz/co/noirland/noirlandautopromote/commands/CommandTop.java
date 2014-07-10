@@ -48,6 +48,8 @@ class CommandTop extends Command {
             return false;
         }
         plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====", false);
+        int totalPages = (int) Math.ceil((double) list.size() / 10);
+        plugin.sendMessage(sender,"Page " + ChatColor.GOLD + p + ChatColor.RESET + " of " + ChatColor.GOLD + totalPages, false);
 
         int rank = low;
         ArrayList<String> ranks = new ArrayList<String>();

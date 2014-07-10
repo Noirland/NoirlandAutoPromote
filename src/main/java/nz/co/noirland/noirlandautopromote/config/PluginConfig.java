@@ -27,7 +27,9 @@ public class PluginConfig extends Config {
 
     public String getPromoteTo(String rank)  { return config.getString("ranks." + rank.toLowerCase() + ".promoteTo"); }
     public boolean getNoPromote(String rank) { return config.getBoolean("ranks." + rank.toLowerCase() + ".noPromote"); }
-    public long getSaveTimeSeconds() { return TimeUnit.SECONDS.convert(config.getInt("settings.saveTime"),TimeUnit.MINUTES); }
+
+    public long getSaveTimeSeconds() { return TimeUnit.MINUTES.toSeconds(config.getInt("settings.saveTime")); }
+    public long getSortTimeSeconds() { return TimeUnit.MINUTES.toSeconds(config.getInt("settings.sortTime", 5)); }
 
     public long getPlayTimeNeededMillis(String rank) {
         int playTimeNeededHours = config.getInt("ranks." + rank.toLowerCase() + ".playTimeNeeded");

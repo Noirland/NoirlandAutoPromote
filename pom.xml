@@ -4,7 +4,7 @@
     <groupId>nz.co.noirland</groupId>
     <artifactId>noirlandautopromote</artifactId>
     <packaging>jar</packaging>
-    <version>3.3.1</version>
+    <version>3.4-SNAPSHOT</version>
     <name>NoirlandAutoPromote</name>
 
     <repositories>

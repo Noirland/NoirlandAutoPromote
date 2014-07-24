@@ -1,35 +1,28 @@
 package nz.co.noirland.noirlandautopromote.database.schema;
 
 import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
-import nz.co.noirland.noirlandautopromote.database.Database;
-import nz.co.noirland.noirlandautopromote.database.DatabaseTables;
+import nz.co.noirland.noirlandautopromote.database.queries.PromoteQuery;
+import nz.co.noirland.zephcore.database.Schema;
 
 import java.sql.SQLException;
 
-public class Schema1 extends Schema {
+public class Schema1 implements Schema {
 
-    private final Database db = Database.inst();
-
-    public void updateDatabase() {
-        createPlayersTable();
-        createSchemaTable();
-    }
-
-    private void createSchemaTable() {
-        String schemaTable = DatabaseTables.SCHEMA.toString();
-        try{
-            db.prepareStatement("CREATE TABLE `" + schemaTable + "` (`version` TINYINT UNSIGNED);").execute();
-            db.prepareStatement("INSERT INTO `" + schemaTable + "` VALUES(1);").execute();
-        }catch(SQLException e) {
-            NoirlandAutoPromote.debug().disable("Could not create schema table!", e);
-        }
-    }
-
-    private void createPlayersTable() {
+    public void run() {
         try {
-            db.prepareStatement("CREATE TABLE `" + DatabaseTables.TIMES.toString() + "` (player VARCHAR(16), playTime BIGINT UNSIGNED, totalPlayTime BIGINT UNSIGNED, PRIMARY KEY (player))").execute();
-        }catch(SQLException e) {
-            NoirlandAutoPromote.debug().disable("Couldn't create times table!", e);
+            createPlayersTable();
+            createSchemaTable();
+        } catch (SQLException e) {
+            NoirlandAutoPromote.debug().disable("Unable to update database to schema 1!", e);
         }
+    }
+
+    private void createSchemaTable() throws SQLException {
+        new PromoteQuery("CREATE TABLE `{PREFIX}_schema` (`version` TINYINT UNSIGNED);").execute();
+        new PromoteQuery("INSERT INTO `{PREFIX}_schema` VALUES(1);").execute();
+    }
+
+    private void createPlayersTable() throws SQLException {
+        new PromoteQuery("CREATE TABLE `{PREFIX}_times` (player VARCHAR(16), playTime BIGINT UNSIGNED, totalPlayTime BIGINT UNSIGNED, PRIMARY KEY (player))").execute();
     }
 }

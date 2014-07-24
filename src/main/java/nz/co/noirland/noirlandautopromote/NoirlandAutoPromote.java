@@ -3,11 +3,12 @@ package nz.co.noirland.noirlandautopromote;
 import nz.co.noirland.noirlandautopromote.commands.Command;
 import nz.co.noirland.noirlandautopromote.commands.CommandAgree;
 import nz.co.noirland.noirlandautopromote.config.PluginConfig;
-import nz.co.noirland.noirlandautopromote.database.Database;
+import nz.co.noirland.noirlandautopromote.database.PromoteDatabase;
 import nz.co.noirland.noirlandautopromote.tasks.SaveTimesTask;
 import nz.co.noirland.noirlandautopromote.tasks.SortTimesTask;
 import nz.co.noirland.zephcore.Debug;
 import nz.co.noirland.zephcore.Util;
+import nz.co.noirland.zephcore.database.AsyncDatabaseUpdateTask;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -20,11 +21,11 @@ import java.util.UUID;
 
 public class NoirlandAutoPromote extends JavaPlugin {
 
-    private Database db;
     private PluginConfig config;
     private BukkitTask saveTimesTask;
     private static NoirlandAutoPromote inst;
     private static Debug debug;
+    private PromoteDatabase db;
 
     private ArrayList<PlayerTimeData> playerTimeData = new ArrayList<PlayerTimeData>();
 
@@ -38,10 +39,10 @@ public class NoirlandAutoPromote extends JavaPlugin {
     @Override
 	public void onEnable() {
         inst = this;
-        config = PluginConfig.inst();
         debug = new Debug(this);
+        config = PluginConfig.inst();
 
-        db = Database.inst();
+        db = PromoteDatabase.inst();
         db.checkSchema();
 
         playerTimeData.addAll(db.getTimeData());
@@ -63,7 +64,8 @@ public class NoirlandAutoPromote extends JavaPlugin {
 
 	@Override
 	public void onDisable(){
-        saveToDB(false);
+        saveToDB();
+        AsyncDatabaseUpdateTask.inst().stop(); // Finishes any remaining queries
         db.close();
 	}
 
@@ -78,7 +80,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
             }
         }
         PlayerTimeData data = new PlayerTimeData(player, 0, 0);
-        db.updatePlayerTimes(data, true);
+        db.updatePlayerTimes(data);
         playerTimeData.add(data);
         return data;
     }
@@ -87,18 +89,16 @@ public class NoirlandAutoPromote extends JavaPlugin {
         Collections.sort(playerTimeData);
     }
 
-	public void saveToDB(boolean thread) {
+	public void saveToDB() {
         for(PlayerTimeData data : getPlayerTimeData()) {
             if(data.hasChanged()) {
-                Database.inst().updatePlayerTimes(data, thread);
+                PromoteDatabase.inst().updatePlayerTimes(data);
             }
         }
 	}
 
 	public void reload() {
-        saveToDB(true);
-        db.close();
-        db.open();
+        saveToDB();
         config.loadFile();
         startSaveTimes();
 	}

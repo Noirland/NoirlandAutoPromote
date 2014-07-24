@@ -2,7 +2,7 @@ package nz.co.noirland.noirlandautopromote.tasks;
 
 import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
 import nz.co.noirland.noirlandautopromote.PlayerTimeData;
-import nz.co.noirland.noirlandautopromote.database.Database;
+import nz.co.noirland.noirlandautopromote.database.PromoteDatabase;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class SaveTimesTask extends BukkitRunnable {
@@ -12,7 +12,7 @@ public class SaveTimesTask extends BukkitRunnable {
 	public void run() {
         for(PlayerTimeData data : plugin.getPlayerTimeData()) {
             if(data.hasChanged()) {
-                Database.inst().updatePlayerTimes(data, true);
+                PromoteDatabase.inst().updatePlayerTimes(data);
             }
         }
 	}

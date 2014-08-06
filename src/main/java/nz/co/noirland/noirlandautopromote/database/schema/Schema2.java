@@ -5,7 +5,6 @@ import nz.co.noirland.noirlandautopromote.database.queries.GetAllTimesQuery;
 import nz.co.noirland.noirlandautopromote.database.queries.PromoteQuery;
 import nz.co.noirland.zephcore.UUIDFetcher;
 import nz.co.noirland.zephcore.database.Schema;
-import nz.co.noirland.zephcore.database.queries.Query;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class Schema2 implements Schema {
 
         new PromoteQuery("ALTER TABLE `{PREFIX}_times` MODIFY COLUMN `player` VARCHAR(36)").execute();
 
-        Query updateQuery = new PromoteQuery(2, "UPDATE {PREFIX}_times SET player=? WHERE player=?");
+        PromoteQuery updateQuery = new PromoteQuery(2, "UPDATE {PREFIX}_times SET player=? WHERE player=?");
 
         for(Map.Entry<String, UUID> entry : uuids.entrySet()) {
             updateQuery.setValue(1, entry.getValue().toString());

@@ -54,7 +54,7 @@ class CommandTop extends Command {
         int rank = low;
         ArrayList<String> ranks = new ArrayList<String>();
         for(PlayerTimeData data : page) {
-            String pString = Util.player(data.getPlayer()).getName();
+            String pString = Util.name(data.getPlayer());
             String color = gmHandler.getGroupColor(gmHandler.getGroup(pString));
             if(color == null) {
                 color = ChatColor.RESET.toString();

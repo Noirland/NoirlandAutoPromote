@@ -1,7 +1,7 @@
 package nz.co.noirland.noirlandautopromote.commands;
 
 import nz.co.noirland.noirlandautopromote.PlayerTimeData;
-import nz.co.noirland.zephcore.Util;
+import nz.co.noirland.noirlandautopromote.callbacks.TopCallback;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -36,6 +36,7 @@ class CommandTop extends Command {
         }
         int low = (p-1) * 10;
         int up = Math.min(low + 10, list.size());
+        int numPages = (int) Math.ceil((double) list.size() / 10);
 
         if(low >= list.size()) {
             plugin.sendMessage(sender, "That page does not exist", true);
@@ -47,25 +48,8 @@ class CommandTop extends Command {
             plugin.sendMessage(sender, "That page does not exist", true);
             return false;
         }
-        plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====", false);
-        int totalPages = (int) Math.ceil((double) list.size() / 10);
-        plugin.sendMessage(sender,"Page " + ChatColor.GOLD + p + ChatColor.RESET + " of " + ChatColor.GOLD + totalPages, false);
 
-        int rank = low;
-        ArrayList<String> ranks = new ArrayList<String>();
-        for(PlayerTimeData data : page) {
-            String pString = Util.name(data.getPlayer());
-            String color = gmHandler.getGroupColor(gmHandler.getGroup(pString));
-            if(color == null) {
-                color = ChatColor.RESET.toString();
-            }
-            String msg = ++rank + ". " + color + pString + ChatColor.RESET + ": " + Util.formatTime(data.getTotalPlayTime());
-            ranks.add(msg);
-        }
-        for(String msg : ranks) {
-            plugin.sendMessage(sender, msg, false);
-
-        }
+        new TopCallback(sender, new ArrayList<PlayerTimeData>(page), p, numPages, low);
         return true;
     }
 }

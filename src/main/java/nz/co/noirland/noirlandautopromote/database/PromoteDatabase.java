@@ -5,6 +5,8 @@ import nz.co.noirland.noirlandautopromote.PlayerTimeData;
 import nz.co.noirland.noirlandautopromote.config.PluginConfig;
 import nz.co.noirland.noirlandautopromote.database.queries.GetAllTimesQuery;
 import nz.co.noirland.noirlandautopromote.database.queries.UpdatePlayTimeQuery;
+import nz.co.noirland.noirlandautopromote.database.schema.Schema1;
+import nz.co.noirland.noirlandautopromote.database.schema.Schema2;
 import nz.co.noirland.zephcore.Debug;
 import nz.co.noirland.zephcore.database.MySQLDatabase;
 
@@ -25,6 +27,12 @@ public class PromoteDatabase extends MySQLDatabase {
             inst = new PromoteDatabase();
         }
         return inst;
+    }
+
+    private PromoteDatabase() {
+        inst = this;
+        schemas.put(1, new Schema1());
+        schemas.put(2, new Schema2());
     }
 
     @Override
@@ -60,10 +68,6 @@ public class PromoteDatabase extends MySQLDatabase {
     @Override
     public String getPrefix() {
         return config.getPrefix();
-    }
-
-    private PromoteDatabase() {
-        inst = this;
     }
 
     public ArrayList<PlayerTimeData> getTimeData() {

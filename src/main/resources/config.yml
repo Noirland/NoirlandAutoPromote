@@ -12,11 +12,14 @@ ranks:
   NonPromotingRank:
     noPromote: true
 
-defaultPromote:
-  default: DefaultRankHere
-  promoteTo: NewRankHere
+mysql:
+    database: autopromote
+    username: autopromote
+    password: 'password'
+    port: 3306
+    host: localhost
+    prefix: promote
 
 settings:
   saveTime: 10
   sortTime: 5
-  debug: false

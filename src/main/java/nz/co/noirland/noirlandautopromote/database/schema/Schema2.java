@@ -1,60 +1,58 @@
 package nz.co.noirland.noirlandautopromote.database.schema;
 
 import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
-import nz.co.noirland.noirlandautopromote.config.PluginConfig;
-import nz.co.noirland.noirlandautopromote.database.Database;
-import nz.co.noirland.noirlandautopromote.database.DatabaseTables;
-import nz.co.noirland.noirlandautopromote.database.Queries;
+import nz.co.noirland.noirlandautopromote.database.queries.GetAllTimesQuery;
+import nz.co.noirland.noirlandautopromote.database.queries.PromoteQuery;
 import nz.co.noirland.zephcore.UUIDFetcher;
+import nz.co.noirland.zephcore.database.Schema;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Schema2 extends Schema {
-
-    private final Database db = Database.inst();
+public class Schema2 implements Schema {
 
     @Override
-    public void updateDatabase() {
-        convertNamesToUUID();
+    public void run() {
         try {
-            db.prepareStatement("UPDATE `" + PluginConfig.inst().getPrefix() + "schema` SET `version` = 2").execute();
+            convertNamesToUUID();
+            updateSchema();
         } catch (SQLException e) {
             NoirlandAutoPromote.debug().disable("Failed to update schema!");
         }
     }
 
-    private void convertNamesToUUID() {
-        PreparedStatement statement = db.prepareStatement(Queries.GET_ALL_TIMES);
-        NoirlandAutoPromote.debug().warning("Updating database players to UUIDs.");
-        try {
-            ResultSet res = statement.executeQuery();
-            ArrayList<String> names = new ArrayList<String>();
-            while(res.next()) {
-                names.add(res.getString("player"));
-            }
-            statement.close();
+    private void updateSchema() throws SQLException {
+        new PromoteQuery("UPDATE `{PREFIX}_schema` SET `version` = 2").execute();
+    }
 
-            db.prepareStatement("ALTER TABLE `" + DatabaseTables.TIMES.toString() + "` MODIFY COLUMN `player` VARCHAR(36)").execute();
+    private void convertNamesToUUID() throws SQLException {
+        NoirlandAutoPromote.debug().warning("Updating database players to UUIDs (this may take a while)");
+        List<Map<String, Object>> res = new GetAllTimesQuery().executeQuery();
 
-            Map<String, UUID> uuids = UUIDFetcher.getUUIDs(names);
-            for(Map.Entry<String, UUID> entry : uuids.entrySet()) {
-                if(entry.getValue() == null) {
-                    db.prepareStatement("DELETE FROM `promote_times` WHERE player='" + entry.getKey() + "';").execute();
-                    continue;
-                }
-                PreparedStatement s = db.prepareStatement("UPDATE " + DatabaseTables.TIMES.toString() + " SET player=? WHERE player=?");
-                s.setString(1, entry.getValue().toString());
-                s.setString(2, entry.getKey());
-                s.execute();
-            }
-            NoirlandAutoPromote.debug().warning("Completed update to UUIDs.");
-        } catch (SQLException e) {
-            e.printStackTrace();
+        ArrayList<String> names = new ArrayList<String>();
+        for(Map<String, Object> row : res) {
+            names.add((String) row.get("player"));
         }
+
+        Map<String, UUID> uuids = UUIDFetcher.getUUIDs(names);
+
+        new PromoteQuery("ALTER TABLE `{PREFIX}_times` MODIFY COLUMN `player` VARCHAR(36)").execute();
+
+        PromoteQuery updateQuery = new PromoteQuery(2, "UPDATE {PREFIX}_times SET player=? WHERE player=?");
+
+        for(Map.Entry<String, UUID> entry : uuids.entrySet()) {
+            updateQuery.setValue(1, entry.getValue().toString());
+            updateQuery.setValue(2, entry.getKey());
+            try {
+                updateQuery.execute();
+            } catch (SQLException e) {
+                NoirlandAutoPromote.debug().warning("Could not update " + entry.getKey() + " to UUID!", e);
+            }
+        }
+
+        NoirlandAutoPromote.debug().warning("Completed update to UUIDs.");
     }
 }

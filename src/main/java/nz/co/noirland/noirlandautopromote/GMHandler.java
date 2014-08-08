@@ -55,6 +55,7 @@ public class GMHandler {
 		if (handler == null) {
 			return null;
 		}
+        if(player == null) return null;
 		if(next) {
 			String nextRank = config.getPromoteTo(getGroup(player));
 			color = ChatColor.translateAlternateColorCodes("&".charAt(0), handler.getGroupPrefix(nextRank));

@@ -84,8 +84,8 @@ public class PromoteDatabase extends MySQLDatabase {
 
         for(Map<String, Object> row : res) {
             UUID player = UUID.fromString((String) row.get("player"));
-            long playTime = (Long) row.get("playTime");
-            long totalPlayTime = (Long) row.get("totalPlayTime");
+            long playTime = ((Number) row.get("playTime")).longValue();
+            long totalPlayTime = ((Number) row.get("totalPlayTime")).longValue();
             times.add(new PlayerTimeData(player, playTime, totalPlayTime));
         }
         return times;

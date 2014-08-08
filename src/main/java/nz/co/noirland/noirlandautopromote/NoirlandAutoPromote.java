@@ -8,7 +8,6 @@ import nz.co.noirland.noirlandautopromote.tasks.SaveTimesTask;
 import nz.co.noirland.noirlandautopromote.tasks.SortTimesTask;
 import nz.co.noirland.zephcore.Debug;
 import nz.co.noirland.zephcore.Util;
-import nz.co.noirland.zephcore.database.AsyncDatabaseUpdateTask;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -65,7 +64,6 @@ public class NoirlandAutoPromote extends JavaPlugin {
 	@Override
 	public void onDisable(){
         saveToDB();
-        AsyncDatabaseUpdateTask.inst().stop(); // Finishes any remaining queries
         db.close();
 	}
 

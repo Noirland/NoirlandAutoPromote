@@ -64,7 +64,6 @@ public class NoirlandAutoPromote extends JavaPlugin {
 	@Override
 	public void onDisable(){
         saveToDB();
-        db.close();
 	}
 
     public ArrayList<PlayerTimeData> getPlayerTimeData() {

@@ -2,7 +2,6 @@ package nz.co.noirland.noirlandautopromote;
 
 import nz.co.noirland.noirlandautopromote.commands.Command;
 import nz.co.noirland.noirlandautopromote.commands.CommandAgree;
-import nz.co.noirland.noirlandautopromote.config.PluginConfig;
 import nz.co.noirland.noirlandautopromote.database.PromoteDatabase;
 import nz.co.noirland.noirlandautopromote.tasks.SaveTimesTask;
 import nz.co.noirland.noirlandautopromote.tasks.SortTimesTask;
@@ -20,7 +19,7 @@ import java.util.UUID;
 
 public class NoirlandAutoPromote extends JavaPlugin {
 
-    private PluginConfig config;
+    private PromoteConfig config;
     private BukkitTask saveTimesTask;
     private static NoirlandAutoPromote inst;
     private static Debug debug;
@@ -39,7 +38,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 	public void onEnable() {
         inst = this;
         debug = new Debug(this);
-        config = PluginConfig.inst();
+        config = PromoteConfig.inst();
 
         db = PromoteDatabase.inst();
         db.checkSchema();
@@ -96,7 +95,7 @@ public class NoirlandAutoPromote extends JavaPlugin {
 
 	public void reload() {
         saveToDB();
-        config.loadFile();
+        config.reload();
         startSaveTimes();
 	}
 

@@ -1,6 +1,5 @@
 package nz.co.noirland.noirlandautopromote;
 
-import nz.co.noirland.noirlandautopromote.config.PluginConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -9,7 +8,7 @@ public class PromotionHandler {
 
     private final NoirlandAutoPromote plugin = NoirlandAutoPromote.inst();
     private final GMHandler gmHandler = GMHandler.inst();
-    private final PluginConfig config = PluginConfig.inst();
+    private final PromoteConfig config = PromoteConfig.inst();
     private static PromotionHandler inst;
 
     public static PromotionHandler inst() {

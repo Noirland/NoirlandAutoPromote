@@ -1,6 +1,5 @@
 package nz.co.noirland.noirlandautopromote;
 
-import nz.co.noirland.noirlandautopromote.config.PluginConfig;
 import org.anjocaido.groupmanager.GroupManager;
 import org.anjocaido.groupmanager.data.Group;
 import org.anjocaido.groupmanager.dataholder.OverloadedWorldHolder;
@@ -14,7 +13,7 @@ import java.util.Map;
 
 public class GMHandler {
 	private GroupManager gm;
-	private PluginConfig config = PluginConfig.inst();
+	private PromoteConfig config = PromoteConfig.inst();
     private static GMHandler inst;
 
     public static GMHandler inst() {

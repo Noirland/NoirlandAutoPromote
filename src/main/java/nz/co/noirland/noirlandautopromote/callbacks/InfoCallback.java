@@ -1,10 +1,8 @@
 package nz.co.noirland.noirlandautopromote.callbacks;
 
-import nz.co.noirland.noirlandautopromote.GMHandler;
-import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
-import nz.co.noirland.noirlandautopromote.PlayerTimeData;
-import nz.co.noirland.noirlandautopromote.PromotionHandler;
-import nz.co.noirland.noirlandautopromote.config.PluginConfig;
+import com.google.common.collect.Maps;
+import com.google.common.util.concurrent.FutureCallback;
+import nz.co.noirland.noirlandautopromote.*;
 import nz.co.noirland.zephcore.Callback;
 import nz.co.noirland.zephcore.Util;
 import org.bukkit.ChatColor;
@@ -12,36 +10,60 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 
-public class InfoCallback extends Callback {
+public class InfoCallback extends Callback<Map.Entry<UUID, String>> {
 
-    UUID uuid;
-    String name;
-    CommandSender sender;
+    public InfoCallback(CommandSender sender, String name) {
+        super(new InfoTask(name), new InfoResult(sender));
+    }
 
+}
 
-    public InfoCallback(CommandSender sender, String player) {
-        super(NoirlandAutoPromote.inst());
-        this.sender = sender;
-        new InfoThread(player);
+class InfoTask implements Callable<Map.Entry<UUID, String>> {
+    private String name;
+
+    public InfoTask(String name) {
+        this.name = name;
     }
 
     @Override
-    public void run() {
+    public Map.Entry<UUID, String> call() throws Exception {
+        UUID uuid = Util.uuid(name);
+        if(uuid != null) {
+            name = Util.name(uuid); // Proper capitalisation
+        }
+        return Maps.immutableEntry(uuid, name);
+    }
+}
+
+class InfoResult implements FutureCallback<Map.Entry<UUID, String>> {
+    private final CommandSender to;
+
+    public InfoResult(CommandSender to) {
+        this.to = to;
+    }
+
+    @Override
+    public void onSuccess(Map.Entry<UUID, String> result) {
         NoirlandAutoPromote plugin = NoirlandAutoPromote.inst();
         GMHandler gmHandler = GMHandler.inst();
-        PluginConfig config = PluginConfig.inst();
+        PromoteConfig config = PromoteConfig.inst();
+
+        UUID uuid = result.getKey();
+        String name = result.getValue();
 
         if(uuid == null) {
-            plugin.sendMessage(sender, "That player has not played on this server.", true);
+            plugin.sendMessage(to, "That player has not played on this server.", true);
             return;
         }
 
         OfflinePlayer oPlayer = Util.player(uuid);
 
         if(!oPlayer.hasPlayedBefore() && !oPlayer.isOnline()) {
-            plugin.sendMessage(sender, "That player has not played on this server.", true);
+            plugin.sendMessage(to, "That player has not played on this server.", true);
             return;
         }
 
@@ -54,36 +76,22 @@ public class InfoCallback extends Callback {
 
         long neededMillis = config.getPlayTimeNeededMillis(group) - data.getPlayTime();
 
-        plugin.sendMessage(sender,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====", false);
+        plugin.sendMessage(to,"==== " + ChatColor.RED + "NoirPromote" + ChatColor.RESET + " ====", false);
 
         if(!config.getNoPromote(group)){
             String nextColor = gmHandler.getColor(name, true);
             String nextRank = config.getPromoteTo(group);
-            plugin.sendMessage(sender,"Time until " + nextColor + nextRank + ChatColor.RESET + ": " + Util.formatTime(neededMillis), false);
+            plugin.sendMessage(to,"Time until " + nextColor + nextRank + ChatColor.RESET + ": " + Util.formatTime(neededMillis), false);
         }
 
         ArrayList<PlayerTimeData> set = plugin.getPlayerTimeData();
         int rank = set.indexOf(data) + 1;
-        plugin.sendMessage(sender,"Total Play Time: " + Util.formatTime(data.getTotalPlayTime()) + ChatColor.DARK_GRAY + " (#" + rank + ")", false);
+        plugin.sendMessage(to,"Total Play Time: " + Util.formatTime(data.getTotalPlayTime()) + ChatColor.DARK_GRAY + " (#" + rank + ")", false);
     }
 
-    private class InfoThread implements Runnable {
-
-        private String p;
-
-        private InfoThread(String player) {
-            this.p = player;
-            new Thread(this, "AutoPromote-InfoThread").start();
-        }
-
-        @Override
-        public void run() {
-            uuid = Util.uuid(p);
-            if(uuid != null) {
-                name = Util.name(uuid); // Proper capitalisation
-            }
-            schedule();
-        }
+    @Override
+    public void onFailure(Throwable error) {
+        to.sendMessage(ChatColor.DARK_RED + "Internal error occurred!");
+        NoirlandAutoPromote.debug().warning("Could not get promote info!", error);
     }
-
 }

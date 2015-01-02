@@ -3,7 +3,7 @@ package nz.co.noirland.noirlandautopromote.commands;
 import nz.co.noirland.noirlandautopromote.GMHandler;
 import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
 import nz.co.noirland.noirlandautopromote.PromotionHandler;
-import nz.co.noirland.noirlandautopromote.config.PluginConfig;
+import nz.co.noirland.noirlandautopromote.PromoteConfig;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +15,7 @@ public class Command implements CommandExecutor {
 
     protected final NoirlandAutoPromote plugin = NoirlandAutoPromote.inst();
     protected final GMHandler gmHandler = GMHandler.inst();
-    protected final PluginConfig config = PluginConfig.inst();
+    protected final PromoteConfig config = PromoteConfig.inst();
     protected final PromotionHandler pmHandler = PromotionHandler.inst();
 
     protected static Command fallback;
@@ -46,15 +46,11 @@ public class Command implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
-
-
         if(args.length > 0 && commands.containsKey(args[0].toLowerCase())) {
             return commands.get(args[0]).run(sender, args);
         }else{
             return fallback.run(sender, args);
         }
-
-
     }
 
     void printHelp(CommandSender sender, String command) {

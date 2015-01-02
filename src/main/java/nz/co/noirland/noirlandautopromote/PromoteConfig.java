@@ -1,21 +1,39 @@
-package nz.co.noirland.noirlandautopromote.config;
+package nz.co.noirland.noirlandautopromote;
+
+import nz.co.noirland.zephcore.Config;
+import nz.co.noirland.zephcore.Debug;
+import org.bukkit.plugin.Plugin;
 
 import java.util.concurrent.TimeUnit;
 
-public class PluginConfig extends Config {
+public class PromoteConfig extends Config {
 
-    private static PluginConfig inst;
+    private static PromoteConfig inst;
 
-    private PluginConfig() {
+    @Override
+    protected Plugin getPlugin() {
+        return NoirlandAutoPromote.inst();
+    }
+
+    @Override
+    protected Debug getDebug() {
+        return NoirlandAutoPromote.debug();
+    }
+
+    private PromoteConfig() {
         super("config.yml");
     }
 
-    public static PluginConfig inst() {
+    public static PromoteConfig inst() {
         if(inst == null) {
-            inst = new PluginConfig();
+            inst = new PromoteConfig();
         }
 
         return inst;
+    }
+
+    public void reload() {
+        load();
     }
 
     public String  getDatabase() { return config.getString("mysql.database"); }
@@ -37,7 +55,7 @@ public class PluginConfig extends Config {
     }
 
     public String getDefault() {
-        for(String key : plugin.getConfig().getConfigurationSection("ranks").getKeys(false)) {
+        for(String key : config.getConfigurationSection("ranks").getKeys(false)) {
             if(config.isSet("ranks."+key+".default")) {
                 return key;
             }

@@ -4,7 +4,7 @@ import nz.co.noirland.noirlandautopromote.GMHandler;
 import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
 import nz.co.noirland.noirlandautopromote.PlayerTimeData;
 import nz.co.noirland.noirlandautopromote.PromotionHandler;
-import nz.co.noirland.noirlandautopromote.config.PluginConfig;
+import nz.co.noirland.noirlandautopromote.PromoteConfig;
 import nz.co.noirland.zephcore.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,7 +18,7 @@ public class PlayerPromoteTask extends BukkitRunnable {
 
     private final PromotionHandler pmHandler = PromotionHandler.inst();
     private final GMHandler gmHandler = GMHandler.inst();
-    private final PluginConfig config = PluginConfig.inst();
+    private final PromoteConfig config = PromoteConfig.inst();
     private PlayerTimeData data;
 
     public PlayerPromoteTask(UUID player) {

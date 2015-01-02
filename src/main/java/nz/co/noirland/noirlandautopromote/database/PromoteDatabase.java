@@ -2,13 +2,13 @@ package nz.co.noirland.noirlandautopromote.database;
 
 import nz.co.noirland.noirlandautopromote.NoirlandAutoPromote;
 import nz.co.noirland.noirlandautopromote.PlayerTimeData;
-import nz.co.noirland.noirlandautopromote.config.PluginConfig;
+import nz.co.noirland.noirlandautopromote.PromoteConfig;
 import nz.co.noirland.noirlandautopromote.database.queries.GetAllTimesQuery;
 import nz.co.noirland.noirlandautopromote.database.queries.UpdatePlayTimeQuery;
 import nz.co.noirland.noirlandautopromote.database.schema.Schema1;
 import nz.co.noirland.noirlandautopromote.database.schema.Schema2;
 import nz.co.noirland.zephcore.Debug;
-import nz.co.noirland.zephcore.database.MySQLDatabase;
+import nz.co.noirland.zephcore.database.mysql.MySQLDatabase;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class PromoteDatabase extends MySQLDatabase {
 
     private static PromoteDatabase inst;
 
-    private static final PluginConfig config = PluginConfig.inst();
+    private static final PromoteConfig config = PromoteConfig.inst();
 
     public static PromoteDatabase inst() {
         if(inst == null) {
